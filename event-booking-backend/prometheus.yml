@@ -1,0 +1,8 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'node_event_api'
+    # Use host.docker.internal to access localhost of the host machine from inside a Docker container (Windows/Mac)
+    static_configs:
+      - targets: ['host.docker.internal:4000']

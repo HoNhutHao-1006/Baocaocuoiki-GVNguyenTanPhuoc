@@ -1,0 +1,2218 @@
+--- Page 1 ---
+ 
+ĐẠI HỌC ĐÀ NẴNG  
+TRƯỜNG ĐẠI HỌC BÁCH KHOA  
+KHOA CÔNG NGHỆ THÔNG TIN  
+ 
+ 
+ 
+ĐỒ ÁN TỐT NGHIỆP  
+NGÀNH: CÔNG NGHỆ THÔNG TIN  
+CHUYÊN NGÀNH: CÔNG NGHỆ PHẦN MỀM  
+ 
+ 
+ 
+ 
+ĐỀ TÀI:  
+XÂY DỰNG WEBSITE QUẢN LÝ  
+TỔ CHỨC SỰ KIỆN  
+ 
+ 
+ 
+ 
+ 
+Người  hướng dẫn: ThS. NGUYỄN THỊ MINH HỶ  
+Sinh viên thực hiện:     NGUYỄN THỊ CẦM  
+Số thẻ sinh viên:   102200368  
+Lớp:    20T2  
+ 
+ 
+ 
+Đà Nẵng,  06/2024 
+ 
+       Nuyễn Thị Cầm            TÊN ĐỀ TÀI : Xây dựng website quản lý tổ chức sự kiện                  2024 
+--- Page 2 ---
+ 
+  
+ĐẠI HỌC ĐÀ NẴNG  
+TRƯỜNG ĐẠI HỌC BÁCH KHOA  
+KHOA CÔNG NGHỆ THÔNG TIN  
+ 
+ 
+ 
+ĐỒ ÁN TỐT NGHIỆP  
+NGÀNH:  CÔNG NGHỆ THÔNG TIN  
+CHUYÊN NGÀNH:  CÔNG NGHỆ PHẦN MỀM  
+ 
+ 
+ 
+ 
+ĐỀ TÀI:  
+ 
+XÂY DỰNG WEBSITE QUẢN LÝ  
+TỔ CHỨC SỰ KIỆN  
+ 
+ 
+ 
+ 
+Người  hướng dẫn: ThS. NGUYỄN THỊ MINH HỶ  
+Sinh viên thực hiện:     NGUYỄN THỊ CẦM  
+Số thẻ sinh viên: 102200368  
+Lớp:    20T2  
+ 
+ 
+ 
+ 
+Đà Nẵng, 06/2024 
+--- Page 3 ---
+ 
+ TÓM T ẮT 
+ 
+Tên đề tài: Xây dựng website quản lý tổ chức sự kiện  
+Sinh viên thực hiện: Nguyễn Thị Cầm  
+Số thẻ SV:  102 200368   Lớp: 20T2  
+Website quản lý tổ chức sự kiện cung cấp một nền tảng trực tuyến giúp các công ty tổ 
+chức sự kiện quảng bá dịch vụ của họ một cách hiệu quả. Khách hàng có thể dễ dàng 
+tìm kiếm thông tin chi tiết về các dịch vụ, so sánh và lựa chọn những dịch vụ phù hợp 
+nhất cho nhu cầu tổ chức sự kiện của mình. Sau khi tìm hiểu kỹ lưỡng, khách hàng có 
+thể tạo hợp đồng thuê dịch vụ một cách nhanh chóng và thuận tiện thông qua website. 
+Ngoài ra, n ền tảng này cũng hỗ trợ các công ty tổ chức sự kiện trong việc quản lý các 
+dịch vụ của mình một cách hợp lý, dễ dàng và hiệu quả hơn, từ đó nâng cao chất lượng 
+và hiệu quả hoạt động kinh doanh.  
+  
+--- Page 4 ---
+ 
+  
+ĐẠI HỌC ĐÀ NẴNG  
+TRƯỜNG ĐẠI HỌC BÁCH KHOA  
+KHOA CÔNG NGHỆ THÔNG TIN  CỘNG HÒA XÃ HÔI CHỦ NGHĨA VIỆT NAM  
+Độc lập - Tự do - Hạnh phúc  
+NHI ỆM V Ụ ĐỒ ÁN T ỐT NGHI ỆP 
+Họ tên sinh viên:  Nguyễn Thị Cầm    Số thẻ sinh viên: 10 2200368  
+Lớp: 20T2     Khoa: Công nghệ thông tin  Ngành: Công nghệ phần mềm  
+1. Tên đề tài đồ án:  
+    Xây dựng website quản lý tổ chức sự kiên  
+2. Đề tài thuộc diện: ☐ Có ký kết thỏa thuận sở hữu trí tuệ đối với kết quả thực hiện  
+3. Các số liệu và dữ liệu ban đầu:  
+……………………………………..……………………………………………..……...
+...…………………………………………………………………………………………
+…..………………………………….…..………………………..…………………  
+4. Nội dung các phần thuyết minh và tính toán:  
+…...……………………………………………………………………………………  
+…...……………………………………………………………………………………  
+…...……………………………………………………………………………………  
+…...……………………………………………………………………………………  
+…...……………………………………………………………………………………  
+5. Các bản vẽ, đồ thị ( ghi rõ các loại và kích thước bản vẽ ):  
+…...……………………………………………………………………………………  
+…...……………………………………………………………………………………  
+…...……………………………………………………………………………………  
+…...……………………………………………………………………………………  
+6. Họ tên người hướng dẫn: Thạc sĩ. Nguyễn Thị Minh Hỷ  
+7. Ngày giao nhiệm vụ đồ án:     /    / 202 4 
+8. Ngày hoàn thành đồ án:         /    / 202 4 
+ 
+ Đà Nẵng, ngày       tháng      năm 202 4 
+  
+Trưởng Bộ môn ……………………..  Người hướng dẫn  
+ 
+--- Page 5 ---
+ 
+i 
+ LỜI NÓI ĐẦU  
+ 
+Em xin gửi lời cảm ơn  chân thành và sâu sắc  đến các thầy cô trong Khoa Công 
+nghệ thông tin, cũng như tất cả các thầy cô trong  trường Đại học Bách khoa – Đại học 
+Đà Nẵng đã dìu dắt, dạy dỗ và truyền đạt  kiến thức, kinh nghiệm quý báu của mình 
+trong suốt quá trình em học tập và nghiên cứu tại trường.  
+Em xin bày tỏ tình cảm và lòng biết ơn chân thành của em tới cô giáo ThS. Nguyễn 
+Thị Minh Hỷ , người đã từng bước hướng dẫn, giúp đỡ em tận tình trong quá trình thực 
+hiện đồ án tốt nghiệp của mình.  Nhờ đó em có thể hoàn thành đồ án đúng tiến độ và 
+tích lũy cho mình nhiều kiến thức quý báu.  
+ Dù đã nỗ lực hoàn thành đồ án một cách tốt nhất, nhưng do hạn chế về thời gian 
+và kiến thức, em không thể tránh khỏi những thiếu sót. Em rất mong nhận được sự cảm 
+thông, chỉ bảo và góp ý tận tình từ quý thầy cô và tất cả các bạn để em có thể hoàn thiện 
+kết quả của mình hơn nữa.  
+Một lần nữa em xin chân thành cảm ơn ! 
+ 
+         Nguyễn Thị Cầm  
+ 
+  
+--- Page 6 ---
+ 
+ii 
+ CAM ĐOAN  
+    
+Em xin cam đoan:  
+1. Nội dung trong đồ án này là do em thực hiện dưới sự hướng  dẫn trực tiếp của 
+ThS. Nguyễn Thị Minh Hỷ.  
+2. Các tham khảo dùng trong đồ án đều được trích dẫn rõ ràng tên tác giả, tên công 
+trình, thời gian, địa điểm công bố.  
+3. Nếu có những sao chép không hợp lệ, vi phạm quy chế đào tạo, em xin chịu hoàn 
+toàn trách nhiệm.  
+ 
+Đà Nẵng, ngày 20 tháng 0 6 năm 202 4 
+                     Sinh viên thực hiện  
+ 
+ 
+ 
+                    Nguyễn Thị Cầm  
+ 
+  
+--- Page 7 ---
+ 
+iii 
+ MỤC LỤC 
+ 
+ 
+TÓM T ẮT 
+NHIỆM VỤ ĐỒ ÁN T ỐT NGHI ỆP 
+LỜI NÓI ĐẦU  ................................ ................................ ................................ .................. i 
+CAM ĐOAN ................................ ................................ ................................ ...................  ii 
+MỤC LỤC  ................................ ................................ ................................ .....................  iii 
+DANH SÁCH CÁC BẢNG  ................................ ................................ ........................... vi 
+DANH SÁCH CÁC HÌNH VẼ  ................................ ................................ ....................  vii 
+DANH SÁCH CÁC KÝ HIỆU, CHỮ VIẾT TẮT  ................................ ......................... ix 
+MỞ ĐẦU ................................ ................................ ................................ .........................  1 
+Chương 1:  CƠ SỞ LÝ THUYẾT VÀ CÔNG CỤ SỬ DỤNG  ................................  3 
+1.1. Kiến thức cơ b ản ................................ ................................ ................................ . 3 
+1.1.1.  HTML  ................................ ................................ ................................ ........  3 
+1.1.2.  CSS ................................ ................................ ................................ ............  3 
+1.1.3.  Javascript  ................................ ................................ ................................ .. 3 
+1.1.4.  Typescript  ................................ ................................ ................................ .. 3 
+1.2. Tổng quan v ề NodeJs và NestJS framework  ................................ ...................  4 
+1.2.1.  NodeJs  ................................ ................................ ................................ ....... 4 
+1.2.2.  NestJS framework  ................................ ................................ .....................  4 
+1.3. Tổng quan v ề ReactJS  ................................ ................................ ........................  6 
+1.3.1.  Định nghĩa  ................................ ................................ ................................ . 6 
+1.3.2.  Những thành ph ần cơ b ản của ReactJs  ................................ .....................  6 
+1.2.3.  Ưu như ợc điểm của ReactJs  ................................ ................................ ...... 7 
+1.4. Tổng quan v ề GraphQL  ................................ ................................ .....................  8 
+1.4.1.  Định nghĩa  ................................ ................................ ................................ . 8 
+1.4.2.  Đặc trưng  ................................ ................................ ................................ .. 9 
+1.5. Tổng quan v ề Apollo Server và Apollo Client  ................................ ...............  11 
+--- Page 8 ---
+ 
+iv 
+ 1.5.1.  Apollo Server  ................................ ................................ ...........................  11 
+1.5.2.  Apollo Client ................................ ................................ ............................  12 
+1.6. Tổng quan v ề hệ quản trị cơ sở dữ liệu PostgreSQL  ................................ .... 13 
+1.6.1.  Định nghĩa  ................................ ................................ ...............................  13 
+1.6.2.  Tính năng  ................................ ................................ ................................ . 13 
+1.6.3.  Ưu như ợc điểm ................................ ................................ ........................  14 
+1.7. Tổng quan v ề Stripe  ................................ ................................ .........................  14 
+1.7.1.  Định nghĩa  ................................ ................................ ...............................  14 
+1.7.2.  Quy trình ho ạt động ................................ ................................ ................  15 
+1.7.3.  Stripe webhook  ................................ ................................ ........................  15 
+1.8. Công c ụ sử dụng ................................ ................................ ...............................  16 
+Chương 2:  PHÂN TÍCH VÀ THI ẾT KẾ HỆ THỐNG ................................ ........  18 
+2.1. Phân tích ch ức năng  ................................ ................................ .........................  18 
+2.1.1.  Chức năng c ủa khách  ................................ ................................ ..............  18 
+2.1.2.  Chức năng c ủa thành viên  ................................ ................................ ....... 18 
+2.1.3.  Chức năng c ủa quản trị viên ................................ ................................ ... 18 
+2.2. Sơ đ ồ ca sử dụng ................................ ................................ ...............................  19 
+2.2.1.  Các tác nhân trong h ệ thống ................................ ................................ ... 19 
+2.2.2.  Sơ đồ ca sử dụng tổng quát c ủa hệ thống ................................ ...............  20 
+2.2.3.  Sơ đồ ca sử dụng của thành viên  ................................ .............................  21 
+2.2.4.  Sơ đồ ca sử dụng của quản trị viên ................................ .........................  24 
+2.3. Đặc tả ca sử dụng ................................ ................................ ..............................  30 
+2.3.1.  Đặc tả ca sử dụng Đăng ký  ................................ ................................ ..... 30 
+2.3.2.  Đặc tả ca sử dụng Đăng nh ập ................................ ................................ . 30 
+2.3.3.  Đặc tả ca sử dụng Đăng xu ất ................................ ................................ .. 31 
+2.3.4.  Đặc tả ca sử dụng Qu ản lý tài kho ản ................................ ......................  32 
+2.3.5.  Đặc tả ca sử dụng Tạo hợp đồng tổ chức một sự kiện  ............................  32 
+2.3.6.  Đặc tả ca sử dụng Qu ản lý h ợp đồng ................................ ......................  33 
+--- Page 9 ---
+ 
+v 
+ 2.3.7.  Đặc tả ca sử dụng Qu ản lý danh sách thư m ời ................................ ....... 33 
+2.3.8.  Đặc tả ca sử dụng Qu ản lý h ợp đồng của công ty  ................................ .. 34 
+2.3.9.  Đặc tả ca sử dụng Qu ản lý s ự kiện. ................................ ........................  34 
+2.3.10.  Đặc tả ca sử dụng Qu ản lý thi ết bị ................................ ..........................  35 
+2.3.11.  Đặc tả ca sử dụng Qu ản lý nhân s ự ................................ ........................  35 
+2.3.12.  Đặc tả ca sử dụng Qu ản lý đ ịa điểm ................................ .......................  36 
+2.3.13.  Đặc tả ca sử dụng Qu ản lý thành viên  ................................ ....................  36 
+2.3.14.  Đặc tả ca sử dụng Th ống kê  ................................ ................................ .... 37 
+2.4. Sơ đ ồ hoạt động ................................ ................................ ................................  37 
+2.4.1.  Sơ đồ hoạt động của thành viên  ................................ ..............................  37 
+2.4.2.  Sơ đồ hoạt động của quản trị viên ................................ ..........................  38 
+2.5. Kiến trúc h ệ thống ................................ ................................ ............................  39 
+2.6. Thiết kế cơ sở dữ liệu ................................ ................................ .......................  40 
+2.6.1.  Danh sách các b ảng dữ liệu ................................ ................................ .... 40 
+2.6.2.  Chi ti ết các b ảng dữ liệu ................................ ................................ .........  41 
+2.6.3.  Mô hình quan h ệ cơ sở dữ liệu ................................ ................................  51 
+Chương 3:  TRIỂN KHAI VÀ CH ẠY TH Ử NGHI ỆM ................................ .........  52 
+3.1. Môi trư ờng tri ển khai  ................................ ................................ ......................  52 
+3.1.1.  Quản lý mã ngu ồn ................................ ................................ ...................  52 
+3.1.3.  Hướng dẫn sử dụng chương trình  ................................ ...........................  53 
+3.1.2.  Môi trư ờng cài đ ặt................................ ................................ ...................  53 
+3.2. Kết quả demo c ủa hệ thống ................................ ................................ .............  54 
+3.2.1.  Chức năng c ủa khách  ................................ ................................ ..............  54 
+3.2.2.  Chức năng c ủa thành viên  ................................ ................................ ....... 58 
+3.2.3.  Chức năng c ủa quản trị viên ................................ ................................ ... 67 
+KẾT LU ẬN ................................ ................................ ................................ ..................  76 
+TÀI LIỆU THAM KH ẢO ................................ ................................ ...........................  77 
+  
+--- Page 10 ---
+ 
+vi 
+ DANH SÁCH CÁC B ẢNG 
+ 
+ 
+Bảng 2.1: Đặc tả ca sử dụng đăng ký  ................................ ................................ ............  30 
+Bảng 2.2: Đặc tả ca sử dụng đăng nhập . ................................ ................................ ....... 30 
+Bảng 2.3: Đặc tả ca sử dụng đăng xuất . ................................ ................................ ........  31 
+Bảng 2.4: Đặc tả ca sử dụng quản lý tài khoản . ................................ ............................  32 
+Bảng 2.5: Đặc tả ca sử dụng tạo hợp đồng tổ chức một sự kiện . ................................ .. 32 
+Bảng 2.6: Đặc tả ca sử dụng quản lý hợp đồng . ................................ ............................  33 
+Bảng 2.7: Đặc tả ca sử dụng quản lý danh sách thư mời  ................................ ..............  33 
+Bảng 2.8: Đặc tả ca sử dụng quản lý hợp đồng của công ty . ................................ ........  34 
+Bảng 2.9: Đặc tả ca sử dụng quản lý sự kiện . ................................ ...............................  34 
+Bảng 2.10: Đặc tả ca sử dụng quản lý thiết bị.  ................................ ..............................  35 
+Bảng 2.11: Đặc tả ca sử dụng quản lý nhân sự . ................................ ............................  35 
+Bảng 2.12: Đặc tả ca sử dụng quản lý địa điểm.  ................................ ...........................  36 
+Bảng 2.13: Đặc tả ca sử dụng quản lý thành viên . ................................ ........................  36 
+Bảng 2.14: Đặc tả ca sử dụng thống kê . ................................ ................................ ........  37 
+Bảng 2.15: Bảng dữ liệu role.  ................................ ................................ ........................  41 
+Bảng 2.16: Bảng dữ liệu user.  ................................ ................................ .......................  41 
+Bảng 2.17: Bảng dữ liệu user_verification_request.  ................................ .....................  42 
+Bảng 2.18: Bảng dữ liệu token.  ................................ ................................ .....................  42 
+Bảng 2.19: Bảng dữ liệu event.  ................................ ................................ .....................  43 
+Bảng 2.20: Bảng dữ liệu event_type.  ................................ ................................ ............  43 
+Bảng 2.21: Bảng dữ liệu device.  ................................ ................................ ...................  44 
+Bảng 2.22: Bảng dữ liệu device_rental.  ................................ ................................ ........  44 
+Bảng 2.23: Bảng dữ liệu human_resources.  ................................ ................................ .. 45 
+Bảng 2.24: Bảng dữ liệu human_resources_rental.  ................................ .......................  45 
+Bảng 2.25: Bảng dữ liệu location.  ................................ ................................ .................  46 
+Bảng 2.26: Bảng dữ liệu location_rental.  ................................ ................................ ...... 46 
+Bảng 2.27: Bảng dữ liệu contract.  ................................ ................................ .................  47 
+Bảng 2.28: Bảng dữ liệu customer . ................................ ................................ ...............  48 
+Bảng 2.29: Bảng dữ liệu email_send_log . ................................ ................................ ..... 48 
+Bảng 2.30: Bảng dữ liệu guest.  ................................ ................................ .....................  49 
+Bảng 2.31: Bảng dữ liệu timeline.  ................................ ................................ .................  50 
+  
+--- Page 11 ---
+ 
+vii 
+ DANH SÁCH CÁC HÌNH V Ẽ 
+ 
+ 
+Hình 1.1: Tổng quan NestJs.  ................................ ................................ ...........................  5 
+Hình 1.2: Sơ đồ vòng đ ời component trong ReactJs.  ................................ ......................  7 
+Hình 1.3: GraphQL.  ................................ ................................ ................................ .........  8 
+Hình 1.4: GraphQL ki ểm soát d ữ liệu mà nó nh ận được ................................ ..............  10 
+Hình 1.5: GraphQL tổng hợp dữ liệu từ nhiều nguồn.  ................................ ..................  10 
+Hình 1.6: GraphQL sử dụng type system để khai báo dữ liệu.  ................................ ..... 11 
+Hình 1.7: Apollo Client . ................................ ................................ ................................  13 
+Hình 1.8: Quy trình ho ạt động của stripe . ................................ ................................ ..... 15 
+Hình 1.9: Công cụ Visual Studio Code.  ................................ ................................ ........  16 
+Hình 1.10: Công c ụ draw.io . ................................ ................................ .........................  17 
+Hình 1.11: Giao di ện Apollo GraphQL . ................................ ................................ ........  17 
+Hình 2.1: Sơ đồ ca sử dụng tổng quát c ủa hệ thống. ................................ .....................  20 
+Hình 2.2: Sơ đồ ca sử dụng Quản lý tài khoản của thành viên . ................................ .... 21 
+Hình 2.3: Sơ đồ ca sử dụng Quản lý hợp đồng của thành viên . ................................ .... 22 
+Hình 2.4: Sơ đồ ca sử dụng Quản lý danh sách thư mời của thành viên . ......................  23 
+Hình 2.5: Sơ đồ ca sử dụng Quản lý sự kiện của quản trị viên.  ................................ .... 24 
+Hình 2.6: Sơ đồ ca sử dụng Quản lý thiết bị của quản trị viên.  ................................ .... 25 
+Hình 2.7: Sơ đồ ca sử dụng Quản lý nhân sự của quản trị viên.  ................................ ... 26 
+Hình 2.8: Sơ đồ ca sử dụng Quản lý địa điểm của quản trị viên.  ................................ .. 27 
+Hình 2.9: Sơ đồ ca sử dụng Quản lý hợp đồng của quản trị viên.  ................................ . 28 
+Hình 2.10: Sơ đồ ca sử dụng Quản lý thành viên của quản trị viên.  .............................  29 
+Hình 2.11: Sơ đồ ca sử dụng Thống kê của quản trị viên.  ................................ ............  29 
+Hình 2.12: Sơ đồ hoạt động của thành viên . ................................ ................................ . 38 
+Hình 2.13: Sơ đồ hoạt động của quản trị viên . ................................ ..............................  39 
+Hình 2.14: Sơ đồ kiến trúc h ệ thống. ................................ ................................ .............  40 
+Hình 2.15: Sơ đồ quan hệ cơ sở dữ liệu . ................................ ................................ ....... 51 
+Hình 3.1: Trang chủ của hệ thống.  ................................ ................................ ................  54 
+Hình 3.2: Các dịch vụ nổi bật.  ................................ ................................ .......................  54 
+Hình 3.3: Danh sách các sự kiện.  ................................ ................................ ..................  55 
+Hình 3.4: Trang chi tiết sự kiện.  ................................ ................................ ....................  56 
+Hình 3.5: Lịch trình dự kiến của sự kiện.  ................................ ................................ ...... 56 
+Hình 3.6: Danh sách các dịch vụ mà sự kiện cung cấp.  ................................ ................  57 
+--- Page 12 ---
+ 
+viii 
+ Hình 3.7: Trang đăng nhập.  ................................ ................................ ...........................  57 
+Hình 3.8: Trang đăng kí.  ................................ ................................ ................................  58 
+Hình 3.9: Email xác thực đăng kí tài khoản.  ................................ ................................ . 58 
+Hình 3.10: Trang thông tin cá nhân của thành viên.  ................................ .....................  60 
+Hình 3.11: Trang đổi mật khẩu của thành viên  ................................ .............................  60 
+Hình 3.12: Các dịch vụ mà sự kiện cung cấp trong hợp đồng.  ................................ ..... 61 
+Hình 3.13: Thông tin chi tiết của hợp đồng.  ................................ ................................ .. 61 
+Hình 3.14: Danh sách các hợp đồng đã đăng tạo.  ................................ .........................  62 
+Hình 3.15: Chi tiết hợp đồng (1).  ................................ ................................ ..................  63 
+Hình 3.16: Chi tiết hợp đồng (2).  ................................ ................................ ..................  63 
+Hình 3.17: Xác nhận đặt cọc.  ................................ ................................ ........................  64 
+Hình 3.18: Màn hình thanh toán bằng stripe.  ................................ ................................  64 
+Hình 3.19: Trang chi tiết hợp đồng sau khi đã đặt cọc.  ................................ .................  65 
+Hình 3.20: Xác nhận hủy tổ chức sự kiện.  ................................ ................................ .... 66 
+Hình 3.21: Chi tiết hợp đồng sau khi hủy. ................................ ................................ ..... 66 
+Hình 3.22: Quản lý danh sách thư mời của thành viên.  ................................ ................  67 
+Hình 3.23: Màn hình thống kê.  ................................ ................................ ......................  67 
+Hình 3.24: Danh sách người dùng.  ................................ ................................ ................  68 
+Hình 3.25: Danh sách sự kiện.  ................................ ................................ .......................  68 
+Hình 3.26: Thêm mới sự kiện.  ................................ ................................ .......................  69 
+Hình 3.27: Cập nhật sự kiện.  ................................ ................................ .........................  70 
+Hình 3.28: Danh sách thiết bị.  ................................ ................................ .......................  70 
+Hình 3.29: Tạo mới thiết bị.  ................................ ................................ ..........................  71 
+Hình 3.30: Cập nhật thông tin thiết bị.  ................................ ................................ ..........  71 
+Hình 3.31: Danh sách nhân sự.  ................................ ................................ ......................  72 
+Hình 3.32: Thêm mới nhân sự.  ................................ ................................ ......................  72 
+Hình 3.33: Cập nhật thông tin nhân sự.  ................................ ................................ .........  73 
+Hình 3.34: Danh sách địa điểm.  ................................ ................................ ....................  73 
+Hình 3.35: Tạo mới địa điểm.  ................................ ................................ ........................  74 
+Hình 3.36: Cập nhật thông tin địa điểm.  ................................ ................................ ....... 74 
+Hình 3.37: Danh sách hợp đồng của công ty.  ................................ ................................  75 
+  
+--- Page 13 ---
+ 
+ix 
+ DANH SÁCH CÁC KÝ HI ỆU, CH Ữ VIẾT TẮT 
+ 
+ 
+Từ  Viết tắt  của Diễn giải  
+HTML  HyperText Markup Language  Ngôn ngữ đánh dấu siêu văn bản  
+CSS Cascading Style Sheets  Điều khiển cách hiện thị nội dung 
+trang web  
+API Application Programming Interface  Giao diện lập trình ứng dụng  
+HTTP  Hypertext Transfer Protocol  Giao thức truyền tải siêu văn bản  
+MVC  Model -View -Controller  Mô hình - Giao diện - Bộ điều 
+khiển  
+DB Database  Cơ sở dữ liệu  
+UI User Interface  Giao diện người dùng  
+DOM  Document Object Model  Mô hình đối tượng tài liệu  
+JSX JavaScript XML  Một loại cú pháp mở rộng dành 
+cho ngôn ngữ JavaScript viết 
+theo kiểu XML  
+SQL  Structured Query Language  Ngôn ngữ truy vấn cấu trúc  
+SDK  Software Development Kit  Các công cụ và phần mềm dùng 
+để phát triển ứng dụng thông qua 
+một nền tàng nhất định  
+UML  Unified Modeling Language  Ngôn ngữ mô hình  
+UUID  Universally Unique IDentifier  Thiết bị số ID duy nhất  
+CVC   Card Verification Code  Giá trị xác minh thẻ  
+--- Page 14 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD : ThS. Nguyễn Thị Minh Hỷ  1 
+ MỞ ĐẦU 
+  
+ 
+1. Lý do chọn đề tài  
+ Trong thời đại kỹ thuật số hiện nay, công nghệ thông tin đóng vai trò quan trọng 
+trong việc nâng cao hiệu quả và tiếp cận khách hàng. Việc xây dựng một website cung 
+cấp dịch vụ tổ chức sự kiện là một lựa chọn thích hợp để tận dụng tiềm năng của công 
+nghệ thông tin trong lĩnh vực này.  
+ Đầu tiên, để tăng cường sự tiện lợi cho khách hàng. Thông qua website, khách 
+hàng có thể truy cập và tìm hiểu về các dịch vụ tổ chức sự kiện một cách nhanh chóng 
+và thuận tiện. Họ có thể xem thông tin chi tiết về các gói dịch vụ, tiện ích và các yêu 
+cầu k hác. Khách hàng cũng có thể tạo hợp đồng để tổ chức sự kiện, hoặc tạo hợp đồng 
+với các dịch vu riêng lẻ, giúp tiết kiệm thời gian và công sức.  
+ Một lợi ích khác là nâng cao chất lượng dịch vụ. Website cung cấp dịch vụ tổ chức 
+sự kiện giúp đảm bảo tính chuyên nghiệp và đáng tin cậy của doanh nghiệp. Bên cạnh 
+đó, website còn cung cấp thông tin về nhân viên tổ chức sự kiện, kỹ năng và kinh nghiệm 
+của họ, giúp khách hàng có cái nhìn tổng quan về sự chuyên nghiệp của đội ngũ.  
+ Ngoài ra, việc sử dụng công nghệ thông tin trong tổ chức sự kiện còn giúp tối ưu 
+hóa quá trình quản lý. Thông qua website, doanh nghiệp có thể quản lý thông tin khách 
+hàng, hợp đồng, ghi chú liên quan đến sự kiện một cách thuận tiện và có hệ thống. Điều 
+này giúp tăng tính tổ chức, giảm thiểu lỗi sót và tạo điều kiện thuận lợi cho việc thực 
+hiện các nhiệm vụ liên quan đến tổ chức sự kiện.  
+ Với những lợi ích mà việc Xây dựng website quản lý tổ chức sự kiện  mang lại, 
+em quyết định chọn đề tài này làm đề tài tốt nghiệp của mình. Việc nghiên cứu và thực 
+hiện dự án này không chỉ giúp nâng cao hiệu quả và chất lượng dịch vụ tổ chức sự kiện 
+mà còn đóng góp vào quá trình phát triển và ứng dụng công nghệ thông tin trong lĩnh 
+vực này.    
+2. Mục đích của đề tài  
+ “Xây dựng website quản lý tổ chức sự kiện ” có mục đích giúp công ty cung cấp 
+dịch vụ sự kiện quảng bá các dịch vụ của mình. Khách hàng có thể xem qua các sự kiện 
+--- Page 15 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  2 
+ và dịch vụ được cung cấp, từ đó lựa chọn những dịch vụ phù hợp với sự kiện mà họ 
+muốn tổ chức và tiến hành tạo hợp đồng thuê dịch vụ.  
+3. Nội dung của đề tài  
+Những nội dung công việc thực hiện để hoàn thành đề tài bao gồm:  
+• Tìm hiểu bài toán tổ chức sự kiện thực tế.  
+• Tìm hiểu và phân tích UML.  
+• Phân tích và thiết kế hệ thống thông tin.  
+• Thiết kế cơ sở dữ liệu cho hệ thống.  
+• Tìm hiểu và nghiên cứu, áp dụng các ngôn ngữ, công cụ lập trình  
+• Xây dựng website  với các chức năng chính  
+• Viết báo cáo.  
+4. Bố cục của báo cáo  
+Báo cáo được chia làm 3 phần: mở đầu, nội dung và kết luận.  
+Mở đầu của báo cáo mô tả tóm tắt về đề tài, lí do lựa chọn đề tài, mục đích của đề 
+tài là gì. Thông qua sẽ cho một cái nhìn tổng quan về chức năng, ý nghĩa của đề tài.  
+Nội dung của báo cáo bao gồm ba chương chính. Chương thứ nhất trình bày những 
+tìm hiểu và nghiên cứu về cơ sở lý thuyết để thực hiện áp dụng vào đề tài. Tìm hiểu về 
+công cụ lập trình, ngôn ngữ lập trình được sử dụng trong đề tài. Phân tích và thiết kế hệ 
+thống thông tin được trình bày ở chương số 2. Ở chương này sẽ xác định được các tác 
+nhân chính của hệ thống. Thể hiện được các sơ đồ ca sử dụng, sơ đồ hoạt động và thực 
+hiện thiết kế, xây dựng cơ sở dữ liệu của hệ thống. Trong chương cuối, quá trình triển 
+khai hệ thống, thực hiện xây dựng mã nguồn chương trình và chạy thử nghiệm được thể 
+hiện. Giao diện của toàn hệ thống cũng được thể hiện ở chương này.  
+Cuối cùng, đề tài được đánh giá lại qua phần kết luận. Đưa ra được những đánh giá 
+kết quả, những vấn đề đạt được, vấn đề chưa được giải quyết và những phương hướng, 
+giải pháp để khắc phục được các vấn đề đó.  
+  
+--- Page 16 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  3 
+ Chương 1:  CƠ S Ở LÝ THUY ẾT VÀ CÔNG C Ụ SỬ DỤNG 
+ 
+ 
+1.1. Kiến thức cơ b ản 
+1.1.1.  HTML  
+ Viết tắt cho Hypertext Markup Language, tạm dịch là ngôn ngữ đánh dấu siêu văn 
+bản. HTML được sử dụng để tạo và cấu trúc các thành phần trong trang web hoặc ứng 
+dụng, phân chia các đoạn văn, heading, links, blockquotes,… HTML không phải là ngôn 
+ngữ lập trì nh. Điều này có nghĩa là nó không thể tạo ra các chức năng "động". Hiểu một 
+cách đơn giản hơn, HTML cũng tương tự như phần mềm Microsoft Word, nó chỉ có tác 
+dụng bố cục và định dạng trang web.  HTML đang được phát triển tiếp với phiên 
+bản HTML5  hứa hẹn mang lại diện mạo mới cho  Web . 
+1.1.2.  CSS 
+ Là chữ viết tắt của Cascading Style Sheets, nó là một ngôn ngữ được sử dụng 
+để tìm và định dạng  lại các phần tử  được tạo ra bởi các ngôn ngữ đánh dấu (ví dụ như 
+HTML). Hiểu đơn giản rằng, nếu HTML đóng vai trò định dạng các phần tử trên website 
+như việc t ạo ra các đoạn văn bản, các tiêu đề, bảng,…thì CSS sẽ giúp chúng ta có thể 
+thêm một chút “phong cách” vào các phần tử  HTML đó như đổi màu sắc trang, đổi màu 
+chữ, thay đổi cấu trúc,…rất nhiều.  
+1.1.3.  Javascript  
+ JavaScript là ngôn ngữ lập trình được nhà phát triển sử dụng để tạo trang web 
+tương tác. Từ làm mới bảng tin trên trang mạng xã hội đến hiển thị hình ảnh động và 
+bản đồ tương tác, các chức năng của JavaScript có thể cải thiện trải nghiệm người dùng 
+của tr ang web. Là ngôn ngữ kịch bản phía máy khách, JavaScript là một trong những 
+công nghệ cốt lõi của World Wide Web. Ví dụ: khi duyệt internet, bất cứ khi nào bạn 
+thấy quảng cáo quay vòng dạng hình ảnh, menu thả xuống nhấp để hiển thị hoặc màu 
+sắc phần tử tha y đổi động trên trang web cũng chính là lúc bạn thấy các hiệu ứng của 
+JavaScript.    
+1.1.4.  Typescript  
+ TypeScript  là một  ngôn ng ữ lập trình  được phát triển và duy trì bởi  Microsoft . Nó 
+là một  tập hợp siêu  cú pháp nghiêm ngặt của  JavaScript  và thêm  tính năng ki ểu tĩnh tùy 
+chọn vào ngôn ngữ. TypeScript được thiết kế để phát triển các ứng dụng lớn và  chuy ển 
+đổi sang JavaScript.  Vì TypeScript là một siêu tập hợp JavaScript, các chương trình 
+JavaScript hiện có cũng là các chương trình TypeScript hợp lệ.  
+--- Page 17 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  4 
+  TypeScript có thể được sử dụng để phát triển các ứng dụng JavaScript cho cả thực 
+thi phía máy khách và phía  máy ch ủ (như với  Node.js  hoặc Deno). Có nhiều tùy chọn 
+có sẵn để biên dịch. Có thể sử dụng Trình kiểm tra TypeScript mặc định, hoặc có thể sử 
+dụng trình biên dịch  Babel  để chuyển đổi TypeScript sang JavaScript.  
+ Ưu điểm:  
+• Code được viết bằng Typescript sẽ dễ dự đoán và debug hơn nhiều với static 
+typing.  
+• Tất cả mọi thông số, số liệu sẽ dễ dàng được lấy nhờ sự hỗ trợ của IDE và các trình 
+biên dịch.  
+• Giúp tiết kiệm lượng lớn thời gian, công sức trong việc kiểm tra code và làm giảm 
+tối đa phần trăm va chạm lỗi trong quá trình vận hành mà không cần thông qua 
+bất kỳ một đối tượng nào khác.  
+• Mọi thao tác của Typescript không những đơn giản, nhanh chóng và tiết kiệm mà 
+lại còn đem lại những hiệu quả bất ngờ trong việc khắc phục lỗi và dễ đọc hơn 
+nhiều.  
+• Typescript giúp tái cấu trúc phù hợp với nhu cầu tìm kiếm khi muốn nâng cấp hệ 
+thống của mình mà không gây náo loạn cho hệ thống.  
+• Khả năng cảnh báo lỗi ngay trong khi viết code mà tỉ lệ mắc lỗi khi sử dụng 
+Typescript trong hệ thống là rất thấp.  
+1.2. Tổng quan v ề NodeJs và NestJS framework  
+1.2.1.  NodeJs  
+ NodeJS là mã nguồn mở chạy trên môi trường V8 JavaScript runtime (một trình 
+thông dịch JavaScript chạy cực nhanh trên trình duyệt Chrome). NodeJS giúp các nhà 
+phát triển xây dựng các ứng dụng web một cách đơn giản và dễ dàng mở rộng.  
+ NodeJS có thể được dùng để xây dựng các loại ứng dụng khác nhau như các ứng 
+dụng dòng lệnh, ứng dụng web, ứng dụng trò chuyện theo thời gian thực, máy chủ REST 
+API,.. Tuy nhiên, NodeJS thường được dùng chủ yếu để xây dựng các chương trình 
+mạng như máy chủ web, tương tự như PHP, Java hoặc ASP.NET.  
+ Vì đây là mã nguồn mở nên cho phép sử dụng miễn phí và đồng thời được liên tục 
+được chỉnh sửa, cải tiến bởi cộng đồng các nhà phát triển toàn cầu.  
+1.2.2.  NestJS framework  
+ NestJS là một framework Node.JS cho phép xây dựng ứng dụng phía server. Nest 
+mở rộng các framework Node.js như Express hay Fastify để bổ sung thêm nhiều module 
+hay thư viện hỗ trợ việc xử lý tác vụ. Đây là một framework mã nguồn mở, sử dụng 
+--- Page 18 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  5 
+ TypeScript và rất linh hoạt để xây dựng các hệ thống backend. Bên cạnh đó, NestJS còn 
+giúp mở rộng các server Node để hỗ trợ những cơ sở dữ liệu như MongoDB, Redis hay 
+Apache Cassandra.  
+ 
+Hình 1.1: Tổng quan NestJs . 
+a. Cấu trúc của NestJS  
+NestJS  được xây dựng từ nhiều yếu tố khác nhau, tuy nhiên quan trọng nhất là ba thành 
+phần chính sau:  
+• Modules : được sử dụng để tổ chức code và chia các tính năng thành các đơn vị 
+có thể tái sử dụng hợp lý. Các tệp TypeScript được nhóm bằng Decorator 
+“@Module”. Decorator “@Module” cung cấp siêu dữ liệu cho NestJS giúp nó xác 
+định các thành phần, bộ điều khiển hay nh ững tài nguyên khác để sắp xếp cấu trúc 
+ứng dụng khoa học, hiệu quả.  
+• Providers:  Một thành phần không thể thiếu ở NestJS đó là Providers. Nó tương tự 
+như một dịch vụ giúp xử lý những tác vụ mang tính phức tạp, logic mà các trình 
+xử lý Controller không thể làm được. Providers có thể được tạo và đưa vào 
+Controllers hoặc Providers khác.  
+• Controllers:  Chức năng chính của Controllers là xử lý các yêu cầu gửi đến và đáp 
+trả lại cho client -side. Sau khi nhận được yêu cầu HTTP  nó sẽ soạn thảo câu trả lời 
+chính xác, phù hợp nhất để gửi đi. Mỗi Controllers sẽ có bộ lộ trình riêng để giúp 
+nó thực hiện tốt các  tác vụ khác nhau.  
+b. Các tính năng của NestJs  
+ NestJS  framework được người dùng sử dụng cực kỳ phổ biến bởi nó sở hữu những 
+tính năng hữu ích như:  
+
+--- Page 19 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  6 
+ • Thúc đẩy sự phát triển của Typescript  
+• Cài đặt đơn giản, dễ sử dụng, không mất nhiều thời gian để học hỏi  
+• Nguồn tài liệu đa dạng, phong phú  
+• Khả năng mở rộng , phát triển, bảo trì cơ sở mã đang hoạt động  
+• Hỗ trợ mô đun giúp các ứng dụng tích hợp các công nghệ và khái niệm phổ biến 
+như Cachingm Websockts, Loggingm validation, TypeOrm, Mongoose  
+1.3. Tổng quan v ề ReactJS  
+1.3.1.  Định nghĩa  
+ ReactJS là khái niệm chỉ một thư viện Javascript mã nguồn mở hỗ trợ xây dựng 
+các thành phần giao diện một cách nhanh gọn và tiện lợi. Bình thường các lập trình viên 
+sẽ nhúng  Javascript  vào code HTML bằng cách thông qua các attribute như 
+AngularJS.   Tuy nhiên với ReactJS các lập trình viên làm việc như một thư viện cho 
+phép nhúng HTML vào javascript thông qua JSX. Qua đó họ có thể dễ dàng lồng các 
+đoạn HTML vào trong JSX làm cho các comp onent trở nên dễ hiểu và dễ sử dụng hơn.  
+1.3.2.  Những thành ph ần cơ b ản của ReactJs  
+a. Component  
+• Khi làm việc trong các project lớn, UI có độ phức tạp cao và cần được chia thành 
+các thành phần nhỏ được gọi là component.   
+• Đoạn mã ngắn có ý nghĩa thực hiện 1 chức năng nhất định  
+• Các component có thể liên kết , tương tác, kế thừa nhau  
+• render() : phương thức này được trigger khi  component đã sẵn sàng để được 
+render lên trên trang. Trong hàm này, sẽ trả về mô tả cho việc bạn muốn React 
+render cái gì lên trên trang. Hàm render chính là mô tả cụ thể của giao diện người 
+dùng tại bất cứ thời điểm nào. Vì thế nếu dữ liệu thay đổi, React sẽ quan tâm đến 
+việc cập nhật lại giao diện với dữ liệu tương ứng.  
+b. Props & State  
+ Props tham số được chuyển qua lại giữa các React component và được truyền qua 
+các component với cú pháp tương tự HTML attributes.  
+ State  là một object lưu trữ giá trị của các thuộc tính trong component và tồn tại 
+trong phạm vi của component đó. Khi giá trị của state được thay đổi, component sẽ được 
+render lại.  
+c. React Lifecycle  
+--- Page 20 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  7 
+  React Lifecycle là một vòng đời của component. Trong khi render một component 
+thì ReactJS thực hiện nhiều tiến trình khác nhau và được lặp lại nhiều lần với các 
+component.  
+ Khi một component được gọi lên trước, nó sẽ tiến hành cài đặt props và state tiếp 
+đó là mounting, unmounting, update, v.v khi đó bạn cần sử dụng hỗ trợ của các hàm 
+lifecycle.  
+ 
+ 
+Hình 1.2: Sơ đồ vòng đ ời component trong ReactJs.  
+1.2.3.  Ưu như ợc điểm của ReactJs  
+a. Ưu điểm  
+• Tốc độ: Về cơ bản, React cho phép các nhà phát triển sử dụng các phần riêng lẻ 
+của ứng dụng của họ ở cả phía máy khách và phía máy chủ, điều này cuối cùng 
+giúp tăng tốc độ của  quá trình phát triển. Nói một cách dễ hiểu, các nhà phát triển 
+khác nhau có thể viết các  phần riêng lẻ và tất cả các thay đổi được thực hiện sẽ 
+không gây ra tính logic của ứng dụng.  
+• Linh hoạt: So với các frontend framework khác, mã React dễ bảo trì hơn và linh 
+hoạt hơn do cấu trúc mô -đun của nó. Do đó, sự linh hoạt này giúp tiết kiệm rất 
+nhiều thời gian và chi phí cho doanh nghiệp.  
+• Hiệu suất: React  được thiết kế để cung cấp hiệu suất cao. Cốt lõi của khung cung 
+cấp chương trình DOM ảo và kết xuất phía máy chủ, giúp các ứng dụng phức tạp 
+chạy cực nhanh.  
+• Khả năng sử dụng: Việc triển khai React khá dễ thực hiện nếu bạn có một số kiến 
+thức cơ bản về JavaScript. Trên thực tế, một nhà phát triển JavaScript chuyên 
+
+--- Page 21 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  8 
+ nghiệp có thể dễ dàng tìm hiểu tất cả các thông tin chi tiết của React framework 
+chỉ trong một hoặc hai ngày.  
+• Phát triển ứng dụng di động: Facebook đã nâng cấp khuôn khổ phát triển các ứng 
+dụng gốc di động cho cả hai  nền tảng Android và iOS.  
+b. Nhược điểm  
+• Reactjs chỉ phục vụ cho tầng View. React chỉ là View Library nó không phải là 
+một MVC framework như những framework khác  
+• Tích hợp Reactjs vào các framework MVC truyền thống yêu cầu cần phải cấu hình 
+lại. 
+• React khá nặng nếu so với các framework khác.  
+• Khó tiếp cận cho người mới học Web  
+1.4. Tổng quan v ề GraphQL  
+1.4.1.  Định nghĩa  
+ GraphQL l à viết tắt của Graph Query Language do Facebook tạo ra từ năm 2012, 
+là ngôn ngữ thao tác và truy vấn dữ liệu nguồn mở cho API, cung cấp giao thức chung 
+cho phép giao tiếp giữa client và server để cập nhật và lấy dữ liệu.  
+ 
+Hình 1.3: GraphQL.  
+ GraphQL được phát triển dựa vào các yếu tố chính sau:  
+a.  Query  
+ Các yêu cầu do bạn đặt ra cho GraphQL được gọi là Query v à query này được 
+phép support cho các nested fields trong tất cả hệ thống của ứng dụng.  
+
+--- Page 22 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  9 
+  Vì vậy, khi client đã đưa ra yêu cầu và tạo query thì không cần lo lắng việc data 
+lấy từ những source nào. GraphQL server s ẽ đảm nhiệm và thực hiện toàn bộ mọi thứ.  
+b.   Schema  
+ GraphQL sử dụng Schema như là một bản hợp đồng “quy chuẩn ngôn ngữ” giữa 
+client và server, client có thể dùng những định nghĩa trong Schema để gửi lên server lấy 
+dữ liệu từ server và server cũng dựa vào đó để có thể biết mình làm gì và trả về kết quả 
+gì cho client.  
+ GraphQL có một ngôn ngữ riêng để định nghĩa Schema. Đó là Schema Definition 
+Language (SDL) Mutations  
+c.  Mutation  
+ Bên cạnh việc request data từ server, đôi khi phía Client cũng cần phải th ực hiện 
+một vài thay đ ổi tới data được lưu ở phía backend. Với GraphQL, ta có thể sử dụng 
+mutations để làm điều đó. Nói chung, có 3 loại mutations thường gặp: Tạo mới (create 
+new), Cập nhật (update), Xóa (delete).  
+ Mutations tuân theo cấu trúc cú pháp giống như query, tuy nhiên nó luôn luôn phải 
+bắt đầu với keyword mutation. (VD: create book, update book, delete book,…..).  
+1.4.2.  Đặc trưng  
+a. Cho phép các client có thể định dạng được chính xác dữ liệu mà họ cần  
+• Khi gửi 1 request GraphQL đến API, sẽ nhận được chính xác những gì yêu cầu  
+trong request.  
+• Các truy vấn GraphQL luôn trả về kết quả có thể dự đoán được.  
+• Các ứng dụng sử dụng GraphQL rất nhanh và ổn định vì GraphQL kiểm soát dữ 
+liệu mà nó nhận được chứ không phải máy chủ  
+--- Page 23 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  10 
+  
+Hình 1.4: GraphQL ki ểm soát d ữ liệu mà nó nh ận được 
+b. GraphQL sẽ làm cho tổng dữ liệu từ nhiều nguồn trở nên dễ dàng hơn  
+• Các câu query GraphQL không chỉ có thể truy xuất các thuộc tính của một dữ liệu 
+mà còn làm việc trơn tru với các đối tượng khác . 
+• Trong khi các API REST phải yêu cầu request từ nhiều URL thì API GraphQL lại 
+có thể lấy tất cả dữ liệu mà ứng dụng của bạn cần trong một request duy nhất.  
+• Các ứng dụng sử dụng GraphQL có tốc độ xử lý rất nhanh ngay cả trên các kết nối 
+chậm.  
+ 
+Hình 1.5: GraphQL t ổng hợp dữ liệu từ nhiều ngu ồn. 
+c. GraphQL thường sử dụng type system cho mục đích khai báo dữ liệu  
+• API GraphQL được tổ chức theo types và fields, truy cập toàn bộ dữ liệu của bạn 
+từ một endpoint duy nhất.  
+
+--- Page 24 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  11 
+ • GraphQL sử dụng các types để đảm bảo ứng dụng của bạn chỉ request những gì có 
+thể, ngoài ra GraphQL còn giải thích các lỗi 1 cách rất dễ hiểu.  
+• Ứng dụng có thể sử dụng các types để tránh viết code phân tích cú pháp thủ công.  
+ 
+Hình 1.6: GraphQL s ử dụng type system đ ể khai báo d ữ liệu. 
+1.5. Tổng quan v ề Apollo Server và Apollo Client  
+GrapqhQL trong vài năm g ần đây d ần trở nên ph ổ biến như là m ột các ti ếp cận 
+thay th ế để xây d ụng API qua REST,  phép khách hàng quyết định dữ liệu nào họ muốn 
+được truyền qua mạng, thay vì yêu cầu máy chủ gửi một tập dữ liệu cố định. Ngoài ra, 
+nó cho phép bạn chỉ định các tài nguyên lồng nhau, giảm rất nhiều việc qua lại đôi khi 
+được yêu cầu khi xử lý các API REST.  
+Apollo  là một nền tảng để xây dựng siêu đồ thị, một mạng thống nhất chứa tất cả 
+dữ liệu, dịch vụ và khả năng kết nối với ứng dụng khách của bạn (chẳng hạn như ứng 
+dụng web và ứng dụng gốc). Trọng tâm của siêu đồ thị là một ngôn ngữ truy vấn có tên 
+là GraphQL.  
+1.5.1.  Apollo Server  
+Apollo Server  là một máy chủ GraphQL mã nguồn mở, tuân thủ thông số kỹ thuật, 
+tương thích với mọi ứng dụng khách GraphQL, bao gồm cả Ứng dụng khách Apollo. 
+Đó là cách tốt nhất để xây dựng API GraphQL tự lập tài liệu, sẵn sàng sản xuất, có thể 
+sử dụng dữ liệu từ bất kỳ nguồn nào.  
+Apollo Server  cung cấp:  
+• Thiết lập đơn giản để các nhà phát triển ứng dụng khách của bạn có thể bắt 
+đầu tìm nạp dữ liệu một cách nhanh chóng  
+
+--- Page 25 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  12 
+ • Áp dụng gia tăng, cho phép bạn thêm các tính năng khi cần  
+• Khả năng tương thích toàn cầu với mọi nguồn dữ liệu, mọi công cụ xây dựng 
+và mọi ứng dụng khách GraphQL  
+• Sẵn sàng sản xuất, cho phép bạn tự tin chạy biểu đồ của mình trong sản xuất  
+1.5.2.  Apollo Client  
+Apollo Client  là thư viện quản lý trạng thái toàn diện dành cho JavaScript cho 
+phép  quản lý cả dữ liệu cục bộ và dữ liệu từ xa bằng GraphQL. Sử dụng nó để tìm 
+nạp, lưu trữ và sửa đổi dữ liệu ứng dụng, đồng thời tự động cập nhật giao diện người 
+dùng của bạn.  
+Apollo Client  giúp  cấu trúc mã theo cách tiết kiệm, có thể dự đoán và khai báo 
+phù hợp với thực tiễn phát triển hiện đại. Thư viện @apollo/client  cốt lõi cung cấp 
+tích hợp sẵn với React và cộng đồng Apollo lớn hơn duy trì tích hợp cho các lớp chế 
+độ xem phổ biến khác.  
+Đặc trưng của Apollo Client : 
+• Tìm nạp dữ liệu khai báo: Viết truy vấn và nhận dữ liệu mà không cần theo 
+dõi trạng thái tải theo cách thủ công.  
+• Trải nghiệm tuyệt vời dành cho nhà phát triển: Tận hưởng công cụ hữu ích 
+cho TypeScript, Chrome / Firefox devtools và VS Code.  
+• Được thiết kế cho React hiện đại: Tận dụng các tính năng mới nhất của React, 
+chẳng hạn như hook.  
+• Có thể áp dụng dần dần: Thả Apollo vào bất kỳ ứng dụng JavaScript nào và 
+kết hợp nó theo từng tính năng.  
+• Tương thích toàn cầu: Sử dụng mọi thiết lập bản dựng và mọi API GraphQL.  
+• Định hướng cộng đồng: Chia sẻ kiến thức với hàng nghìn nhà phát triển trong 
+cộng đồng GraphQL.  
+ 
+ 
+--- Page 26 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  13 
+  
+Hình 1.7: Apollo Client . 
+1.6. Tổng quan v ề hệ quản trị cơ sở dữ liệu PostgreSQL  
+1.6.1.  Định nghĩa  
+ PostgreSQL là một hệ thống quản trị cơ sở dữ liệu quan hệ và đối tượng (object -
+relational database management system) miễn phí và nguồn mở (RDBMS) tiên tiến nhất 
+hiện nay. Khả năng mở rộng cao và tuân thủ các tiêu chuẩn kỹ thuật. Nó được thiết kế 
+để xử lý một loạt các khối lượng công việc lớn, từ các máy tính cá nhân đến kho dữ liệu 
+hoặc dịch vụ Web có nhiều người dùng đồng thời.  
+1.6.2.  Tính năng  
+ Cung cấp nhiều kiểu dữ liệu:  PostgreSQL cung cấp đa dạng kiểu dữ liệu như 
+nguyên hàm (các nguyên số, boolean, số, chuỗi), cấu trúc (UUID, phạm vi,…), hình 
+học, document,…  
+ Bảo đảm toàn vẹn dữ liệu:  Dữ liệu trong PostgreSQL đảm bảo tính toàn vẹn bằng 
+cách ràng buộc loại từ, Primary Keys, Foreign Keys, khóa khuyến nghị, khóa hàm số,…  
+ Tính năng thiết lập linh hoạt:  Người dùng được thiết lập danh mục từ đơn giản 
+đến phức tạp, tối ưu hóa tốc độ truy cập, hỗ trợ thống kê trên nhiều cột,…  
+ Chức năng bảo mật:  PostgreSQL hỗ trợ xây dựng hàng rào bảo mật, xác thực mạnh 
+(SCRAM -SHA -256, SSPI, LDAP, GSSAPI, Certificate,…), hệ thống kiểm soát truy cập 
+kĩ càng, bảo mật cấp độ cột – hàng.  
+ Khả năng mở rộng: Người dùng thực hiện mở rộng hệ thống qua các phương pháp 
+lưu trữ, ngôn ngữ thủ tục (PL / PGSQL, Python, Perl, và nhiều ngôn ngữ khác), PostGIS, 
+kết nối cơ sở dữ liệu hoặc luồng khác với giao diện SQL chuẩn.  
+ Chức năng tìm kiếm văn bản:  PostgreSQL cung cấp tính năng tìm kiếm văn bản 
+đầy đủ, hệ thống hóa ký tự theo cách khoa học (thông qua ICU collations).  
+
+--- Page 27 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  14 
+ 1.6.3.  Ưu như ợc điểm 
+a. Ưu điểm  
+ PostgreSQL sở hữu hệ thống tính năng đa dạng giúp hỗ trợ các nhà quản trị bảo vệ 
+toàn vẹn dữ liệu, tạo ra một môi trường chịu lỗi giúp chúng ta quản lý cả tập dữ liệu lớn 
+lẫn tập dữ liệu nhỏ.  
+ Ngoài hệ thống nguồn mở và miễn phí, PosgreSQL cũng có khả năng mở rộng 
+tuyệt vời. Chẳng hạn như bạn có thể sử dụng các kiểu dữ liệu riêng của bạn, xây dựng 
+các hàm tùy chỉnh, hay viết code từ các ngôn ngữ lập trình khác nhau mà không cần 
+biên dịch lại cơ  sở dữ liệu.  
+ PostgreSQL tuân theo tiêu chuẩn SQL nhưng không bất đồng với các tính năng 
+truyền thống hay dẫn đến các quyết định kiến trúc gây hại. Nhiều tính năng theo tiêu 
+chuẩn SQL được hỗ trợ, thế nhưng đôi khi có hàm hoặc cú pháp khác lạ một chút.  
+b. Nhược điểm  
+PostgreSQL không chịu sự quản lý của bất kỳ tổ chức nào gây khó khăn để người 
+tiếp cận với đầy đủ tính năng.  
+Có vô số ứng dụng ứng dụng mã nguồn mở không phải ứng dụng nào cũng được 
+hỗ trợ tốt.  
+Hiệu suất hoạt động chậm hơn so với MySQL  
+1.7. Tổng quan v ề Stripe  
+1.7.1.  Định nghĩa  
+ Stripe là nền tảng phần mềm tốt nhất cho hoạt động kinh doanh trên internet. Stripe 
+hiện đang thực hiện xử lý hàng tỷ đô la mỗi năm cho các doanh nghiệp trên khắp thế 
+giới. Stripe cung cấp SDK để có thể tích hợp trên các thiết bị chạy hệ điều hành Android 
+và IOS. Ngoài ra, nó còn cung cấp Stripe API để có thể đ ược sử dụng bởi rất nhiều các 
+ngôn ngữ như: Node,Ruby, Python, Java, GO... (Stripe API )  
+--- Page 28 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  15 
+ 1.7.2.  Quy trình ho ạt động 
+ 
+Hình 1.8: Quy trình ho ạt động của stripe . 
+Quy trình hoạt động của stripe có 6 bước:  
+• Bước 1: Web browser gửi thông tin thẻ tín dụng (gồm email, số thẻ tín dụng, ngày 
+hết hạn, CVC và lượng tiền giao dịch) lên Stripe.  
+• Bước 2: Trong trường hợp thông tin thẻ tín dụng hợp lệ, Stripe trả về cho ứng dụng 
+1 đoạn mã Token. Tại thời điểm này việc giao dịch chưa được thực hiện.  
+• Bước 3: Ứng dụng gửi token lên web server.  
+• Bước 4: Web server nhận token từ ứng dụng và gửi token này lên Stripe để thực 
+hiện giao dịch, lúc này việc giao dịch mới thực sự diễn ra.  
+• Bước 5: Stripe trả về response cho web server kết quả giao dịch.  
+• Bước 6: Web server trả về cho ứng dụng kết quả giao dịch.  
+1.7.3.  Stripe webhook  
+ Webhooks như là một số điện thoại mà Stripe sẽ gọi đến để thông báo về những 
+hành động xảy ra ở tài khoản Stripe của bạn. Hành động đó có thể là tạo mới một 
+customer hay là việc thanh toán thành công cho ngân hàng. Webhook endpoint như là 
+người ở đầu dây bên kia sẽ nhận cuộc gọi đó và tùy thuộc vào thông tin mà bên Stripe 
+cung cấp để thực hiện các hành động thay đổi bên hệ thống của mình.  
+ Khi khởi tạo một endpoint webhooks strpe gắn với với hện thống của mình để có 
+thể lắng nge sự kiện của của stripe như checkout, transfer để tiến hành thực hiện các 
+logic xử lý phía server.  
+
+--- Page 29 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  16 
+ 1.8. Công c ụ sử dụng 
+Xây dựng mã chương trình sử dụng công cụ VSCode, đặc điểm nổi bật là đơn giản, 
+gọn nhẹ, dễ dàng cài đặt, hỗ trợ nhiều hệ điều hành cũng như nhiều ngôn ngữ lập trình 
+khác nhau.  
+ 
+Hình 1.9: Công c ụ Visual Studio Code.  
+ Quá trình phân tích và thiết kế UML thì công cụ draw.io  (link truy cập trên 
+website: https://www.draw.io/ ) được sử dụng. Công cụ này giúp chúng ta có thể dễ dàng 
+thao tác và sử dụng để tạo các sơ đồ ca sử dụng, sơ đồ hoạt động,….  
+
+--- Page 30 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  17 
+  
+Hình 1.10: Công c ụ draw.io . 
+Kiểm tra, chạy thử API của chương trình thông qua giao diện của Apollo 
+GraphQL  
+ 
+Hình 1.11: Giao di ện Apollo GraphQL . 
+ 
+ 
+ 
+  
+
+--- Page 31 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  18 
+ Chương 2:  PHÂN TÍCH VÀ THI ẾT KẾ HỆ THỐNG 
+ 
+ 
+2.1. Phân tích ch ức năng  
+ Hệ thống website quản lý tổ chức sự kiện cung cấp một nền tảng cho công ty tổ 
+chức sự kiện quảng bá dịch vụ của họ, quản lý các dịch vụ và hợp đồng một cách hiệu 
+quả. Đồng thời, khách hàng có thể dễ dàng tìm kiếm và xem xét các dịch vụ phù hợp để 
+tổ chức sự kiện của mình.  
+ Hệ thống phục vụ cho 3 loại người dùng: Quản trị viên, Thành viên và Khách. Các 
+chức năng theo từng nhóm người dùng sẽ được mô tả dưới đây.  
+2.1.1.  Chức năng c ủa khách  
+a. Chức năng đăng ký  
+ Chức năng này cho phép khách có thể đăng ký tài khoản vào hệ thống để sử dụng.  
+b. Chức năng tìm kiếm các sự kiện   
+ Chức năng này cho phép khách có thể tìm kiếm các sự kiện mà hệ thống cung cấp.  
+c. Chức năng xem chi tiết sự kiện  
+ Chức năng này cho phép khách có thể xem chi tiết được sự kiện mà hệ thống cung 
+cấp, từ đó có thể đưa ra yêu cầu tồ chức sự kiện đó.  
+2.1.2.  Chức năng c ủa thành viên  
+ Thành viên có các chức năng của khách và có thêm các chức năng sau:  
+a. Chức năng đăng nhập/đăng xuất  
+ Chức năng này cho phép thành viên có thể đăng nhập vào hệ thống để thực hiện 
+các chức năng của mình và đăng xuất khỏi hệ thống khi không còn sử dụng hệ thống.  
+b. Chức năng quản lý tài khoản  
+ Chức năng này cho phép thành viên có thể xem và chỉnh sửa các thông tin cá nhân 
+đăng ký trong hệ thống.  
+c. Chức năng quản lý hợp đồng  
+ Thành viên có thể tạo hợp đồng từ sự kiện mẫu mà công ty cung cấp . Ngoài ra, có 
+thể xem chi tiết hợp đồng, đặt cọc, thanh toán hoặc yêu cầu hủy hợp đồng.  
+d. Chức năng quản lý danh sách thư mời  
+ Thành viên có thể gửi thư mời tham dự sự kiện thông qua mail, bằng cách tải lên 
+danh sách thư mời có trong file excel và nhấn nút gửi . 
+2.1.3.  Chức năng c ủa quản trị viên 
+ Quản trị viên có các chức năng của khách và có thêm các chức năng sau:  
+--- Page 32 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  19 
+ a. Chức năng đăng nhập /đăng x uất: chức năng tương tự như thành viên  
+b. Chức năng quản lý hợp đồng của công ty  
+ Quản trị viên có thể xem danh sách, chi tiết hợp đồng, cập nhật trạng thái của các 
+hợp đồng.  
+c. Chức năng quản lý thiết bị  
+ Quản trị viên có thể xem danh sách các thiết bị có sẵn, chỉnh sửa, có thể tìm kiếm, 
+tạo mới thiết bị.  
+d. Chức năng quản lý nhân sự  
+ Quản trị viên có thể xem danh sách các nhân sự có sẵn, chỉnh sửa, có thể tìm kiếm, 
+tạo mới nhân sự.  
+e. Chức năng quản lý địa điểm  
+ Quản trị viên có thể xem danh sách các địa điểm  có sẵn, chỉnh sửa, có thể tìm kiếm, 
+tạo mới địa điểm . 
+f. Chức năng quản lý thành viên  
+ Quản trị viên có thể xem danh sách các thành viên trong hệ thống, đóng băng hoặc 
+kích hoạt tài khoản của thành viên  
+g. Chức năng quản lý sự kiện  
+ Quản trị viên có thể xem danh sách các sự kiện  có sẵn, chỉnh sửa, có thể tìm kiếm, 
+tạo mới sự kiện . 
+h. Chức năng thống kê  
+ Quản trị viên có thể thống kê được doanh thu, số lượng hợp đồng, người dùng theo 
+từng tháng trong năm . 
+2.2. Sơ đ ồ ca sử dụng 
+2.2.1.  Các tác nhân trong h ệ thống 
+Hệ thống có 3 tác nhân là quản trị viên, thành viên và khách:  
+• Quản trị viên: Là người đại diện cho công ty tổ chức sự kiện, có chức năng quản 
+lý hợp đồng của công ty, quản lý  sự kiện và  các dịch vụ cung cấp trong sự kiện  
+(thiết bị, nhân sự , địa điểm) . 
+• Thành viên: Là những người có mong muốn tìm kiếm dịch vụ tổ chức sự kiện hoặc 
+dịch vụ cho thuê các thiết bị, nhân sự , địa điểm  trong sự kiện, đã có tài khoản trong 
+hệ thống.  
+• Khách: Là người chưa có tài khoản trong hệ thống, có thể xem thông tin các sự 
+kiện mà hệ thống cung cấp . 
+Các tác nhân quản trị viên, thành viên đều có các chức năng của khách.  
+--- Page 33 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  20 
+ 2.2.2.  Sơ đồ ca sử dụng tổng quát c ủa hệ thống 
+ 
+Hình 2.1: Sơ đồ ca sử dụng tổng quát c ủa hệ thống. 
+
+--- Page 34 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  21 
+ 2.2.3.  Sơ đồ ca sử dụng của thành viên  
+ 
+Hình 2.2: Sơ đồ ca sử dụng Qu ản lý tài kho ản của thành viên . 
+ 
+
+--- Page 35 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  22 
+  
+Hình 2.3: Sơ đồ ca sử dụng Qu ản lý h ợp đồng của thành viên. 
+ 
+
+--- Page 36 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  23 
+  
+Hình 2.4: Sơ đồ ca sử dụng Qu ản lý danh sách thư m ời của thành viên . 
+ 
+
+--- Page 37 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  24 
+ 2.2.4.  Sơ đồ ca sử dụng của quản trị viên 
+ 
+Hình 2.5: Sơ đồ ca sử dụng Qu ản lý sự kiện của quản trị viên.  
+ 
+ 
+
+--- Page 38 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  25 
+  
+Hình 2.6: Sơ đồ ca sử dụng Qu ản lý thiết bị của quản trị viên.  
+ 
+
+--- Page 39 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  26 
+  
+Hình 2.7: Sơ đồ ca sử dụng Qu ản lý nhân s ự của quản trị viên.  
+ 
+
+--- Page 40 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  27 
+  
+Hình 2.8: Sơ đồ ca sử dụng Qu ản lý địa điểm của quản trị viên.  
+ 
+ 
+
+--- Page 41 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  28 
+  
+Hình 2.9: Sơ đồ ca sử dụng Qu ản lý hợp đồng của quản trị viên.  
+ 
+ 
+ 
+
+--- Page 42 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  29 
+  
+Hình 2.10: Sơ đồ ca sử dụng Qu ản lý thành viên c ủa quản trị viên.  
+ 
+ 
+Hình 2.11: Sơ đồ ca sử dụng Thống kê  của quản trị viên.  
+  
+
+--- Page 43 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  30 
+ 2.3. Đặc tả ca sử dụng 
+2.3.1.  Đặc tả ca sử dụng Đăng ký  
+Bảng 2.1: Đặc tả ca sử dụng đăng ký . 
+Tên ca sử dụng  Đăng ký 
+Tác nhân  Khách  
+Mô tả  Cho phép khách đăng ký để trở thành thành viên của hệ 
+thống.  
+Điều kiện kích hoạt  Người sử dụng truy cập hệ thống  nhưng chưa có tài khoản . 
+Chọn mục Đăng nhập, chọn Chưa có tài khoản?  
+Các bước thực hiện  1. Khách  nhập các thông tin đăng ký: email, tên, và mật 
+khẩu , xác nhận mật khẩu.  
+2. Bấm vào button Đăng ký . 
+3. Hệ thống kiểm tra dữ liệu.  
+4. Thông báo kết quả đăng ký.  
+Kết quả  Nếu các thông tin hợp lệ , thông báo đăng ký thành công. Gửi 
+yêu cầu xác nhận thông qua email đã đăng ký, đồng thời gửi 
+email thông báo có đăng ký mới đến tài khoản quản trị viên. 
+Trường hợp lỗi  1. Người dùng nhập các thông tin đăng ký không hợp lệ  
+2. Hệ thống kiểm tra dữ liệu nhập vào là sai . 
+3. Các thông tin trùng lặp, đã tồn tại trong hệ thống.  
+4. Thông báo lỗi ra màn hình.  
+ 
+2.3.2.  Đặc tả ca sử dụng Đăng nh ập 
+Bảng 2.2: Đặc tả ca sử dụng đăng nhập . 
+Tên ca sử dụng  Đăng nhập  
+Tác nhân  Thành viên, quản trị viên  
+Mô tả  Cho phép thành viên, quản trị viên đăng nhập  vào hệ thống 
+để thực hiện các chức năng của mình.  
+Điều kiện kích hoạt  Thành viên, quản trị viên truy cập hệ thống nhưng chưa đăng 
+nhập.   
+Chọn mục Đăng nhập.  
+Các bước thực hiện  1. Người dùng  nhập các thông tin email  và mật khẩu.  
+--- Page 44 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  31 
+ 2. Bấm nút Đăng nhập . 
+3. Hệ thống kiểm tra dữ liệu nhập là đúng.  
+4. Đưa đến trang chủ. 
+Kết quả  Tùy vào  vai trò của tác nhân đăng nhập sẽ được đưa đến 
+những trang đích cụ thể.  
+Trường hợp lỗi  1. Người dùng không nhập các thông tin email và mật khẩu.  
+2. Hệ thống kiểm tra dữ liệu nhập email và mật khẩu sai.  
+3. Thông báo lỗi ra màn hình.  
+ 
+2.3.3.  Đặc tả ca sử dụng Đăng xu ất 
+Bảng 2.3: Đặc tả ca sử dụng đăng xuất . 
+Tên ca sử dụng  Đăng xuất  
+Tác nhân  Thành viên, quản trị viên  
+Mô tả  Cho phép thành viên, quản trị viên đăng suất khỏi hệ thống 
+khi không c òn nhu cầu sử dụng  
+Điều kiện kích hoạt  Thành viên, quản trị viên đã đăng nhập vào hệ thống.  
+Các bước thực hiện  Người dùng  chọn mục Đăng xuất  
+Kết quả Phiên đăng nhập kết thúc, người dùng đăng xuất khỏi hệ 
+thống.  
+Trường hợp lỗi  Hệ thống không kết thúc được phiên đăng nhập, đưa ra thông 
+báo lỗi.  
+ 
+--- Page 45 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  32 
+ 2.3.4.  Đặc tả ca sử dụng Qu ản lý tài kho ản 
+Bảng 2.4: Đặc tả ca sử dụng quản lý tài khoản . 
+Tên ca sử dụng  Quản lý tài khoản  
+Tác nhân  Thành viên  
+Mô tả  Cho phép thành viên  đăng nhập vào hệ thống để quản lý tài 
+khoản cá nhân của mình bao gồm xem, chỉnh sửa thông tin cá 
+nhân , đổi mật khẩu . 
+Điều kiện kích hoạt  Thành viên đăng nhập vào hệ thống. Chọn mục Thông tin cá 
+nhân  
+Các bước thực hiện  1. Người dùng  nhập các thông tin  
+2. Bấm nút Lưu 
+3. Hệ thống kiểm tra dữ liệu nhập là đúng.  
+4. Thực hiện cập nhật thông tin . 
+Kết quả  Đưa đến trang quản lý tài khoản.  
+Trường hợp lỗi  1. Người dùng nhập không chính xác các thông tin  
+2. Hệ thống kiểm tra dữ liệu nhập vào là  sai. 
+3. Thông báo lỗi ra màn hình.  
+ 
+2.3.5.  Đặc tả ca sử dụng Tạo hợp đồng tổ chức một sự kiện  
+Bảng 2.5: Đặc tả ca sử dụng tạo hợp đồng tổ chức một sự kiện . 
+Tên ca sử dụng  Tạo hợp đồng tổ chức một sự kiện  
+Tác nhân  Thành viên  
+Mô tả  Cho phép thành viên tìm kiếm, xem chi tiết các  sự kiện mẫu  và 
+tạo hợp đồng để đăng ký tổ chức sự kiện đó.  
+Điều kiện kích 
+hoạt  Thành viên đăng nhập vào hệ thống.  
+Chọn mục Dịch vụ sự kiện  
+Các bước thực 
+hiện 1. Người dùng chọn sự kiện cụ thể để xem  
+2. Nhấn xem chi tiết sự kiện  
+3. Nhấn button  Đăng kí tổ chức sự kiện để đăng ký tổ chức sự 
+kiện đó  
+4. Điền các thông tin cần thiết để tạo hợp đồng.  
+Kết quả  Tạo một hợp đồng để tổ chức sự kiện đó  
+--- Page 46 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  33 
+ Trường hợp lỗi  Số lượng sản phẩm của dịch vụ không có sẵn, hệ thống đưa ra 
+thông báo lỗi.  
+ 
+2.3.6.  Đặc tả ca sử dụng Qu ản lý h ợp đồng 
+Bảng 2.6: Đặc tả ca sử dụng quản lý hợp đồng . 
+Tên ca sử dụng  Quản lý hợp đồng  
+Tác nhân  Thành viên  
+Mô tả  Cho phép thành viên quản lý hợp đồng  
+Điều kiện kích hoạt  Thành viên đăng nhập vào hệ thống.  
+Các bước thực hiện  1. Thành viên chọn mục Quản lý hợp đồng  
+2. Thành viên xem danh sách hợp đồng  
+3. Thành viên chọn hợp đồng để xem chi tiết  
+4. Thành viên tiến hành thanh toán hoặc đặt cọc cho hợp 
+đồng đó.  
+Kết quả  Hiển thị chi tiết hợp đồng thanh toán, thành viên có thể đặt 
+cọc hoặc thanh toán hợp đồng thành công  
+Trường hợp lỗi  1. Hệ thống không thể lấy dữ liệu thông báo lỗi  
+2. Người dùng nhập thông tin thanh toán sai, hệ thống đưa ra 
+thông báo lỗi   
+ 
+2.3.7.  Đặc tả ca sử dụng Qu ản lý danh sách thư m ời 
+Bảng 2.7: Đặc tả ca sử dụng quản lý danh sách thư mời . 
+Tên ca sử dụng  Quản lý danh sách thư mời  
+Tác nhân  Thành viên  
+Mô tả  Cho phép thành viên quản lý danh sách thư mời  
+Điều kiện kích hoạt  Thành viên đăng nhập vào hệ thống.  
+Các bước thực hiện  1. Thành viên chọn mục Quản lý danh sách thư mời  
+2. Thành viên xem danh sách thư mời  
+3. Thành viên tải về file excel mẫu, nếu chưa có  
+4. Thành viên chọn  file excel chứa danh sách khách mời từ 
+máy cá nhân  
+--- Page 47 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  34 
+ 5. Thành viên nhấn nút Gửi thư mời  để gửi thư mời tham dự 
+sự kiện thông qua mail  
+Kết quả  Hiển thị danh sách thư mời , lần gửi và trạng thái cái mail đã 
+gửi 
+Trường hợp lỗi  1. Hệ thống không thể lấy dữ liệu thông báo lỗi  
+2. Thông  tin mail không chính xác   
+ 
+2.3.8.  Đặc tả ca sử dụng Qu ản lý h ợp đồng của công ty  
+Bảng 2.8: Đặc tả ca sử dụng quản lý hợp đồng của công ty . 
+Tên ca sử dụng  Quản lý hợp đồng  
+Tác nhân  Quản trị viên  
+Mô tả  Cho phép quản trị viên xem thông tin, câp nhật thông tin hợp 
+đồng.  
+Điều kiện kích hoạt  Quản trị viên chọn mục Hợp đồng  
+Các bước thực hiện  1. Quản trị viên xem danh sách hợp đồng  
+2. Quản trị viên chọn một hợp đồng để xem chi tiết  
+3. Quản trị viên cập nhật trạng thái cho hợp đồng  
+Kết quả  Trang chi tiết hợp đồng được hiển thị, trạng thái hợp đồng 
+được cập nhật  
+Trường hợp lỗi  Hệ thống không lấy được thông tin hợp đồng, thông báo hiển 
+thị lỗi ra màn hình  
+ 
+2.3.9.  Đặc tả ca sử dụng Qu ản lý s ự kiện. 
+Bảng 2.9: Đặc tả ca sử dụng quản lý sự kiện . 
+Tên ca sử dụng  Quản lý sự kiện  
+Tác nhân  Quản trị viên  
+Mô tả  Cho phép quản trị viên quản lý các sự kiện cung cấp  
+Điều kiện kích hoạt  Quản trị viên đăng nhập vào hệ thống.  
+Chọn mục Sự kiện 
+Các bước thực hiện  1. Quản trị viên xem toàn bộ danh sách sự kiện  
+--- Page 48 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  35 
+ 2. Quản trị viên xem chi tiết một sự kiện cụ thể, có thể cập 
+nhật, xóa sự kiện đó.  
+3. Quản trị viên có thể thêm mới một sự kiện vào danh sách  
+Kết quả  Đưa đến trang danh sách sự kiện  
+Trường hợp lỗi  1. Lỗi do không có dữ liệu để hiển thị.  
+2. Lỗi do nhập thông tin không đúng  
+3. Thông báo lỗi ra màn hình.  
+ 
+2.3.10.  Đặc tả ca sử dụng Quản lý thi ết bị 
+Bảng 2.10: Đặc tả ca sử dụng quản lý thiết bị . 
+Tên ca sử dụng  Quản lý thiết bị  
+Tác nhân  Quản trị viên  
+Mô tả  Quản trị viên có thể xem, sửa, xóa danh sách thiết bị mà hệ 
+thống cung cấp  
+Điều kiện kích hoạt  Quản trị viên đăng nhập vào hệ thống.  
+Chọn mục Thiết bị 
+Các bước thực hiện  1. Quản trị viên xem toàn bộ danh sách thiết bị  
+2. Quản trị viên xem chi tiết một thiêt bị cụ thể, có thể cập 
+nhật, xóa thiết bị đó.  
+3. Quản trị viên có thể thêm mới một thiết bị vào danh sách.  
+Kết quả  Đưa đến trang danh sách thiết bị  
+Trường hợp lỗi  1. Lỗi do không có dữ liệu để hiển thị  
+2. Lỗi do không nhập đúng thông tin  
+3. Thông báo lỗi ra màn hình.  
+ 
+2.3.11.  Đặc tả ca sử dụng Qu ản lý nhân s ự 
+Bảng 2.11: Đặc tả ca sử dụng quản lý nhân sự . 
+Tên ca sử dụng  Quản lý nhân sự  
+Tác nhân  Quản trị viên  
+Mô tả  Quản trị viên có thể xem, sửa, xóa danh sách nhân sự mà hệ 
+thống cung cấp  
+--- Page 49 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  36 
+ Điều kiện kích hoạt  Quản trị viên đăng nhập vào hệ thống.  
+Chọn mục Nhân sự 
+Các bước thực hiện  1. Quản trị viên xem toàn bộ danh sách nhân sự  
+2. Quản trị viên xem chi tiết một nhân sự cụ thể, có thể cập 
+nhật, xóa nhân sự  đó. 
+3. Quản trị viên có thể thêm mới một nhân sự vào danh sách  
+Kết quả  Đưa đến trang danh sách nhân sự  
+Trường hợp lỗi  1. Lỗi do không có dữ liệu để hiển thị  
+2. Lỗi do không nhập đúng thông tin.  
+3. Thông báo lỗi ra màn hình.  
+ 
+2.3.12.  Đặc tả ca sử dụng Qu ản lý địa điểm 
+Bảng 2.12: Đặc tả ca sử dụng quản lý địa điểm.  
+Tên ca sử dụng  Quản lý địa điểm  
+Tác nhân  Quản trị viên  
+Mô tả  Quản trị viên có thể xem, sửa, xóa danh sách địa điểm  mà hệ 
+thống cung cấp  
+Điều kiện kích hoạt  Quản trị viên đăng nhập vào hệ thống.  
+Chọn mục Địa điểm  
+Các bước thực hiện  1. Quản trị viên xem toàn bộ danh sách địa điểm  
+2. Quản trị viên xem chi tiết một địa điểm  cụ thể, có thể cập 
+nhật, xóa địa điểm  đó. 
+3. Quản trị viên có thể thêm mới một địa điểm  vào danh sách  
+Kết quả  Đưa đến trang danh sách địa điểm  
+Trường hợp lỗi  1. Lỗi do không có dữ liệu để hiển thị  
+2. Lỗi do không nhập đúng thông tin.  
+3. Thông báo lỗi ra màn hình.  
+ 
+2.3.13.  Đặc tả ca sử dụng Qu ản lý thành viên  
+Bảng 2.13: Đặc tả ca sử dụng quản lý  thành viên . 
+Tên ca sử dụng  Quản lý thành viên  
+Tác nhân  Quản trị viên  
+--- Page 50 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  37 
+ Mô tả  Quản trị viên có thể xem, đóng băng, kích hoạt lại tài khoản 
+thành viên  
+Điều kiện kích hoạt  Quản trị viên đăng nhập vào hệ thống.  
+Chọn mục Người dùng  
+Các bước thực hiện  1. Quản trị viên xem toàn bộ danh sách thành viên có trong 
+hệ thống   
+2. Quản trị viên xem chi tiết một thành viên cụ thể.  
+3. Quản trị viên có thể đóng băng, kích hoạt tài khoản thành 
+viên.  
+Kết quả  Đưa đến trang danh sách thành viên  
+Trường hợp lỗi  1. Lỗi do không có dữ liệu để hiển thị  
+2. Thông báo lỗi ra màn hình.  
+ 
+2.3.14.  Đặc tả ca sử dụng Th ống kê  
+Bảng 2.14: Đặc tả ca sử dụng thống kê . 
+Tên ca sử dụng  Quản lý thống kê  
+Tác nhân  Quản trị viên  
+Mô tả  Quản trị viên có thể thống kê lại doanh thu, số lượng hợp 
+đồng, người dùng của từng tháng trong năm . 
+Điều kiện kích hoạt  Quản trị viên đăng nhập vào hệ thống.  
+Chọn mục Thống kê  
+Các bước thực hiện  1. Quản trị viên chọn thống kê doanh thu hoặc sự kiện hoặc 
+dịch vụ theo tháng.  
+Kết quả  Đưa đến trang thống kê  
+Trường hợp lỗi  1. Lỗi do không có dữ liệu để hiển thị  
+2. Thông báo lỗi ra màn hình.  
+ 
+2.4. Sơ đ ồ hoạt động 
+2.4.1.  Sơ đồ hoạt động của thành viên  
+--- Page 51 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  38 
+  
+Hình 2.12: Sơ đồ hoạt động của thành viên . 
+2.4.2.  Sơ đồ hoạt động của quản trị viên 
+
+--- Page 52 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  39 
+  
+Hình 2.13: Sơ đồ hoạt động của quản trị viên. 
+2.5. Kiến trúc h ệ thống 
+ Hệ thống được xây dựng theo mô hình client -server. Trong đó, phía client dựa trên 
+apollo client để gọi api từ server dùng GraphQL. Server giữ vai trò xử lý logic và quản 
+trị cơ sở dữ liệu.  
+         
+                                 
+                     
+                                                 
+                     
+                                          
+                                                                                      
+                                    
+              
+               
+                                     
+                              
+            
+         
+              
+   
+                                 
+                                                 
+              
+                
+                                     
+                               
+            
+         
+              
+   
+                                                       
+              
+                
+                                     
+                               
+            
+         
+              
+   
+                                                       
+              
+                   
+                                     
+                              
+            
+         
+              
+   
+                          
+                                                                   
+                                
+--- Page 53 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  40 
+  
+Hình 2.14: Sơ đồ kiến trúc h ệ thống. 
+ Nhờ vào kiến trúc như vậy, chúng ta có thể triển khai môi trường client trên nhiều 
+nền tảng khác nhau, các xử lý liên quan đến nghiệp vụ tập trung, dễ dàng nâng cấp hoặc 
+thay đổi.  
+2.6. Thiết kế cơ sở dữ liệu 
+2.6.1.  Danh sách các b ảng dữ liệu 
+Cơ sở dữ liệu của hệ thống sẽ gồm các bảng sau:  
+• User: là bảng dữ liệu người dùng, chứa thông tin của người dùng trong hệ thống.  
+• User_verification_request: là bảng dữ liệu chứa thông tin đăng kí người dùng mới. 
+Khi người dùng xác thực sẽ dùng dữ liệu từ bảng này để tạo một user mới  
+• Role: là bảng dữ liệu phân quyền, chứa quyền người dùng truy cập.  
+• Token: là bảng dữ liệu token khi người dùng đăng nhập.  
+• Event: là bảng dữ liệu thông tin các sự kiện  
+• Event_type: là bảng dữ liệu chứa các loại sự kiện  
+• Device: là bảng dữ liệu chứa thông tin của thiết bị  
+• Device_rental: là bảng dữ liệu các thiết bị được thuê  
+• Human_resources: là bảng dữ liệu chứa thông tin của nhân sự  
+• Human_resources_rental: là bảng dữ liệu các nhân sự được thuê  
+• Location: là bảng dữ liệu chứa thông tin của địa điểm  
+• Location_rental: là bảng dữ liệu các địa điểm được thuê  
+
+--- Page 54 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  41 
+ • Rental: là bảng dữ liệu chứa thông tin thuê 
+• Contract: là bảng dữ liệu hợp đồng.  
+• Customer: là bảng dữ liệu chứa thông tin khách hàng  
+• Email_send_log: là bảng dữ liệu chứa  thông tin các lần gửi mail  
+• Guest: là bảng dữ liệu chứa thông tin khách mời và trạng thái gửi mail  
+• Timeline: là bảng dữ liệu chứa thông tin timeline của sự kiện  
+ 
+2.6.2.  Chi ti ết các b ảng dữ liệu 
+Bảng 2.15: Bảng dữ liệu role . 
+Role  
+Tên cột  Kiểu dữ liệu  Độ dài tối đa  Ghi chú  Giải Thích  
+id Uuid  36  Khóa chính, 
+Duy nhất  Khóa chính của 
+bảng  
+name  Varchar  255   Tên quyền  
+created_at  Date    Ngày tạo  
+updated_at  Date     Ngày chỉnh sửa  
+ 
+Bảng 2.16: Bảng dữ liệu user . 
+User  
+Tên cột  Kiểu dữ liệu  Độ dài tối đa  Ghi chú  Giải Thích  
+id Uuid  36  Khóa chính, 
+Duy nhất  Khóa chính của 
+bảng  
+first_name  Varchar  50  Họ và tên đệm 
+người dùng  
+last_name  Varchar  50  Tên người dùng  
+email  Varchar  50  Duy nhất  Email  
+password  Varchar  100   Mật khẩu  
+role_id  Int 11 Khóa ngoại, 
+liên kết với 
+bảng role  Mã phân quyền  
+avatar  Varchar  100  Ảnh đại diện  
+phone_number  Varchar  50  Số điện thoại  
+--- Page 55 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  42 
+ created_at  Date    Ngày tạo  
+updated_at  Date   
+  Ngày chỉnh sửa  
+ 
+Bảng 2.17: Bảng dữ liệu user_verification_request . 
+User_verification_request  
+Tên cột  Kiểu dữ liệu  Độ dài tối đa  Ghi chú  Giải Thích  
+id Uuid  36  Khóa chính, 
+Duy nhất  Khóa chính của 
+bảng  
+email  Varchar  50  Duy nhất  Email  
+data Json   Dữ liệu của yêu 
+cầu 
+code  Varchar  100  Mã yêu cầu  
+expiration_time  Date    Thời gian hợp lệ 
+của mã yêu cầu  
+type Enum    Loại yêu cầu  
+created_at  Date    Ngày tạo  
+updated_at  Date     Ngày chỉnh sửa  
+ 
+Bảng 2.18: Bảng dữ liệu token . 
+Token  
+Tên cột  Kiểu dữ liệu  Độ dài tối đa  Ghi chú  Giải Thích  
+id Uuid  36  Khóa chính, 
+Duy nhất  Khóa chính của 
+bảng  
+user_id  uuid 36  Khóa ngoại, 
+liên kết với 
+bảng User  Mã người dùng  
+access_token  Text   
+Access token  
+refresh_token  Text   
+Refresh token  
+email  Varchar  50  Email người dùng  
+last_used  Date    Thời gian sử dụng 
+cuối cùng  
+--- Page 56 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  43 
+ created_at  Date    Ngày tạo  
+updated_at  Date     Ngày chỉnh sửa  
+ 
+Bảng 2.19: Bảng dữ liệu event . 
+Event  
+Tên cột  Kiểu dữ liệu  Độ dài tối đa  Ghi chú  Giải thích  
+id  Uuid  36  Khóa chính, 
+duy nhất  Khóa chính của bảng  
+name  Varchar  255   Tên sự kiện   
+description  Varchar  255  Mô tả chung về sự 
+kiện 
+detail  Varchar    Chi tiết về sự kiện  
+img string    Hình ảnh của sự kiện  
+event_format  Boolean   True : Sự kiện 
+online  
+False: Sự kiện 
+offline  Hình thức  của sự 
+kiện 
+is_template  Boolean   True: Sự kiện 
+mẫu Trạng thái sử dụn  
+online _link  Varchar  255  Link tham gia sự 
+kiện online  
+invitation_link  Varchar  255  Link thư mời tham 
+dự sự kiện 
+created_at  Date    Ngày tạo  
+updated_at  Date   
+  Ngày chỉnh sửa  
+ 
+Bảng 2.20: Bảng dữ liệu event_type.  
+Event_type  
+Tên c ột Kiểu dữ 
+liệu Độ dài tối 
+đa Ghi chú  Giải thích  
+id Uuid  36  Khóa chính, 
+duy nhất  Khóa chính của 
+bảng  
+--- Page 57 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  44 
+ name  Varchar  255  Tên loại sự kiện  
+created_at  Date    Ngày tạo  
+updated_at  Date     Ngày chỉnh sửa  
+ 
+Bảng 2.21: Bảng dữ liệu device . 
+Device  
+Tên c ột Kiểu dữ 
+liệu Độ dài tối 
+đa Ghi chú  Giải thích  
+id Uuid  36  Khóa chính, 
+duy nhất  Khóa chính của 
+bảng  
+name  Varchar  255  Tên thiết bị  
+description  Varchar    Mô tả chung về 
+thiết bị  
+image  String    Hình ảnh thiết bị  
+hourly_rental_fee  Float     Tiền thuê thiết bị 
+mỗi giờ  
+quantity  Int   Số lượng thiết bị  
+created_at  Date    Ngày tạo  
+updated_at  Date     Ngày chỉnh sửa  
+ 
+Bảng 2.22: Bảng dữ liệu device_rental . 
+Device _rental  
+Tên c ột Kiểu dữ 
+liệu Độ dài tối 
+đa Ghi chú  Giải thích  
+id Uuid  36  Khóa chính, duy 
+nhất Khóa chính của 
+bảng  
+device_id  Uuid  36 Khóa phụ, liên kết 
+với bảng Device  Mã thiết bị  
+rental _id Uuid  36 Khóa phụ, liên kết 
+với bảng Rental  Mã thuê 
+quantity  Int   Số lượng thiết bị  
+được thuê  
+--- Page 58 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  45 
+ created_at  Date    Ngày tạo  
+updated_at  Date     Ngày chỉnh sửa  
+ 
+Bảng 2.23: Bảng dữ liệu human_resources . 
+Human_resources  
+Tên c ột Kiểu dữ 
+liệu Độ dài tối 
+đa Ghi chú  Giải thích  
+id Uuid  36  Khóa chính, duy 
+nhất Khóa chính của 
+bảng  
+name  Varchar  255  Tên nhân sự  
+description  Varchar    Mô tả chung về 
+nhân sự  
+image  String    Hình ảnh nhân 
+sự 
+hourly_ salary  Float     Tiền thuê nhân 
+sự mỗi giờ  
+quantity  Int   Số lượng nhân 
+sự 
+created_at  Date    Ngày tạo  
+updated_at  Date     Ngày chỉnh sửa  
+ 
+Bảng 2.24: Bảng dữ liệu human_resources_rental . 
+Human_resources _rental  
+Tên c ột Kiểu dữ 
+liệu Độ dài tối 
+đa Ghi chú  Giải thích  
+id Uuid  36  Khóa chính, duy 
+nhất Khóa chính 
+của bảng  
+human_resources _id Uuid  36 Khóa phụ, liên kết 
+với bảng 
+Human_resources  Mã nhân sự  
+rental_id  Uuid  36 Khóa phụ, liên kết 
+với bảng Rental  Mã thuê  
+--- Page 59 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  46 
+ quantity  Int   Số lượng nhân 
+sự được thuê  
+created_at  Date    Ngày tạo  
+updated_at  Date     Ngày chỉnh 
+sửa 
+ 
+Bảng 2.25: Bảng dữ liệu location . 
+Location  
+Tên c ột Kiểu dữ 
+liệu Độ dài tối 
+đa Ghi chú  Giải thích  
+id Uuid  36  Khóa chính, duy 
+nhất Khóa chính của 
+bảng  
+name  Varchar  255  Tên địa điểm  
+description  Varchar    Mô tả chung về 
+địa điểm  
+image  String    Hình ảnh địa 
+điểm  
+hourly_rental_fee  Float     Tiền thuê địa 
+điểm  mỗi giờ  
+created_at  Date    Ngày tạo  
+updated_at  Date     Ngày chỉnh sửa  
+ 
+Bảng 2.26: Bảng dữ liệu location_rental . 
+Location _rental  
+Tên c ột Kiểu dữ 
+liệu Độ dài tối 
+đa Ghi chú  Giải thích  
+id Uuid  36  Khóa chính, duy 
+nhất Khóa chính của 
+bảng  
+location _id Uuid  36 Khóa phụ, liên kết 
+với bảng Location  Mã địa điểm  
+rental_id  Uuid  36 Khóa phụ, liên kết 
+với bảng Rental  Mã thuê  
+--- Page 60 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  47 
+ quantity  Int   Số lượng địa 
+điểm  được thuê  
+created_at  Date    Ngày tạo  
+updated_at  Date     Ngày chỉnh sửa  
+ 
+Bảng 2.27: Bảng dữ liệu contract . 
+Contract  
+Tên c ột Kiểu dữ 
+liệu Độ dài tối 
+đa Ghi chú  Giải thích  
+id Uuid  36  Khóa chính, duy 
+nhất Khóa chính 
+của bảng  
+rental _id Uuid  36 Khóa phụ, liên kết 
+với bảng Rental  Mã thuê  
+name  Varchar  255  Tên hợp đồng  
+payment_intent_id  Uuid    Mã thanh toán  
+customer_id  Uuid   Khóa phụ, liên 
+kết với bảng 
+Customer  Mã khách hàng  
+status  Enum   contract_status {  
+  draft  
+  deposit_paid  
+  inprogress  
+  waiting_paid  
+  completed  
+} Trạng thái hợp 
+đồng  
+created_at  Date    Ngày tạo  
+updated_at  Date     Ngày chỉnh 
+sửa 
+ 
+ 
+ 
+ 
+--- Page 61 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  48 
+ Bảng 2.28: Bảng dữ liệu customer . 
+Customer  
+Tên cột  Kiểu dữ liệu  Độ dài tối đa  Ghi chú  Giải thích  
+id Uuid  36  Khóa chính, 
+duy nhất  Khóa chính 
+của bảng  
+name  Varchar  255  Tên khách 
+hàng  
+phone_number  varchar  20  Số điện thoại 
+khách hàng  
+address  Varchar  255  Địa chỉ khách 
+hàng  
+create_at  Date    Ngày tạo  
+update_at  Date    Ngày chỉnh 
+sửa 
+ 
+ 
+Bảng 2.29: Bảng dữ liệu email_send_log . 
+Email_send_log  
+Tên cột  Kiểu dữ liệu  Độ dài tối 
+đa  Ghi chú  Giải thích  
+id Uuid  36 Khóa chính, duy 
+nhất Khóa chính c ủa 
+bảng 
+contract_id  Uuid  36 Khóa ngo ại, liên 
+kết với bảng 
+Contract  Mã hợp đồng 
+file_name  Varchar  255  Tên file  
+create_at  Date    Ngày tạo  
+update_at  Date    Ngày chỉnh sửa  
+ 
+ 
+ 
+--- Page 62 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  49 
+ Bảng 2.30: Bảng dữ liệu guest.  
+Guest  
+Tên cột  Kiểu dữ 
+liệu Độ dài tối đa  Ghi chú  Giải 
+thích  
+id Uuid  36  Khóa chính, 
+duy nhất  Khóa 
+chính 
+của 
+bảng  
+email_send_log_id  Uuid  36 Khóa ngoại, liên 
+kết với bảng 
+Email_send_lo g Mã 
+lần 
+gửi 
+mail 
+email  Varchar  255  
+ Mail 
+khách 
+mời 
+status  Enum  SENT_EMAIL_STATUS 
+{ 
+  UNSENT = 0,  
+  QUEUED = 1,  
+  SENDING = 2,  
+  SENT = 3,  
+  FAILED = 4,  
+}  Trạng 
+thái 
+gửi 
+mail 
+error  Text   Lỗi 
+xảy 
+ra 
+create_at  Date    Ngày 
+tạo 
+update_at  Date    Ngày 
+chỉnh 
+sửa 
+ 
+ 
+--- Page 63 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  50 
+ Bảng 2.31: Bảng dữ liệu timeline . 
+Timeline  
+Tên cột  Kiểu dữ liệu  Độ dài tối đa  Ghi chú  Giải thích  
+id Uuid  36  Khóa chính, 
+duy nhất  Khóa chính của 
+bảng  
+rental_id  Uuid  36 Khóa ngoại, liên 
+kết với bảng 
+Rental  Mã thuê 
+description  Text  
+  Mô tả chi tiết  
+     
+time_start  Datetime    Thời gian bắt đầu  
+create_at  Date    Ngày tạo  
+update_at  Date    Ngày chỉnh sửa  
+ 
+--- Page 64 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  51 
+ 2.6.3.  Mô hình quan h ệ cơ sở dữ liệu 
+Mối quan hệ giữa các bảng dữ liệu được thể hiện dưới đây:  
+ 
+Hình 2.15: Sơ đồ quan h ệ cơ sở dữ liệu. 
+ 
+ 
+  
+
+--- Page 65 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  52 
+ Chương 3:  TRIỂN KHAI VÀ CH ẠY TH Ử NGHI ỆM 
+ 
+ 
+3.1. Môi trư ờng tri ển khai  
+3.1.1.  Quản lý mã ngu ồn 
+a. Git 
+ Git là một hệ thống quản lý phiên bản phân tán (có tên tiếng anh là Distributed 
+Version Control System – DVCS) được ra đời vào năm 2005 hiện đang được sử dụng 
+vô cùng phổ biến. Git cung cấp cho mỗi một lập trình viên kho lưu trữ riêng cho toàn 
+bộ lịch sử thay đổi.   
+ VSC  là viết tắt của Version Control System  là hệ thống kiểm soát các phiên bản 
+phân tán mã nguồn mở. Các  VSC  sẽ lưu trữ tất cả các file trong toàn bộ dự án và ghi lại 
+toàn bộ lịch sử thay đổi của file. Mỗi sự thay đổi được lưu lại sẽ được và thành một 
+version (phiên bản).  
+ Lợi ích:  
+• Dễ sử dụng, thao tác nhanh, gọn, lẹ và rất an toàn.  
+• Dễ dàng kết hợp các phân nhánh (branch), có thể giúp quy trình làm việc code theo 
+nhóm đơn giản hơn rất nhiều.  
+• Chỉ cần clone mã nguồn từ kho chứa hoặc clone một phiên bản thay đổi nào đó từ 
+kho chứa, hoặc một nhánh nào đó từ kho chứa là bạn có thể làm việc ở mọi lúc 
+mọi nơi.  
+• Deployment sản phẩm một cách dễ dàng hơn.  
+b. GitHub  
+ GitHub là một nền tảng lưu trữ mã nguồn mở trực tuyến và hệ thống quản lý phiên 
+bản phổ biến. Nó cung cấp một môi trường làm việc chung cho các nhà phát triển phát 
+triển phần mềm, cho phép họ lưu trữ, quản lý và chia sẻ mã nguồn dễ dàng. GitHub cung 
+cấp nhiều tính năng hữu ích như theo dõi thay đổi, quản lý dự án, xem xét mã nguồn, 
+tích hợp CI/CD và tạo lập cộng đồng phát triển phần mềm.  
+ Khi sử dụng GitHub các cá nhân hay tổ chức có thể lưu trữ và quản lý kho code 
+dễ dàng, an toàn và truy cập nhanh chóng thông qua Internet. Với GitHub, nó cung cấp 
+dung lượng lưu trữ miễn phí cho người dùng, ngoài ra bạn có thể nâng cấp dung lượng 
+(mất phí)  khi muốn sử dụng nhiều dung lượng hơn.  
+ Lợi ích:  
+• Sự tiện lợi. Thao  tác mỗi khi cần lưu trữ, tải lên, tải xuống  code  dễ dàng  hơn. 
+--- Page 66 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  53 
+ • Kiểm  soát các thay đổi trong  code  nhanh  chóng,  chính  xác. 
+• Dễ dàng  quản  lý, phân  phối công  việc,  hoàn  thành  dự án lập trình  chất lượng  hơn. 
+3.1.3.  Hướng dẫn sử dụng chương trình  
+Source code được lưu trữ ở github, để chạy chương trình hoàn chỉnh chúng ta thực 
+hiện theo các bước:  
+• Backend: Sử dụng lệnh git clone  để tải toàn bộ mã chương trình về máy. Tiếp theo 
+sử dụng lệnh yarn  để cài đặt toàn bộ thư viện của chương trình. Cuối cùng ở thư 
+mục gốc sử dụng yarn dev để chạy chương trình.  
+• Frontend: Sử dụng lệnh git clone  để tải toàn bộ mã chương trình web application 
+về máy. Tiếp theo sử dụng yarn để cài đặt toàn bộ thư viện của chương trình. 
+Cuối cùng ở thư mục gốc sử dụng yarn dev để chạy chương trình.   
+ Sau khi hoàn thiện các bước trên thì chúng ta có thể thao tác các chức năng của hệ 
+thống  
+3.1.2.  Môi trư ờng cài đ ặt 
+a. Node Js  
+ NodeJS là môi trường runtime mã nguồn mở đa nền tảng, được sử dụng để phát 
+triển các ứng dụng mạng và ứng dụng server -side. Các ứng dụng NodeJS được viết bằng 
+JavaScript và có thể chạy trong NodeJS runtime trên OS X, Microsoft Windows và 
+Linux.  
+NodeJS cũng cung cấp một thư viện bao gồm rất nhiều các module JavaScript 
+khác nhau nhằm đơn giản hóa việc phát triển các ứng dụng web, qua đó giảm thiểu 
+tình trạng sử dụng quá nhiều Node.js.  
+b. Yarn:  
+ Yarn  là công cụ quản lý gói phần mềm nguồn mở cho dự án của bạn, nó ngoài việc 
+cho bạn sử dụng các gói phần mềm còn cho phép bạn chia sẻ các gói phần mềm do bạn 
+viết với các lập trình viên trên toàn cầu. Yarn thực hiện các công việc với tốc độ rất 
+nhanh, bảo mật cao và đáng tin cậy. Code được chia sẻ thường được gọi là package (gói 
+phần mềm) hoặc module (mô đun phần mềm). Tất cả các gói được sử dụng sẽ được mô 
+tả trong file package.json nằm trong thư mục gốc của dự án.  
+c.  Back -end là web API được xây dựng bằng ngôn ngữ typescript với fram ework 
+Nestjs.  
+d. Front -end là web application sử dụng thư viện ReactJs để xây dựng  
+--- Page 67 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  54 
+ e. Hệ quản trị cơ sở dữ liệu  là PostgreSql  
+3.2. Kết quả demo c ủa hệ thống 
+3.2.1.  Chức năng c ủa khách  
+Trang chủ của hệ thống bao gồm giới thiệu về công ty, tổng quát các dịch vụ mà 
+công ty cung cấp.  
+ 
+Hình 3.1: Trang ch ủ của hệ thống. 
+ 
+ 
+Hình 3.2: Các d ịch vụ nổi bật. 
+Người dùng có thể truy c ập trang sự kiện mà công ty cung cấp bằng cách chọn tab 
+Dịch vụ sự kiện  trên thanh banner. Khi người dùng nhấn, giao diện sẽ được chuyển 
+
+--- Page 68 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  55 
+ sang trang Dịch vụ sự kiện . Từ đây người dùng có thể tìm kiếm hoặc lướt danh sách sự 
+kiện để tìm kiếm.  
+ 
+Hình 3.3: Danh sách các s ự kiện. 
+Người dùng có thể xem được thông tin chi tiết của sự kiện bằng cách click vào sự 
+kiện cụ thể.  
+
+--- Page 69 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  56 
+  
+Hình 3.4: Trang chi ti ết sự kiện. 
+ 
+Hình 3.5: Lịch trình d ự kiến của sự kiện. 
+Ngoài tiêu đề, hệ thống sẽ cung cấp thông tin chi tiết về sự kiện, các dịch vụ cung cấp 
+cho sự kiện đó.  
+
+--- Page 70 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  57 
+  
+Hình 3.6: Danh sách các d ịch vụ mà sự kiện cung c ấp. 
+Để thực hiện đăng nhập, người dùng click vào nút Đăng nhập  để tới trang đăng nhập. 
+Sau đó nhập email, mật khẩu để đăng nhập vào hệ thống.  
+ 
+Hình 3.7: Trang đăng nh ập. 
+Nếu chưa có tài khoản người dùng có thể thực hiện đăng kí bằng cách nhấn vào 
+Chưa có tài khoản? Đăng ký màn hình đăng kí sẽ hiện ra.  
+
+--- Page 71 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  58 
+  
+Hình 3.8: Trang đăng kí . 
+Thực hiện bổ sung thông tin để đăng kí. Sau khi ấn đăng kí, một mã code sẽ được 
+gửi về email đăng kí, sử dụng mã code để nhập vào màn hình Xác thực tài khoản.  
+ 
+Hình 3.9: Email xác th ực đăng kí tài kho ản. 
+Khi xác thực hoặc đăng nhập, màn hình sẽ được chuyển sang trang chủ . 
+3.2.2.  Chức năng c ủa thành viên  
+Thành viên có các chức năng tạo hợp đồng tổ chức sự kiện với danh sách các 
+dịch vụ cần thuê, quản lý hợp đồng, quản lý danh sách thư mời và quản lý tài khoản.  
+
+--- Page 72 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  59 
+  
+Chức năng qu ản lý tài kho ản bao gồm xem và ch ỉnh sửa thông tin cá nhân.  Để 
+cập nhật thông tin cá nhân, thành  viên nhấn Chỉnh sửa, rồi nhập thông tin rồi nhấn Lưu 
+để cập nhật 
+ 
+--- Page 73 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  60 
+  
+Hình 3.10: Trang thông tin cá nhân c ủa thành viên.  
+ Ngoài ra, còn có chức năng đổi mật khẩu , thành viên có thể đổi mật khẩu bằng 
+cách nhấn Chỉnh sửa , rồi nhập mật khẩu cũ, mật khẩu mới . Sau đó,  nhấn nút Lưu để 
+đổi mật khẩu  
+ 
+Hình 3.11: Trang đ ổi mật khẩu của thành viên  
+ Để yêu cầu tổ chức sự kiện, ở trang chi tiết sự kiện, thành viên ấn vào Đăng kí tổ 
+chức sự kiện , sau đó điền các thông tin cần thiết. Thành viên có thể chọn tạo hợp đồng 
+với số lượng cung cấp có sẵn hoặc chỉnh sửa dịch vụ, số lượng tương ứng.  
+
+--- Page 74 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  61 
+  
+Hình 3.12: Các d ịch vụ mà sự kiện cung c ấp trong h ợp đồng. 
+ 
+ 
+Hình 3.13: Thông tin chi ti ết của hợp đồng. 
+ Khi ấn nút tạo hợp đồng, nếu có một trong các dịch vụ không đủ số lượng có sẵn, 
+thống báo lỗi sẽ hiển thị. Ngược lại, nếu tạo thành công, thành viên sẽ được đưa đến 
+trang quản lý hợp đồng.  
+
+--- Page 75 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  62 
+  
+Hình 3.14: Danh sách các h ợp đồng đã  tạo. 
+Từ danh sách hợp đồng, thành viên có thể chọn xem chi tiết hợp đồng hoặc tiến hành 
+đặt cọc cho những hợp đồng mới tạo hoặc thanh toán cho những hợp đồng đang chờ 
+thanh toán. Nếu hợp đồng không được đặt cọc trong v òng 3 ngày kể từ ngày tạo, hợp 
+đồng sẽ tự động chuyển về trạng thái hủy.  
+
+--- Page 76 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  63 
+  
+Hình 3.15: Chi ti ết hợp đồng (1) . 
+ 
+Hình 3.16: Chi ti ết hợp đồng (2). 
+Để đặt cọc hợp đồng, thành viên phải thanh toán giá trị bằng 30% tổng giá trị hợp đồng.  
+
+--- Page 77 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  64 
+  
+Hình 3.17: Xác nh ận đặt cọc. 
+Sau khi xác nhận, thành viên sẽ được chuyển tới trang thanh toán bằng stripe.  
+ 
+Hình 3.18: Màn hình thanh toán b ằng stripe . 
+Thành viên điền các thông tin cần thiết và nhất nút Pay. Nếu thành công, thành viên sẽ 
+được chuyển trang sang chi tiết hợp đồng đã đặt cọc và trạng thái của hợp đồng sẽ 
+chuyển sang Đã đặt cọc   
+
+--- Page 78 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  65 
+  
+Hình 3.19: Trang chi ti ết hợp đồng sau khi đã đ ặt cọc. 
+Để yêu cầu hủy hợp đồng, thành viên có thể nhấn vào biểu tượng Hủy ở phía trên góc 
+phải màn hình, khi đó sẽ hiện ra thông báo xác nhận hủy. Khi thành viên xác nhận, hợp 
+đồng sẽ chuyển qua trạng thái hủy mà không hoàn trả lại bất kỳ số tiền nào. Ngoài ra, 
+thành viên có thể yêu cầu hủy ở màn hình danh sách hợp đồng. Thành viên không thể 
+yêu cầu hủy hợp đồng khi hợp đồng đang ở trong trạng thái chờ đặt cọc và trạng thái 
+chờ thanh toán. Ngoài ra, nếu hợp đồng bị hủy bới quản trị viên, thành viên sẽ được 
+hoàn tr ả toàn bộ số tiền mà họ đã đặt cọc.  
+
+--- Page 79 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  66 
+  
+Hình 3.20: Xác nh ận hủy tổ chức sự kiện. 
+ 
+ 
+Hình 3.21: Chi ti ết hợp đồng sau khi h ủy. 
+Nếu thành viên có nhu c ầu mu ốn gửi thư m ời tham d ự sự kiện cho khách m ời, thì thành 
+viên có th ể tải lên danh sách khách m ời từ file excel  và nhấn nút Gửi thư mời. Ở đây, 
+thành viên có th ể xem đư ợc thông tin c ủa các l ần gửi và trạng thái mail đã g ửi. 
+
+--- Page 80 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  67 
+  
+Hình 3.22: Quản lý danh sách thư m ời của thành viên.  
+3.2.3.  Chức năng c ủa quản trị viên  
+Sau khi đăng nhập, quản trị viên sẽ được chuyển qua trang thống kê. Ở đây, quản 
+trị viên có thể xem thống kê doanh thu, số lượng người dùng , hợp đồng đã được thuê 
+sau khi lựa chọn năm mà họ muốn thống kê.  
+ 
+Hình 3.23: Màn hình th ống kê . 
+Để thực hiện chức năng quản lý người dùng , quản trị viên chọn mục Người dùng  ở 
+thanh navbar . Quản trị viên cũng có thể đóng băng hoặc kích hoạt tài khoản của thành 
+viên, bằng cách nhấn vào biểu tượng Đóng băng  hoặc Kích hoạt  trong phần Actions  
+
+--- Page 81 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  68 
+  
+Hình 3.24: Danh sách ngư ời dùng . 
+Để chuyển sang quản lý sự kiện, quản trị viên nhấn Sự kiện trên thanh nav bar, khi 
+đó quản trị viên sẽ xem được danh sách các sự kiện.  
+ 
+Hình 3.25: Danh sách s ự kiện. 
+Để tạo mới một sự kiện, nhấn nút Thêm mới  để mở màn hình tạo mới.  
+
+--- Page 82 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  69 
+  
+Hình 3.26: Thêm m ới sự kiện. 
+Khi thêm thành công, màn hình sẽ được chuyển về trang danh sách sự kiện. Để 
+xem chi tiết hoặc cập nhật sự kiện, người dùng chọn Cập nhật  ở phần Actions . 
+
+--- Page 83 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  70 
+  
+Hình 3.27: Cập nhật sự kiện. 
+Quản trị viên có th ể quản lý thiết bị bằng cách ch ọn Thiết bị. Tại đây, qu ản trị viên có 
+thể xem chi ti ết, thêm m ới, cập nhật, xóa thiết bị 
+ 
+Hình 3.28: Danh sách thi ết bị. 
+Quản trị viên cũng có thể thêm một thiết bị bằng cách nhấn Thêm mới.  
+
+--- Page 84 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  71 
+  
+ 
+Hình 3.29: Tạo mới thiết bị. 
+Khi thêm thành công, màn hình sẽ được chuyển về trang danh sách thiết bị . Để 
+xem chi tiết hoặc cập nhật thiết bị , người dùng chọn Cập nhật  ở phần Actions . 
+ 
+Hình 3.30: Cập nhật thông tin thi ết bị. 
+
+--- Page 85 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  72 
+ Để thực hiện chức năng quản lý nhân sự , quản trị viên nhấn Nhân sự ở thanh navbar , 
+khi đó quản trị viên sẽ xem được danh sách các nhân sự.  
+ 
+ 
+Hình 3.31: Danh sách nhân s ự. 
+Để tạo mới một nhân sự, nhấn nút Thêm mới  để mở màn hình tạo mới.  
+ 
+Hình 3.32: Thêm m ới nhân s ự. 
+Khi thêm thành công, màn hình sẽ được chuyển về trang danh sách nhân sự . Để 
+xem chi tiết hoặc cập nhật nhân sự , người dùng chọn Cập nhật  ở phần Actions . 
+ 
+
+--- Page 86 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  73 
+  
+Hình 3.33: Cập nhật thông tin nhân s ự. 
+Để thực hiện chức năng quản lý địa điểm, quản trị viên nhấn  Địa điểm  ở thanh 
+navbar, khi đó quản trị viên sẽ xem được danh sách các địa điểm . 
+ 
+ 
+Hình 3.34: Danh sách đ ịa điểm. 
+Để tạo mới một địa điểm , nhấn nút Thêm mới  để mở màn hình tạo mới.  
+ 
+
+--- Page 87 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  74 
+  
+Hình 3.35: Tạo mới địa điểm. 
+Khi thêm thành công, màn hình sẽ được chuyển về trang danh sách địa điểm . Để 
+xem chi tiết hoặc cập nhật địa điểm , người dùng chọn Cập nhật  ở phần Actions . 
+ 
+ 
+Hình 3.36: Cập nhật thông tin đ ịa điểm. 
+Quản trị viên còn có chức năng xóa sự kiện, thiết bị, nhân sự , địa điểm  nếu muốn, 
+khi đó tại trang quản lý sự kiện, hoặc thiết bị, hoặc nhân sự, ở mỗi bản ghi, quản trị viên 
+có thể nhấn biểu tượng Xóa trong mục Actions  để xóa. Tuy nhiên, bản ghi đó có thể 
+xóa trong trường hợp bản ghi đó chưa được sử dụng (chưa được thêm vào danh sách, 
+chưa thêm vào hợp đồng).  
+
+--- Page 88 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  75 
+  
+ 
+Để thực hiện chức năng quản lý hợp đồng , quản trị viên nhấn  Hợp đồng  ở thanh navbar, 
+khi đó quản trị viên sẽ xem được danh sách các hợp đồng hiện có của công ty . Quản trị 
+viên chỉ có thể cập nhật trạng thái sang Đang thực hiện , bằng cách nhấn vào biểu tượng 
+Duyệt  trong phần Actions , khi hợp đồng đã được đặt cọc và trước khi hợp đồng diễn ra 
+nhiều nhất 7 ngày. Nếu hợp đồng không được cập nhật trạng thái thành Đang thực hiện  
+trước ngày bắt đầu diễn ra  7 ngày , hợp đồng sẽ bị hủy, và trạng thái hợp đồng sẽ cập 
+nhật thành Hủy bởi admin . Vì vậy, tiền đặt cọc sẽ đươc tự động hoàn trả cho thành viên 
+người đặt hợp đồng.  Nếu quản trị viên không duyệt  yêu cầu tổ chức sự kiện, thì quản trị 
+viên cũng có thể nhấn nút Hủy trong phần Actions  trước ngày bắt đầu  sự kiện nhiều 
+nhất 7 ngày . Sau đó, hợp đồng sẽ chuyển sang trạng thái Hủy bỏi admin  và tiền cũng 
+sẽ được hoàn trả lại cho thành viên . 
+ 
+ 
+Hình 3.37: Danh sách h ợp đồng của công ty.  
+  
+
+--- Page 89 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  76 
+ KẾT LU ẬN 
+ 
+1. Kết quả đạt được  
+ Hệ thống giải quyết được các vấn đề đã đề ra, cơ bản hoàn thành đúng như thiết 
+kế ban đầu đặt ra.  
+ Về mặt lý thuyết, tìm hiểu được các bước phân tích hệ thống, triển khai để hoàn 
+thiện một sản phẩn thực tế. Nắm được các lý thuyết về ReactJs để xây dựng giao diện 
+cho website, áp dụng NestJs để xây dựng API kết hợp cùng với GraphQL, các kiến thức 
+về  hệ quản trị cơ sở dữ liệu PostgreSQL. Tích hợp được chức n ăng thanh toán thông 
+qua Stripe, đồng thời tìm hiểu thực hiện deploy sản phẩm lên môi trường internet.  
+ Về mặt ứng dụng,  xây dựng thành công website quản lý tổ chức sự kiện. Giao diện 
+được thiết kế để thuận tiện cho người sử dụng, dễ thực hiện được các chức năng ứng với 
+từng tác nhân.  
+ 2. Những vấn đề chưa giải quyết được  
+ Ngoài những mặt đạt được như trên, ứng dụng còn một số vấn đề chưa giải quyết 
+được như sau:  
+• Chưa có chức năng bảo mật thông tin tài khoản.  
+• Trong hệ thống, thông tin sự kiện và các dịch vụ đang được thêm thủ công, có thể 
+gây phiền cho người dùng.  
+3. Hướng phát triển  
+ Với những mặt chưa giải quyết được như trên, ứng dụng cần có những hướng phát 
+triển để cải thiện như sau:  
+• Xây dựng chức năng bảo mật thông tin tài khoản thông qua các phương thức xác 
+thực khác nhau như thông qua số điện thoại, xác thực 2 bước,..  
+• Xây dựng thê m chức năng upload file  excel chứa thông tin  chi tiết của các  dịch 
+vụ, sự kiện  khi tạo dịch vụ, sự kiện để quản trị viên có thể thêm nhanh hơn.  
+  
+--- Page 90 ---
+Đề tài : Xây dựng website quản lý tổ chức sự kiện  
+ 
+SVTH : Nguyễn Thị Cầm  GVHD: ThS. Nguyễn Thị Minh Hỷ  77 
+ TÀI LI ỆU THAM KH ẢO 
+ 
+TÀI LIỆU TIẾNG VIỆT  
+[1]  Lê Thị Mỹ Hạnh, Giáo  trình môn công nghệ phần mềm , Khoa Công nghệ Thông  
+tin, Đại học Bách Khoa, Đại học Đà Nẵng.  
+[1]  Phan Huy Khánh, Giáo  trình Phân tích và thiết kế hệ thống, Khoa Công nghệ Thông  
+tin, Đại học Bách Khoa, Đại học Đà Nẵng.  
+ 
+TÀI LIỆU TIẾNG ANH  
+[1] Apollo GraphQL, Apollo GraphQL | Supergraph: unify APIs, microservices, & 
+databases in a composable graph , https://www.apollographql.com/ [Accessed date: 
+12/05/2024] 
+[2] GraphQL , GraphQL | A query language for your API , https://graphql.org/  
+[Accessed date: 1 2/05/2024] 
+[3] NestJs, NestJS - A progressive Node.js framework  [Accessed date: 1 0/05/2024] 
+[4] ReactJs, https://reactjs.org  [Accessed date: 10/05/2024] 
+[5] Stripe, Stripe Documentation , https://stripe.com/docs  [Accessed date: 20/05/2024] 
+ 
+ 
