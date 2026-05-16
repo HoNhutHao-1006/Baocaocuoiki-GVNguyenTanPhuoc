@@ -5,7 +5,7 @@ export default function Sidebar({ currentUser, view, setView, onLogout }) {
   if (!currentUser) return null;
 
   return (
-    <div className="sidebar" style={{ minWidth: 250 }}>
+    <div className="sidebar">
       <div className="sidebar-header" style={{ fontSize: '1.5rem' }}>Lu<span style={{ color: 'var(--primary-color)' }}>mina</span></div>
       <div className="nav-links">
         {currentUser.role === 'ADMIN' && (
@@ -19,6 +19,7 @@ export default function Sidebar({ currentUser, view, setView, onLogout }) {
             <div className={`nav-item ${view === 'devices' ? 'active' : ''}`} onClick={() => setView('devices')}><Monitor size={18} /> Quản lý thiết bị</div>
             <div className={`nav-item ${view === 'personnel' ? 'active' : ''}`} onClick={() => setView('personnel')}><Users size={18} /> Nhân sự (Nội bộ)</div>
             <div className={`nav-item ${view === 'members' ? 'active' : ''}`} onClick={() => setView('members')}><Users size={18} /> Khách hàng (Member)</div>
+            <div className={`nav-item ${view === 'mailbox' ? 'active' : ''}`} onClick={() => setView('mailbox')}><ClipboardList size={18} /> 📬 Hộp thư yêu cầu</div>
           </>
         )}
         {currentUser.role === 'ORGANIZER' && (

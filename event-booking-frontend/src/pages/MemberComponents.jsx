@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { fetchGraphQL } from '../api/axiosClient';
 import { PlusCircle, Send, Trash2, Mail, Users, CheckCircle, Clock, XCircle } from 'lucide-react';
+import EventProposalWizard from '../features/proposal/EventProposalWizard';
 
 const StatCard = ({ icon, label, value, color }) => (
   <div style={{ background: `${color}10`, border: `1px solid ${color}30`, borderRadius: 14, padding: '16px 20px', flex: 1, minWidth: 140 }}>
@@ -113,27 +114,13 @@ export function ProjectManager({ currentUser }) {
       )}
 
       {showCreate && (
-        <div className="modal-overlay" onClick={() => setShowCreate(false)}>
-          <div className="modal-content" onClick={e => e.stopPropagation()} style={{ width: 560 }}>
-            <h2 className="page-title">📝 Tạo Đề Xuất Sự Kiện</h2>
-            <form onSubmit={handleCreate}>
-              <div className="form-group"><label>Tên sự kiện *</label><input className="form-control" required value={form.title} onChange={e => setForm({...form, title: e.target.value})} /></div>
-              <div className="form-group"><label>Mô tả chi tiết *</label><textarea className="form-control" rows={3} required value={form.description} onChange={e => setForm({...form, description: e.target.value})} style={{ resize: 'vertical' }} /></div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                <div className="form-group"><label>Loại sự kiện</label><select className="form-control" value={form.eventType} onChange={e => setForm({...form, eventType: e.target.value})}><option value="PUBLIC">Công khai</option><option value="PRIVATE">Riêng tư</option></select></div>
-                <div className="form-group"><label>Ngày dự kiến *</label><input type="date" className="form-control" required value={form.expectedDate} onChange={e => setForm({...form, expectedDate: e.target.value})} /></div>
-              </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                <div className="form-group"><label>Địa điểm *</label><input className="form-control" required value={form.expectedLocation} onChange={e => setForm({...form, expectedLocation: e.target.value})} /></div>
-                <div className="form-group"><label>Ngân sách (VNĐ)</label><input type="number" className="form-control" value={form.budget} onChange={e => setForm({...form, budget: e.target.value})} /></div>
-              </div>
-              <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
-                <button type="submit" className="btn">Gửi đề xuất</button>
-                <button type="button" className="btn outline" onClick={() => setShowCreate(false)}>Hủy</button>
-              </div>
-            </form>
-          </div>
-        </div>
+        <EventProposalWizard currentUser={currentUser} onClose={() => setShowCreate(false)} onSubmit={async (data) => {
+          try {
+            await fetchGraphQL(`mutation M($title: String!, $description: String!, $eventType: String, $expectedDate: String!, $expectedLocation: String!, $budget: Float) { createEventProposal(memberId: "${currentUser.id}", title: $title, description: $description, eventType: $eventType, expectedDate: $expectedDate, expectedLocation: $expectedLocation, budget: $budget) { id } }`, data);
+            alert('✅ Gửi đề xuất thành công!');
+            setShowCreate(false); load();
+          } catch (err) { alert(err.message); }
+        }} />
       )}
     </div>
   );

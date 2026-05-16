@@ -1,50 +1,59 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Ticket, Clock, PlusCircle, Send, Eye, Upload, FileText } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Ticket, Clock, PlusCircle, Send, Eye, FileText, AlertTriangle } from 'lucide-react';
 import { fetchGraphQL } from '../api/axiosClient';
 import SettingsPage from './SettingsPage';
 import GenericCRUD from '../features/dashboard/GenericCRUD';
+import MemberContractDetailModal from '../features/dashboard/MemberContractDetailModal';
 import { ProjectManager, InvitationManager } from './MemberComponents';
+
+class ErrorBoundary extends React.Component {
+  constructor(props) { super(props); this.state = { hasError: false, error: null }; }
+  static getDerivedStateFromError(error) { return { hasError: true, error }; }
+  componentDidCatch(error, info) { console.error('MemberPage Error:', error, info); }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{ textAlign: 'center', padding: 60 }}>
+          <AlertTriangle size={48} color="#EF4444" style={{ marginBottom: 16 }} />
+          <h3 style={{ fontFamily: 'Outfit', color: '#EF4444', marginBottom: 8 }}>Đã xảy ra lỗi</h3>
+          <p style={{ color: '#888', marginBottom: 20 }}>{this.state.error?.message || 'Không thể tải trang này.'}</p>
+          <button className="btn" onClick={() => this.setState({ hasError: false, error: null })}>🔄 Thử lại</button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 function ContractManager({ currentUser }) {
   const [contracts, setContracts] = useState([]);
-  const [proposals, setProposals] = useState([]);
-  const [showCreate, setShowCreate] = useState(false);
-  const [details, setDetails] = useState('');
-  const [totalAmount, setTotalAmount] = useState('');
-  const [proposalId, setProposalId] = useState('');
-  const [contractFile, setContractFile] = useState(null);
-  const [uploading, setUploading] = useState(false);
-  const fileRef = useRef(null);
+  const [viewDetail, setViewDetail] = useState(null);
 
   const load = () => {
-    fetchGraphQL(`query { getMyContracts(memberId: "${currentUser.id}") { id details totalAmount status createdAt fileUrl fileName proposalTitle } }`)
+    fetchGraphQL(`query { getMyContracts(memberId: "${currentUser.id}") { id details totalAmount status createdAt fileUrl fileName proposalTitle proposalId } }`)
       .then(r => setContracts(r.getMyContracts || [])).catch(() => {});
-    fetchGraphQL(`query { getMyEventProposals(memberId: "${currentUser.id}") { id title status } }`)
-      .then(r => setProposals((r.getMyEventProposals || []).filter(p => p.status === 'Approved'))).catch(() => {});
   };
   useEffect(load, []);
 
-  const handleCreate = async (e) => {
-    e.preventDefault();
-    setUploading(true);
-    let fileUrl = '', fileName = '';
-    if (contractFile) {
-      const fd = new FormData();
-      fd.append('contract', contractFile);
-      const res = await fetch('http://localhost:4000/upload-contract', { method: 'POST', body: fd });
-      const data = await res.json();
-      if (data.success) { fileUrl = data.fileUrl; fileName = data.fileName; }
-    }
+  const handleConfirm = async (id) => {
     try {
-      await fetchGraphQL(
-        `mutation M($details: String!, $totalAmount: Float, $proposalId: ID, $fileUrl: String, $fileName: String) { createContract(memberId: "${currentUser.id}", details: $details, totalAmount: $totalAmount, proposalId: $proposalId, fileUrl: $fileUrl, fileName: $fileName) { id } }`,
-        { details, totalAmount: Number(totalAmount), proposalId: proposalId || undefined, fileUrl, fileName }
-      );
-      alert('✅ Tạo hợp đồng thành công!');
-      setShowCreate(false); setDetails(''); setTotalAmount(''); setProposalId(''); setContractFile(null);
-      load();
-    } catch (err) { alert(err.message); }
-    setUploading(false);
+      await fetchGraphQL(`mutation { memberConfirmContract(contractId: "${id}") { id } }`);
+      alert('✅ Đã xác nhận hợp đồng! Sự kiện sẽ được chuyển cho nhân viên tổ chức.');
+      setViewDetail(null); load();
+    } catch (e) { alert(e.message); }
+  };
+
+  const handleReject = async (id) => {
+    if (!confirm('Bạn chắc chắn muốn từ chối hợp đồng này?')) return;
+    try {
+      await fetchGraphQL(`mutation { memberRejectContract(contractId: "${id}") { id } }`);
+      alert('Đã từ chối hợp đồng.'); setViewDetail(null); load();
+    } catch (e) { alert(e.message); }
+  };
+
+  const statusLabel = (s) => {
+    const map = { 'Pending': { text: '⏳ Chờ bạn xác nhận', cls: 'warning' }, 'MemberConfirmed': { text: '✅ Đã xác nhận — Đang chuyển cho NV', cls: 'blue' }, 'MemberRejected': { text: '❌ Đã từ chối', cls: 'error' }, 'EmployeeConfirmed': { text: '🎉 Đang triển khai sự kiện', cls: 'success' }, 'Paid': { text: '💰 Đã thanh toán', cls: 'success' } };
+    return map[s] || { text: s, cls: 'warning' };
   };
 
   return (
@@ -54,8 +63,16 @@ function ContractManager({ currentUser }) {
           <div style={{ background: 'rgba(0,240,255,0.08)', border: '1px solid rgba(0,240,255,0.2)', borderRadius: 10, padding: '8px 18px', fontSize: '0.85rem', fontFamily: 'Outfit', fontWeight: 600 }}>
             📊 Tổng: <span style={{ color: 'var(--primary-color)', fontWeight: 800 }}>{contracts.length}</span> hợp đồng
           </div>
+          {contracts.filter(c => c.status === 'Pending').length > 0 && (
+            <div style={{ background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.3)', borderRadius: 10, padding: '8px 18px', fontSize: '0.85rem', fontFamily: 'Outfit', fontWeight: 600, color: '#F59E0B' }}>
+              🔔 {contracts.filter(c => c.status === 'Pending').length} hợp đồng chờ xác nhận
+            </div>
+          )}
         </div>
-        <button className="btn" onClick={() => setShowCreate(true)}>+ Tạo hợp đồng mới</button>
+      </div>
+
+      <div style={{ background: 'rgba(0,240,255,0.04)', border: '1px solid rgba(0,240,255,0.15)', borderRadius: 12, padding: '14px 20px', marginBottom: 20, fontSize: '0.85rem', color: '#aaa' }}>
+        💡 Hợp đồng được tạo tự động khi Admin duyệt đề xuất sự kiện của bạn. Nhấn vào hợp đồng để xem chi tiết đầy đủ (Hợp đồng dịch vụ, Phụ lục báo giá, Biên bản thanh lý, Đề nghị thanh toán).
       </div>
 
       <div className="panel">
@@ -63,69 +80,44 @@ function ContractManager({ currentUser }) {
           <div style={{ textAlign: 'center', padding: 50, color: 'var(--text-muted)' }}>
             <FileText size={48} style={{ marginBottom: 12, opacity: 0.5 }} />
             <div style={{ fontFamily: 'Outfit', fontWeight: 600 }}>Chưa có hợp đồng nào</div>
+            <div style={{ fontSize: '0.85rem', color: '#666', marginTop: 8 }}>Hãy gửi đề xuất sự kiện để nhận hợp đồng từ hệ thống</div>
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            {contracts.map(c => (
-              <div key={c.id} style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: 12, padding: '16px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
-                <div style={{ flex: 1, minWidth: 200 }}>
-                  {c.proposalTitle && <div style={{ fontSize: '0.78rem', color: 'var(--accent-color)', fontWeight: 600, marginBottom: 4 }}>📋 Dự án: {c.proposalTitle}</div>}
-                  <div style={{ fontWeight: 700, marginBottom: 4 }}>{c.details}</div>
-                  <div style={{ fontSize: '0.82rem', color: '#888' }}>Ngày tạo: {new Date(parseInt(c.createdAt || Date.now())).toLocaleDateString('vi-VN')}</div>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  {c.fileUrl && (
-                    <a href={`http://localhost:4000${c.fileUrl}`} target="_blank" rel="noreferrer" className="btn outline" style={{ padding: '8px 16px', fontSize: '0.85rem', textDecoration: 'none' }}>
-                      📄 {c.fileName || 'Tải file'}
-                    </a>
-                  )}
-                  <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontWeight: 900, fontSize: '1.1rem', color: 'var(--primary-color)', fontFamily: 'Outfit' }}>{c.totalAmount?.toLocaleString()}đ</div>
-                    <span className={`badge ${c.status === 'Paid' ? 'success' : c.status === 'Approved' ? 'blue' : c.status === 'Pending' ? 'warning' : 'error'}`}>{c.status}</span>
+            {contracts.map(c => {
+              const sl = statusLabel(c.status);
+              return (
+                <div key={c.id} style={{ background: c.status === 'Pending' ? 'rgba(245,158,11,0.04)' : 'rgba(255,255,255,0.02)', border: `1px solid ${c.status === 'Pending' ? 'rgba(245,158,11,0.25)' : 'var(--border-color)'}`, borderRadius: 12, padding: '16px 20px', cursor: 'pointer', transition: 'all 0.2s' }} onClick={() => setViewDetail(c)}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--primary-color)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor = c.status === 'Pending' ? 'rgba(245,158,11,0.25)' : 'var(--border-color)'; e.currentTarget.style.transform = 'none'; }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
+                    <div style={{ flex: 1, minWidth: 200 }}>
+                      {c.proposalTitle && <div style={{ fontSize: '0.82rem', color: 'var(--accent-color)', fontWeight: 700, marginBottom: 4 }}>📋 {c.proposalTitle}</div>}
+                      <div style={{ fontWeight: 600, fontSize: '0.9rem', color: '#ccc', marginBottom: 4 }}>{(c.details || '').substring(0, 80)}...</div>
+                      <div style={{ fontSize: '0.78rem', color: '#666' }}>📅 {new Date(c.createdAt || Date.now()).toLocaleDateString('vi-VN')}</div>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                      <div style={{ textAlign: 'right' }}>
+                        <div style={{ fontWeight: 900, fontSize: '1.1rem', color: 'var(--primary-color)', fontFamily: 'Outfit' }}>{c.totalAmount?.toLocaleString()}đ</div>
+                        <span className={`badge ${sl.cls}`}>{sl.text}</span>
+                      </div>
+                      <Eye size={18} color="#666" />
+                    </div>
                   </div>
-                  {c.status === 'Approved' && <button className="btn outline" style={{ padding: '8px 16px', fontSize: '0.82rem' }} onClick={() => { fetchGraphQL(`mutation { updateContractStatus(contractId: "${c.id}", status: "Deposited") { id } }`).then(() => { alert('Đặt cọc thành công!'); load(); }) }}>Đặt cọc</button>}
-                  {c.status === 'Deposited' && <button className="btn" style={{ padding: '8px 16px', fontSize: '0.82rem' }} onClick={() => { fetchGraphQL(`mutation { updateContractStatus(contractId: "${c.id}", status: "Paid") { id } }`).then(() => { alert('Đã thanh toán!'); load(); }) }}>Thanh toán</button>}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
 
-      {showCreate && (
-        <div className="modal-overlay" onClick={() => setShowCreate(false)}>
-          <div className="modal-content" onClick={e => e.stopPropagation()} style={{ width: 520 }}>
-            <h2 className="page-title">📝 Tạo Hợp Đồng Mới</h2>
-            <form onSubmit={handleCreate}>
-              {proposals.length > 0 && (
-                <div className="form-group">
-                  <label>Liên kết Dự án (tùy chọn)</label>
-                  <select className="form-control" value={proposalId} onChange={e => setProposalId(e.target.value)}>
-                    <option value="">-- Không liên kết --</option>
-                    {proposals.map(p => <option key={p.id} value={p.id}>{p.title}</option>)}
-                  </select>
-                </div>
-              )}
-              <div className="form-group"><label>Chi tiết hợp đồng</label><textarea className="form-control" rows={3} required value={details} onChange={e => setDetails(e.target.value)} style={{ resize: 'vertical', minHeight: 80 }} /></div>
-              <div className="form-group"><label>Giá trị hợp đồng (VNĐ)</label><input type="number" className="form-control" required value={totalAmount} onChange={e => setTotalAmount(e.target.value)} /></div>
-              <div className="form-group">
-                <label>📄 File hợp đồng (PDF/DOC)</label>
-                <div onClick={() => fileRef.current?.click()} style={{ border: '2px dashed var(--border-color)', borderRadius: 12, padding: '20px', textAlign: 'center', cursor: 'pointer', background: 'rgba(0,240,255,0.03)', transition: 'border-color 0.2s' }}>
-                  {contractFile ? (
-                    <div style={{ color: 'var(--primary-color)', fontWeight: 600 }}>📎 {contractFile.name} ({(contractFile.size / 1024).toFixed(0)} KB)</div>
-                  ) : (
-                    <><Upload size={24} color="#888" style={{ marginBottom: 8 }} /><div style={{ color: '#888', fontSize: '0.9rem' }}>Click để chọn file</div></>
-                  )}
-                </div>
-                <input ref={fileRef} type="file" accept=".pdf,.doc,.docx" hidden onChange={e => setContractFile(e.target.files[0])} />
-              </div>
-              <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
-                <button type="submit" className="btn" disabled={uploading}>{uploading ? '⌛ Đang tải...' : 'Tạo hợp đồng'}</button>
-                <button type="button" className="btn outline" onClick={() => setShowCreate(false)}>Hủy</button>
-              </div>
-            </form>
-          </div>
-        </div>
+      {viewDetail && (
+        <MemberContractDetailModal
+          contract={viewDetail}
+          onClose={() => setViewDetail(null)}
+          onConfirm={handleConfirm}
+          onReject={handleReject}
+        />
       )}
     </div>
   );
@@ -134,8 +126,8 @@ function ContractManager({ currentUser }) {
 export default function MemberPage({ view, currentUser }) {
   const [orders, setOrders] = useState([]);
   const [realtimeNotif, setRealtimeNotif] = useState(null);
-
   const [contracts, setContracts] = useState([]);
+  const [showHistory, setShowHistory] = useState(false);
 
   const loadOrders = () => {
     fetchGraphQL(`query { getMyTicketOrders(memberId: "${currentUser.id}") { id eventId eventTitle status totalAmount qrCode holdExpiresAt seatLabel seatLabels zoneName quantity } }`)
@@ -188,27 +180,20 @@ export default function MemberPage({ view, currentUser }) {
   };
 
   if (view === 'settings') return <div><h2 className="page-title">Hồ Sơ Của Tôi</h2><SettingsPage currentUser={currentUser} /></div>;
+  if (view === 'create-event') return <ErrorBoundary><ProjectManager currentUser={currentUser} /></ErrorBoundary>;
+  if (view === 'contracts') return (
+    <ErrorBoundary>
+      <div>
+        <h2 className="page-title">📄 Quản Lý Hợp Đồng Sự Kiện</h2>
+        <ContractManager currentUser={currentUser} />
+      </div>
+    </ErrorBoundary>
+  );
+  if (view === 'invitations') return <ErrorBoundary><InvitationManager currentUser={currentUser} /></ErrorBoundary>;
 
-  // ══════════════════════════════════════════════
-  // VIEW: TẠO DỰ ÁN SỰ KIỆN (UPGRADED)
-  // ══════════════════════════════════════════════
-  if (view === 'create-event') return <ProjectManager currentUser={currentUser} />;
-
-  // ══════════════════════════════════════════════
-  // VIEW: HỢP ĐỒNG
-  // ══════════════════════════════════════════════
-  const [showHistory, setShowHistory] = useState(false);
   const activeOrders = orders.filter(o => o.status !== 'Cancelled');
   const cancelledOrders = orders.filter(o => o.status === 'Cancelled');
 
-  if (view === 'contracts') return (
-    <div>
-      <h2 className="page-title">📄 Quản Lý Hợp Đồng Sự Kiện</h2>
-      <ContractManager currentUser={currentUser} />
-    </div>
-  );
-
-  if (view === 'invitations') return <InvitationManager currentUser={currentUser} />;
 
   // ══════════════════════════════════════════════
   // VIEW: TỦ VÉ (Dashboard)

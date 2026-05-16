@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { fetchGraphQL } from '../api/axiosClient';
 import GenericCRUD from '../features/dashboard/GenericCRUD';
-import { MapPin, Server, Monitor, Users, FileText, Calendar, TrendingUp, Activity, CheckCircle, ClipboardList } from 'lucide-react';
+import ContractDetailModal from '../features/dashboard/ContractDetailModal';
+import AdvancedDashboard from '../features/dashboard/AdvancedDashboard';
+import { MapPin, Server, Monitor, Users, FileText, Calendar, TrendingUp, Activity, CheckCircle, ClipboardList, Eye } from 'lucide-react';
 
 // ══════════════════════════════════════════════════════════
 // SVG ILLUSTRATIONS cho mỗi section
@@ -74,98 +76,14 @@ const IllustrationProposal = () => (
 );
 
 // ══════════════════════════════════════════════════════════
-// ADMIN STATS DASHBOARD
+// ADMIN STATS DASHBOARD - Using AdvancedDashboard component
 // ══════════════════════════════════════════════════════════
-function AdminStats() {
-  const [stats, setStats] = useState(null);
-  const [contracts, setContracts] = useState([]);
-  useEffect(() => {
-    fetchGraphQL(`query { getSystemStats { totalRevenue totalTicketsSold activeUsers totalEvents pendingProposals totalContracts } }`).then(d => setStats(d.getSystemStats)).catch(() => { });
-    fetchGraphQL(`query { getAllContracts(limit: 5) { id details totalAmount status createdAt } }`).then(d => setContracts(d.getAllContracts || [])).catch(() => {});
-  }, []);
-
-  if (!stats) return <div style={{ padding: 40 }}>Đang phân tích dữ liệu...</div>;
-
-  const statCards = [
-    { label: 'Tổng Doanh Thu', value: `${stats.totalRevenue.toLocaleString()} đ`, icon: <TrendingUp size={24} />, color: '#00F0FF', pct: 75 },
-    { label: 'Vé Đã Bán', value: stats.totalTicketsSold, icon: <Activity size={24} />, color: '#FF00E5', pct: 60 },
-    { label: 'Nhân Sự & KH', value: stats.activeUsers, icon: <Users size={24} />, color: '#10B981', pct: 92 },
-    { label: 'Tổng Sự Kiện', value: stats.totalEvents, icon: <Calendar size={24} />, color: '#F59E0B', pct: 85 },
-    { label: 'Yêu Cầu Chờ Duyệt', value: stats.pendingProposals, icon: <ClipboardList size={24} />, color: '#FF6B35', pct: 40 },
-    { label: 'Tổng Hợp Đồng', value: stats.totalContracts, icon: <FileText size={24} />, color: '#8B5CF6', pct: 70 },
-  ];
-
-  return (
-    <div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 30 }}>
-        <div style={{ width: 56, height: 56, borderRadius: 16, background: 'linear-gradient(135deg, rgba(0,240,255,0.2), rgba(255,0,229,0.2))', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(0,240,255,0.3)' }}>
-          <Monitor size={28} color="#00F0FF" />
-        </div>
-        <div>
-          <h2 className="page-title" style={{ marginBottom: 0 }}>Thống Kê Báo Cáo Toàn Cầu</h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', margin: 0 }}>Tổng quan hệ thống quản lý sự kiện</p>
-        </div>
-      </div>
-
-      {/* Stats Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20, marginBottom: 30 }}>
-        {statCards.map((s, i) => (
-          <div key={i} className="panel" style={{ textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-            <div style={{ position: 'absolute', top: -15, right: -15, width: 80, height: 80, borderRadius: '50%', background: `${s.color}08`, border: `1px solid ${s.color}15` }} />
-            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 12 }}>
-              <div style={{ width: 44, height: 44, borderRadius: 12, background: `${s.color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: s.color }}>
-                {s.icon}
-              </div>
-            </div>
-            <h3 style={{ color: '#ccc', fontSize: '0.85rem', fontWeight: 500, marginBottom: 6 }}>{s.label}</h3>
-            <h1 style={{ color: s.color, fontSize: '2rem', margin: '6px 0', fontFamily: 'Outfit', fontWeight: 900 }}>{typeof s.value === 'number' ? s.value.toLocaleString() : s.value}</h1>
-            <div style={{ background: '#333', height: 6, borderRadius: 3, marginTop: 10 }}>
-              <div style={{ background: s.color, width: `${s.pct}%`, height: '100%', borderRadius: 3, transition: 'width 1s ease' }} />
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Bottom Row */}
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 20 }}>
-        <div className="panel">
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
-            <TrendingUp size={20} color="var(--primary-color)" />
-            <h3>Thống kê doanh thu theo năm</h3>
-          </div>
-          <div style={{ height: 200, display: 'flex', alignItems: 'flex-end', gap: 10, marginTop: 20 }}>
-            {[40, 55, 65, 72, 90].map((h, i) => (
-              <div key={i} style={{ flex: 1, position: 'relative' }}>
-                <div style={{ background: `linear-gradient(to top, var(--primary-color), ${i === 4 ? '#FF00E5' : 'var(--primary-color)'})`, height: `${h}%`, borderRadius: '6px 6px 0 0', transition: 'height 0.8s ease', opacity: 0.8 + i * 0.04 }} />
-                <div style={{ textAlign: 'center', marginTop: 8, fontSize: '0.75rem', color: '#888' }}>{2022 + i}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="panel">
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
-            <FileText size={20} color="var(--accent-color)" />
-            <h3>Hợp đồng gần đây</h3>
-          </div>
-          <ul style={{ listStyle: 'none', padding: 0 }}>
-            {contracts.slice(0, 5).map((c, i) => (
-              <li key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: i < 4 ? '1px solid #333' : 'none' }}>
-                <span style={{ fontSize: '0.88rem', maxWidth: 160, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{c.details}</span>
-                <span className={`badge ${c.status === 'Paid' ? 'success' : c.status === 'Approved' ? 'blue' : c.status === 'Pending' ? 'warning' : 'error'}`}>{c.status}</span>
-              </li>
-            ))}
-            {contracts.length === 0 && <li style={{ color: 'var(--text-muted)', textAlign: 'center', padding: 20 }}>Chưa có hợp đồng</li>}
-          </ul>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 // ══════════════════════════════════════════════════════════
 // ADMIN MAIN
 // ══════════════════════════════════════════════════════════
 export default function AdminPage({ view }) {
+  const [selectedContract, setSelectedContract] = useState(null);
   const handleToggleUser = async (u, loadData) => {
     let newSt = u.status === 'LOCKED' ? 'ACTIVE' : 'LOCKED';
     await fetchGraphQL(`mutation { updateUserStatus(userId: "${u.id}", status: "${newSt}") { id } }`);
@@ -203,7 +121,7 @@ export default function AdminPage({ view }) {
     loadData();
   };
 
-  if (view === 'dashboard') return <AdminStats />;
+  if (view === 'dashboard') return <AdvancedDashboard />;
 
   if (view === 'locations') return <GenericCRUD key={view} 
     title="Quản Lý Địa Điểm" 
@@ -267,25 +185,32 @@ export default function AdminPage({ view }) {
         ]} 
   />;
 
-  if (view === 'contracts') return <GenericCRUD key={view} 
-        title="Quản Lý Hợp Đồng Toàn Hệ Thống" 
+  if (view === 'contracts') return (<>
+    <GenericCRUD key={view} 
+        title="Quan Ly Hop Dong Toan He Thong" 
         headerIllustration={<IllustrationContract />}
         dataQuery="query C($page: Int, $limit: Int) { getAllContracts(page: $page, limit: $limit) { id details totalAmount status createdAt memberId fileUrl fileName proposalTitle } }" dataKey="getAllContracts" 
+        enableDateFilter={true}
+        dateFilterKey="createdAt"
         columns={[
-          { key: 'createdAt', label: 'Ngày Tạo', render: r => new Date(parseInt(r.createdAt || Date.now())).toLocaleDateString() },
-          { key: 'proposalTitle', label: 'Dự Án', render: r => r.proposalTitle || '—' },
-          { key: 'details', label: 'Chi Tiết' },
-          { key: 'totalAmount', label: 'Giá Trị', render: r => `${r.totalAmount?.toLocaleString()}đ` },
-          { key: 'fileUrl', label: 'File', render: r => r.fileUrl ? <a href={`http://localhost:4000${r.fileUrl}`} target="_blank" rel="noreferrer" style={{ color: 'var(--primary-color)', fontWeight: 600, fontSize: '0.85rem' }}>📄 {r.fileName || 'Tải về'}</a> : <span style={{ color: '#666' }}>—</span> },
-          { key: 'status', label: 'Trạng Thái', render: r => <span className={`badge ${r.status === 'Paid' ? 'success' : r.status === 'Approved' ? 'blue' : r.status === 'Pending' ? 'warning' : 'error'}`}>{r.status}</span> },
-          { label: 'Duyệt/Hủy', render: (r, load) => (
+          { key: 'createdAt', label: 'Ngay Tao', render: r => { try { const d = r.createdAt; if (!d) return '—'; const date = new Date(isNaN(d) ? d : parseInt(d)); return isNaN(date) ? '—' : date.toLocaleDateString('vi-VN'); } catch { return '—'; }}},
+          { key: 'proposalTitle', label: 'Du An', render: r => r.proposalTitle || '—' },
+          { key: 'details', label: 'Chi Tiet', render: r => <span style={{maxWidth:120,display:'inline-block',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{r.details?.slice(0,40)}</span> },
+          { key: 'totalAmount', label: 'Gia Tri', render: r => `${r.totalAmount?.toLocaleString()}d` },
+          { key: 'status', label: 'Trang Thai', render: r => <span className={`badge ${r.status === 'Paid' ? 'success' : r.status === 'Approved' ? 'blue' : r.status === 'Pending' ? 'warning' : 'error'}`}>{r.status}</span> },
+          { label: 'Xem', render: (r) => (
+            <button className="btn outline" style={{padding:'6px 12px',fontSize:'0.8rem'}} onClick={() => setSelectedContract(r)}><Eye size={14} style={{marginRight:4}}/>Chi tiet</button>
+          )},
+          { label: 'Duyet/Huy', render: (r, load) => (
             <div style={{ display: 'flex', gap: 5 }}>
-              <button className="btn outline" onClick={() => handleUpdateContract(r.id, 'Approved', load)} disabled={r.status !== 'Pending'}>Duyệt</button>
-              <button className="btn outline" style={{ color: '#ff4444', borderColor: '#ff4444' }} onClick={() => handleUpdateContract(r.id, 'Cancelled', load)} disabled={r.status === 'Cancelled' || r.status === 'Paid'}>Hủy</button>
+              <button className="btn outline" onClick={() => handleUpdateContract(r.id, 'Approved', load)} disabled={r.status !== 'Pending'}>Duyet</button>
+              <button className="btn outline" style={{ color: '#ff4444', borderColor: '#ff4444' }} onClick={() => handleUpdateContract(r.id, 'Cancelled', load)} disabled={r.status === 'Cancelled' || r.status === 'Paid'}>Huy</button>
             </div>
           )}
         ]} 
-  />;
+    />
+    {selectedContract && <ContractDetailModal contract={selectedContract} onClose={() => setSelectedContract(null)} />}
+  </>);
 
   if (view === 'members') return <GenericCRUD key={view} 
         title="Quản Lý Khách Hàng (Member)" 
@@ -329,6 +254,84 @@ export default function AdminPage({ view }) {
           )}
         ]}
   />;
+  if (view === 'mailbox') return <AdminMailbox />;
 
   return <div><h2 className="page-title">Admin Dashboard</h2></div>;
+}
+
+function AdminMailbox() {
+  const [requests, setRequests] = useState([]);
+  const [filter, setFilter] = useState('all');
+  const load = () => {
+    fetchGraphQL(`query { getAllAdminRequests { id memberId memberName type subject content status adminNote createdAt resolvedAt } }`)
+      .then(r => setRequests(r.getAllAdminRequests || [])).catch(() => {});
+  };
+  useEffect(load, []);
+
+  const handleResolve = async (id, status, note) => {
+    const adminNote = note || prompt('Ghi chú xử lý:') || '';
+    await fetchGraphQL(`mutation M($requestId: ID!, $adminNote: String, $status: String!) { resolveAdminRequest(requestId: $requestId, adminNote: $adminNote, status: $status) { id } }`,
+      { requestId: id, adminNote, status });
+    load();
+  };
+
+  const typeLabels = { location_request: '📍 Yêu cầu địa điểm', complaint: '⚠️ Khiếu nại', review: '⭐ Đánh giá', other: '📋 Khác' };
+  const typeColors = { location_request: '#00F0FF', complaint: '#EF4444', review: '#F59E0B', other: '#888' };
+  const filtered = filter === 'all' ? requests : requests.filter(r => r.type === filter || r.status === filter);
+  const pending = requests.filter(r => r.status === 'Pending').length;
+
+  return (
+    <div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+          <div style={{ width: 52, height: 52, borderRadius: 14, background: 'linear-gradient(135deg, rgba(0,240,255,0.2), rgba(255,0,229,0.15))', border: '1px solid rgba(0,240,255,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem' }}>📬</div>
+          <div>
+            <h2 className="page-title" style={{ marginBottom: 0 }}>Hộp Thư Yêu Cầu</h2>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', margin: 0 }}>Quản lý yêu cầu, khiếu nại và đánh giá từ khách hàng</p>
+          </div>
+        </div>
+        {pending > 0 && <div style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 10, padding: '8px 16px', fontWeight: 700, color: '#EF4444', fontFamily: 'Outfit' }}>🔴 {pending} chờ xử lý</div>}
+      </div>
+
+      <div style={{ display: 'flex', gap: 8, marginBottom: 20, flexWrap: 'wrap' }}>
+        {[{v:'all',l:'Tất cả'},{v:'Pending',l:'⏳ Chờ xử lý'},{v:'location_request',l:'📍 Địa điểm'},{v:'complaint',l:'⚠️ Khiếu nại'},{v:'review',l:'⭐ Đánh giá'}].map(f => (
+          <button key={f.v} onClick={() => setFilter(f.v)} className={`btn ${filter === f.v ? '' : 'outline'}`} style={{ padding: '6px 14px', fontSize: '0.82rem' }}>{f.l}</button>
+        ))}
+      </div>
+
+      <div className="panel">
+        {filtered.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: 50, color: 'var(--text-muted)' }}>
+            <div style={{ fontSize: '3rem', marginBottom: 10 }}>📭</div>
+            <div style={{ fontFamily: 'Outfit', fontWeight: 600 }}>Không có yêu cầu nào</div>
+          </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {filtered.map(r => (
+              <div key={r.id} style={{ background: 'rgba(255,255,255,0.02)', border: `1px solid ${r.status === 'Pending' ? 'rgba(245,158,11,0.3)' : 'var(--border-color)'}`, borderRadius: 12, padding: '16px 20px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12 }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
+                      <span style={{ color: typeColors[r.type] || '#888', fontWeight: 700, fontSize: '0.82rem' }}>{typeLabels[r.type] || r.type}</span>
+                      <span className={`badge ${r.status === 'Resolved' ? 'success' : r.status === 'Reviewed' ? 'blue' : 'warning'}`} style={{ fontSize: '0.72rem' }}>{r.status}</span>
+                    </div>
+                    <div style={{ fontWeight: 800, fontFamily: 'Outfit', marginBottom: 4 }}>{r.subject}</div>
+                    <div style={{ fontSize: '0.85rem', color: '#ccc', whiteSpace: 'pre-line', marginBottom: 6 }}>{r.content}</div>
+                    <div style={{ fontSize: '0.78rem', color: '#666' }}>👤 {r.memberName || 'N/A'} • {r.createdAt ? new Date(r.createdAt).toLocaleDateString('vi-VN') : ''}</div>
+                    {r.adminNote && <div style={{ marginTop: 8, padding: '8px 12px', background: 'rgba(0,240,255,0.05)', border: '1px solid rgba(0,240,255,0.15)', borderRadius: 8, fontSize: '0.82rem' }}>💬 Admin: {r.adminNote}</div>}
+                  </div>
+                  {r.status === 'Pending' && (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 6, flexShrink: 0 }}>
+                      <button className="btn" style={{ padding: '6px 14px', fontSize: '0.8rem' }} onClick={() => handleResolve(r.id, 'Resolved', null)}>✅ Xử lý</button>
+                      <button className="btn outline" style={{ padding: '6px 14px', fontSize: '0.8rem' }} onClick={() => handleResolve(r.id, 'Reviewed', null)}>👁️ Đã xem</button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }

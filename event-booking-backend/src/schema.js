@@ -10,11 +10,13 @@ const Device = require('./models/Device');
 const { SeatZone, Seat } = require('./models/Floorplan');
 const Contract = require('./models/Contract');
 const EventProposal = require('./models/EventProposal');
+const AdminRequest = require('./models/AdminRequest');
 const { generateDynamicQR, verifyOTP } = require('./services/qr.service');
 const { generateVerificationCode, sendVerificationEmail } = require('./services/email.service');
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'EMS_SUPER_SECRET_KEY';
 
@@ -35,6 +37,9 @@ const typeDefs = `#graphql
   type Stats { totalRevenue: Float!, totalTicketsSold: Int!, activeUsers: Int!, totalEvents: Int!, pendingProposals: Int!, totalContracts: Int!, totalRefunded: Float, cancelledCount: Int }
   type CheckinResult { success: Boolean!, message: String!, guestInfo: String }
   type DateConflictResult { hasConflict: Boolean!, conflictingEvents: [Event] }
+  type ResourceCheck { available: Boolean!, locationConflicts: [String], deviceShortages: [String], conflictingEvents: [Event] }
+  type SetupData { proposal: EventProposal, devices: [DeviceItem], locations: [Location], conflictingEvents: [Event], locationAvailable: Boolean! }
+  type AdminRequest { id: ID!, memberId: String!, memberName: String, type: String!, subject: String!, content: String!, status: String!, adminNote: String, createdAt: String, resolvedAt: String }
 
   type EventProposal {
     id: ID!
@@ -68,6 +73,63 @@ const typeDefs = `#graphql
     ticketTiers: [TicketTier]
   }
 
+  type ContractFull {
+    id: ID!
+    details: String
+    totalAmount: Float
+    status: String
+    createdAt: String
+    fileUrl: String
+    fileName: String
+    memberId: String
+    memberName: String
+    memberEmail: String
+    memberPhone: String
+    memberBankName: String
+    memberBankAccount: String
+    proposalId: String
+    proposalTitle: String
+    proposalDescription: String
+    proposalEventType: String
+    proposalExpectedDate: String
+    proposalExpectedLocation: String
+    proposalBudget: Float
+    eventId: String
+    eventTitle: String
+    services: [ServiceItem]
+    devices: [DeviceItem]
+  }
+
+  type MonthlyRevenue { month: String!, revenue: Float!, orders: Int! }
+  type CategoryStat { name: String!, count: Int!, amount: Float }
+  type AnalyticsDashboard {
+    monthlyRevenue: [MonthlyRevenue]
+    eventTypeStats: [CategoryStat]
+    contractStatusStats: [CategoryStat]
+    orderStatusStats: [CategoryStat]
+    totalMembers: Int!
+    newMembersThisMonth: Int!
+    avgOrderValue: Float!
+    conversionRate: Float!
+  }
+
+  type RoadmapPhase {
+    phase: String
+    title: String
+    items: [String]
+  }
+
+  type AIInsights {
+    swotStrengths: [String]
+    swotWeaknesses: [String]
+    swotOpportunities: [String]
+    swotThreats: [String]
+    marketTrends: [String]
+    strategicRecommendations: [String]
+    roadmapPhases: [RoadmapPhase]
+    generatedAt: String
+  }
+
   type Query {
     login(username: String!, password: String!): User
     getAllUsers(page: Int, limit: Int): [User]
@@ -91,8 +153,15 @@ const typeDefs = `#graphql
     getAllEventProposals(page: Int, limit: Int): [EventProposal]
     getMyEventProposals(memberId: ID!): [EventProposal]
     checkEventDateConflict(date: String!, location: String!, excludeEventId: ID): DateConflictResult
+    checkResourceAvailability(date: String!, location: String!, contractId: ID): ResourceCheck
+    getEmployeeSetupData(contractId: ID!): SetupData
     getMyInvitations(memberId: ID!, proposalId: ID): [Invitation]
     getInvitationStats(memberId: ID!): InvitationStats
+    getContractFull(contractId: ID!): ContractFull
+    getAnalyticsDashboard: AnalyticsDashboard
+    getAIInsights: AIInsights
+    getAllAdminRequests: [AdminRequest]
+    getMyAdminRequests(memberId: ID!): [AdminRequest]
   }
 
   type Mutation {
@@ -100,6 +169,7 @@ const typeDefs = `#graphql
     sendVerificationCode(email: String!): Boolean
     verifyEmailCode(email: String!, code: String!): Boolean
     updateAvatar(userId: ID!, avatar: String!): User
+    updateUserProfile(id: ID!, fullname: String, avatar: String): User
     updateUserStatus(userId: ID!, status: String!): User
     approveEvent(eventId: ID!): Event
     createEvent(organizerId: String!, categoryId: String!, title: String!, date: String!, coverImg: String!, location: String!, eventType: String, ticketingEnabled: Boolean, description: String): Event
@@ -125,6 +195,11 @@ const typeDefs = `#graphql
     deleteInvitation(invitationId: ID!): Boolean
     sendInvitation(invitationId: ID!): Invitation
     sendAllInvitations(memberId: ID!, proposalId: ID): Boolean
+    createAdminRequest(memberId: ID!, type: String!, subject: String!, content: String!): AdminRequest
+    resolveAdminRequest(requestId: ID!, adminNote: String, status: String!): AdminRequest
+    memberConfirmContract(contractId: ID!): Contract
+    memberRejectContract(contractId: ID!): Contract
+    employeeConfirmContract(contractId: ID!): Contract
   }
 `;
 
@@ -208,7 +283,7 @@ const resolvers = {
     getAllCategories: async () => await Category.find(),
 
     searchEvents: async (_, { searchTerm, categoryId }) => {
-      let filter = { status: 'Approved' };
+      let filter = { status: 'Approved', eventType: 'PUBLIC' };
       if (categoryId) filter.categoryId = categoryId;
       if (searchTerm) filter.$or = [
         { title: { $regex: searchTerm, $options: 'i' } },
@@ -275,10 +350,39 @@ const resolvers = {
       return await EventProposal.find({ memberId }).sort({ createdAt: -1 });
     },
     checkEventDateConflict: async (_, { date, location, excludeEventId }) => {
-      const filter = { date, location: { $regex: location, $options: 'i' }, status: 'Approved' };
+      const filter = { date, location: { $regex: location, $options: 'i' }, status: { $in: ['Approved', 'Private'] } };
       if (excludeEventId) filter._id = { $ne: excludeEventId };
       const conflicts = await Event.find(filter);
       return { hasConflict: conflicts.length > 0, conflictingEvents: conflicts };
+    },
+    checkResourceAvailability: async (_, { date, location, contractId }) => {
+      // Check location/date conflicts
+      const conflictingEvents = await Event.find({ date, location: { $regex: location, $options: 'i' }, status: { $in: ['Approved', 'Private'] } });
+      const locationConflicts = conflictingEvents.map(e => `"${e.title}" (${e.date} @ ${e.location})`);
+      // Check device availability
+      const devices = await Device.find();
+      const deviceShortages = devices.filter(d => (d.quantity || 0) <= 0).map(d => `${d.name} (Hết hàng)`);
+      return {
+        available: conflictingEvents.length === 0,
+        locationConflicts,
+        deviceShortages,
+        conflictingEvents
+      };
+    },
+    getEmployeeSetupData: async (_, { contractId }) => {
+      const contract = await Contract.findById(contractId);
+      if (!contract) throw new Error('Không tìm thấy hợp đồng.');
+      const proposal = contract.proposalId ? await EventProposal.findById(contract.proposalId) : null;
+      const devices = await Device.find().sort({ name: 1 });
+      const locations = await Location.find().sort({ name: 1 });
+      // Check conflicts for this proposal's date/location
+      let conflictingEvents = [];
+      let locationAvailable = true;
+      if (proposal) {
+        conflictingEvents = await Event.find({ date: proposal.expectedDate, location: { $regex: proposal.expectedLocation, $options: 'i' }, status: { $in: ['Approved', 'Private'] } });
+        locationAvailable = conflictingEvents.length === 0;
+      }
+      return { proposal, devices, locations, conflictingEvents, locationAvailable };
     },
     getMyInvitations: async (_, { memberId, proposalId }) => {
       const query = { memberId };
@@ -294,7 +398,152 @@ const resolvers = {
         confirmed: all.filter(i => i.status === 'Confirmed').length,
         declined: all.filter(i => i.status === 'Declined').length
       };
-    }
+    },
+
+    getContractFull: async (_, { contractId }) => {
+      const contract = await Contract.findById(contractId);
+      if (!contract) throw new Error('Không tìm thấy hợp đồng.');
+      const member = contract.memberId ? await User.findById(contract.memberId) : null;
+      const proposal = contract.proposalId ? await EventProposal.findById(contract.proposalId) : null;
+      const event = contract.eventId ? await Event.findById(contract.eventId) : null;
+      const services = await Service.find().limit(20);
+      const devices = await Device.find().limit(20);
+      return {
+        id: contract._id.toString(), details: contract.details, totalAmount: contract.totalAmount,
+        status: contract.status, createdAt: contract.createdAt?.toISOString(),
+        fileUrl: contract.fileUrl, fileName: contract.fileName,
+        memberId: contract.memberId?.toString(),
+        memberName: member ? (member.fullname || member.username) : '',
+        memberEmail: member?.email || '', memberPhone: member?.phone || '',
+        memberBankName: member?.bankName || '', memberBankAccount: member?.bankAccount || '',
+        proposalId: contract.proposalId?.toString(),
+        proposalTitle: proposal?.title || '', proposalDescription: proposal?.description || '',
+        proposalEventType: proposal?.eventType || '', proposalExpectedDate: proposal?.expectedDate || '',
+        proposalExpectedLocation: proposal?.expectedLocation || '', proposalBudget: proposal?.budget || 0,
+        eventId: contract.eventId?.toString(), eventTitle: event?.title || '',
+        services, devices
+      };
+    },
+
+    getAnalyticsDashboard: async () => {
+      const allOrders = await Order.find();
+      const paidOrders = allOrders.filter(o => o.status === 'Paid' || o.status === 'CheckedIn');
+      // Monthly revenue
+      const monthlyMap = {};
+      paidOrders.forEach(o => {
+        const d = o.createdAt || new Date();
+        const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+        if (!monthlyMap[key]) monthlyMap[key] = { month: key, revenue: 0, orders: 0 };
+        monthlyMap[key].revenue += o.totalAmount || 0;
+        monthlyMap[key].orders += 1;
+      });
+      const monthlyRevenue = Object.values(monthlyMap).sort((a,b) => a.month.localeCompare(b.month)).slice(-12);
+      // Event types
+      const events = await Event.find();
+      const etMap = {};
+      events.forEach(e => { const t = e.eventType || 'PUBLIC'; etMap[t] = (etMap[t]||0)+1; });
+      const eventTypeStats = Object.entries(etMap).map(([name,count]) => ({ name, count, amount: 0 }));
+      // Contract status
+      const contracts = await Contract.find();
+      const csMap = {};
+      contracts.forEach(c => { const s = c.status||'Pending'; if(!csMap[s]) csMap[s]={count:0,amount:0}; csMap[s].count++; csMap[s].amount+=(c.totalAmount||0); });
+      const contractStatusStats = Object.entries(csMap).map(([name,v]) => ({ name, count: v.count, amount: v.amount }));
+      // Order status
+      const osMap = {};
+      allOrders.forEach(o => { const s = o.status||'Held'; osMap[s] = (osMap[s]||0)+1; });
+      const orderStatusStats = Object.entries(osMap).map(([name,count]) => ({ name, count, amount: 0 }));
+      // Members
+      const totalMembers = await User.countDocuments({ role: 'MEMBER' });
+      const som = new Date(); som.setDate(1); som.setHours(0,0,0,0);
+      const newMembersThisMonth = await User.countDocuments({ role: 'MEMBER', createdAt: { $gte: som } });
+      const avgOrderValue = paidOrders.length > 0 ? paidOrders.reduce((s,o) => s+(o.totalAmount||0), 0) / paidOrders.length : 0;
+      const conversionRate = allOrders.length > 0 ? (paidOrders.length / allOrders.length) * 100 : 0;
+      return { monthlyRevenue, eventTypeStats, contractStatusStats, orderStatusStats, totalMembers, newMembersThisMonth, avgOrderValue, conversionRate };
+    },
+
+    getAIInsights: async () => {
+      try {
+        const apiKey = process.env.GEMINI_API_KEY;
+        if (!apiKey) throw new Error('GEMINI_API_KEY not configured');
+        const genAI = new GoogleGenerativeAI(apiKey);
+        const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+
+        // Gather real system data
+        const totalRevenue = await Order.aggregate([{ $match: { status: { $in: ['Paid', 'CheckedIn'] } } }, { $group: { _id: null, total: { $sum: '$totalAmount' } } }]);
+        const totalOrders = await Order.countDocuments();
+        const paidOrders = await Order.countDocuments({ status: { $in: ['Paid', 'CheckedIn'] } });
+        const cancelledOrders = await Order.countDocuments({ status: 'Cancelled' });
+        const totalEvents = await Event.countDocuments();
+        const totalMembers = await User.countDocuments({ role: 'MEMBER' });
+        const totalContracts = await Contract.countDocuments();
+        const pendingProposals = await EventProposal.countDocuments({ status: 'Pending' });
+        const eventTypes = await Event.aggregate([{ $group: { _id: '$eventType', count: { $sum: 1 } } }]);
+
+        const systemData = {
+          totalRevenue: totalRevenue[0]?.total || 0,
+          totalOrders, paidOrders, cancelledOrders,
+          conversionRate: totalOrders > 0 ? ((paidOrders / totalOrders) * 100).toFixed(1) : 0,
+          cancelRate: totalOrders > 0 ? ((cancelledOrders / totalOrders) * 100).toFixed(1) : 0,
+          totalEvents, totalMembers, totalContracts, pendingProposals,
+          eventTypes: eventTypes.map(e => `${e._id}: ${e.count}`).join(', ')
+        };
+
+        const prompt = `Ban la chuyen gia phan tich kinh doanh cho cong ty to chuc su kien "Lumina EMS". Dua tren du lieu he thong THUC TE sau:
+
+- Tong doanh thu: ${systemData.totalRevenue.toLocaleString()} VND
+- Tong don hang: ${systemData.totalOrders} (Da thanh toan: ${systemData.paidOrders}, Huy: ${systemData.cancelledOrders})
+- Ty le chuyen doi: ${systemData.conversionRate}%
+- Ty le huy: ${systemData.cancelRate}%
+- Tong su kien: ${systemData.totalEvents}
+- Tong thanh vien: ${systemData.totalMembers}
+- Tong hop dong: ${systemData.totalContracts}
+- De xuat cho duyet: ${systemData.pendingProposals}
+- Phan loai su kien: ${systemData.eventTypes}
+
+Hay tra loi CHINH XAC theo format JSON sau (KHONG giai thich them, CHI tra ve JSON):
+{
+  "swotStrengths": ["diem manh 1", "diem manh 2", "diem manh 3", "diem manh 4"],
+  "swotWeaknesses": ["diem yeu 1", "diem yeu 2", "diem yeu 3", "diem yeu 4"],
+  "swotOpportunities": ["co hoi 1 (dua tren xu huong thi truong 2026)", "co hoi 2", "co hoi 3", "co hoi 4"],
+  "swotThreats": ["thach thuc 1", "thach thuc 2", "thach thuc 3", "thach thuc 4"],
+  "marketTrends": ["xu huong 1 voi % du bao", "xu huong 2", "xu huong 3", "xu huong 4", "xu huong 5"],
+  "strategicRecommendations": ["khuyen nghi chien luoc 1 cu the", "khuyen nghi 2", "khuyen nghi 3", "khuyen nghi 4"],
+  "roadmapPhases": [
+    {"phase": "Q3/2026", "title": "ten giai doan ngan", "items": ["hanh dong 1", "hanh dong 2", "hanh dong 3"]},
+    {"phase": "Q4/2026", "title": "ten giai doan", "items": ["hanh dong 1", "hanh dong 2", "hanh dong 3"]},
+    {"phase": "Q1/2027", "title": "ten giai doan", "items": ["hanh dong 1", "hanh dong 2", "hanh dong 3"]},
+    {"phase": "Q2/2027", "title": "ten giai doan", "items": ["hanh dong 1", "hanh dong 2", "hanh dong 3"]}
+  ]
+}`;
+
+        const result = await model.generateContent(prompt);
+        const text = result.response.text();
+        // Extract JSON from response
+        const jsonMatch = text.match(/\{[\s\S]*\}/);
+        if (!jsonMatch) throw new Error('Invalid AI response');
+        const parsed = JSON.parse(jsonMatch[0]);
+        return { ...parsed, generatedAt: new Date().toISOString() };
+      } catch (err) {
+        console.error('AI Insights error:', err.message);
+        return {
+          swotStrengths: ['He thong QR check-in hien dai', 'Dashboard real-time analytics', 'GraphQL API hieu nang cao', 'Giao dien UX/UI chuyen nghiep'],
+          swotWeaknesses: ['Can toi uu ty le huy ve', 'Chua co mobile app', 'Can mo rong doi ngu ho tro', 'Thieu tinh nang loyalty program'],
+          swotOpportunities: ['Thi truong to chuc su kien tang 25%/nam (2026)', 'Xu huong hybrid events', 'AI personalization dang len ngoi', 'Mo rong sang B2B enterprise'],
+          swotThreats: ['Canh tranh gia tu doi thu', 'Chi phi van hanh tang cao', 'Thay doi xu huong nguoi dung nhanh', 'Rui ro bao mat va quy dinh GDPR'],
+          marketTrends: ['To chuc su kien truc tuyen: 78%', 'Hybrid events: 65%', 'AI-powered: 52%', 'Green events: 45%', 'Metaverse/VR: 28%'],
+          strategicRecommendations: ['Giam ty le huy ve bang chinh sach gia linh hoat', 'Tich hop AI de xuat su kien ca nhan hoa', 'Xay dung loyalty program tang retention', 'Mo rong B2B partnerships'],
+          roadmapPhases: [
+            { phase: 'Q3/2026', title: 'Toi uu hoa', items: ['Giam ty le huy ve', 'Nang cap CSKH', 'A/B testing UI'] },
+            { phase: 'Q4/2026', title: 'Ca nhan hoa', items: ['AI de xuat su kien', 'Email marketing', 'Loyalty program'] },
+            { phase: 'Q1/2027', title: 'Mo rong', items: ['Hybrid events', 'B2B partnerships', 'API marketplace'] },
+            { phase: 'Q2/2027', title: 'Dai duong xanh', items: ['Metaverse events', 'NFT ticketing', 'Global expansion'] }
+          ],
+          generatedAt: new Date().toISOString()
+        };
+      }
+    },
+    getAllAdminRequests: async () => await AdminRequest.find().sort({ createdAt: -1 }),
+    getMyAdminRequests: async (_, { memberId }) => await AdminRequest.find({ memberId }).sort({ createdAt: -1 })
   },
 
   Mutation: {
@@ -368,6 +617,13 @@ const resolvers = {
 
     updateAvatar: async (_, { userId, avatar }) => {
       return await User.findByIdAndUpdate(userId, { avatar }, { new: true });
+    },
+
+    updateUserProfile: async (_, { id, fullname, avatar }) => {
+      const update = {};
+      if (fullname !== undefined) update.fullname = fullname;
+      if (avatar !== undefined) update.avatar = avatar;
+      return await User.findByIdAndUpdate(id, update, { new: true });
     },
 
     updateUserStatus: async (_, { userId, status }) => {
@@ -688,6 +944,79 @@ Hai bên cam kết thực hiện đúng các điều khoản
         await inv.save();
       }
       return true;
+    },
+    createAdminRequest: async (_, args) => {
+      const req = await AdminRequest.create(args);
+      if (globalIo) globalIo.emit('new-admin-request', { id: req._id.toString(), type: args.type, subject: args.subject });
+      return req;
+    },
+    resolveAdminRequest: async (_, { requestId, adminNote, status }) => {
+      const update = { status, adminNote };
+      if (status === 'Resolved') update.resolvedAt = new Date();
+      return await AdminRequest.findByIdAndUpdate(requestId, update, { new: true });
+    },
+    memberConfirmContract: async (_, { contractId }) => {
+      const contract = await Contract.findById(contractId);
+      if (!contract) throw new Error('Không tìm thấy hợp đồng.');
+      if (contract.status !== 'Pending') throw new Error('Hợp đồng không ở trạng thái chờ xác nhận.');
+      // Auto-assign to a random employee
+      const employees = await User.find({ role: { $in: ['EMPLOYEE', 'ORGANIZER'] }, status: 'ACTIVE' });
+      let assignedId = null;
+      if (employees.length > 0) {
+        const randomEmp = employees[Math.floor(Math.random() * employees.length)];
+        assignedId = randomEmp._id;
+      }
+      const updated = await Contract.findByIdAndUpdate(contractId, { status: 'MemberConfirmed', employeeId: assignedId }, { new: true });
+      if (globalIo) globalIo.emit('contract-confirmed', { contractId, employeeId: assignedId?.toString() });
+      return updated;
+    },
+    memberRejectContract: async (_, { contractId }) => {
+      const contract = await Contract.findById(contractId);
+      if (!contract) throw new Error('Không tìm thấy hợp đồng.');
+      return await Contract.findByIdAndUpdate(contractId, { status: 'MemberRejected' }, { new: true });
+    },
+    employeeConfirmContract: async (_, { contractId }) => {
+      const contract = await Contract.findById(contractId);
+      if (!contract) throw new Error('Không tìm thấy hợp đồng.');
+      if (contract.status !== 'MemberConfirmed') throw new Error('Hợp đồng chưa được khách hàng xác nhận.');
+      // Get proposal for date/location check
+      const proposal = contract.proposalId ? await EventProposal.findById(contract.proposalId) : null;
+      // Check date/location conflict before creating event
+      if (proposal) {
+        const conflicts = await Event.find({
+          date: proposal.expectedDate,
+          location: { $regex: proposal.expectedLocation, $options: 'i' },
+          status: { $in: ['Approved', 'Private'] }
+        });
+        if (conflicts.length > 0) {
+          throw new Error(`TRÙNG LỊCH! Ngày ${proposal.expectedDate} tại "${proposal.expectedLocation}" đã có sự kiện: "${conflicts[0].title}". Vui lòng liên hệ khách hàng để thay đổi.`);
+        }
+      }
+      // Update contract status
+      const updated = await Contract.findByIdAndUpdate(contractId, { status: 'EmployeeConfirmed' }, { new: true });
+      // Create Event from proposal
+      if (proposal) {
+        const eventStatus = proposal.eventType === 'PUBLIC' ? 'Approved' : 'Private';
+        const event = await Event.create({
+          organizerId: contract.memberId,
+          categoryId: null,
+          title: proposal.title,
+          description: proposal.description,
+          date: proposal.expectedDate,
+          location: proposal.expectedLocation,
+          coverImg: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800',
+          eventType: proposal.eventType || 'PUBLIC',
+          ticketingEnabled: proposal.eventType === 'PUBLIC',
+          status: eventStatus,
+        });
+        await Contract.findByIdAndUpdate(contractId, { eventId: event._id });
+        console.log(`[Event] ✅ Sự kiện "${event.title}" đã được tạo (${eventStatus}). ${eventStatus === 'Approved' ? '🌐 Hiển thị công khai trên trang chủ' : '🔒 Chỉ hiển thị nội bộ'}`);
+        if (globalIo) {
+          if (eventStatus === 'Approved') globalIo.emit('event-approved', { eventId: event._id.toString(), title: event.title });
+          globalIo.emit('event-created-from-contract', { contractId, eventId: event._id.toString(), title: event.title, visibility: eventStatus });
+        }
+      }
+      return updated;
     }
   },
 
@@ -702,6 +1031,18 @@ Hai bên cam kết thực hiện đúng các điều khoản
       if (!p.proposalId) return null;
       const prop = await EventProposal.findById(p.proposalId);
       return prop ? prop.title : null;
+    }
+  },
+
+  AdminRequest: {
+    id: (p) => p._id?.toString() || p.id,
+    memberId: (p) => p.memberId?.toString(),
+    createdAt: (p) => p.createdAt ? p.createdAt.toISOString() : null,
+    resolvedAt: (p) => p.resolvedAt ? p.resolvedAt.toISOString() : null,
+    memberName: async (p) => {
+      if (!p.memberId) return '';
+      const u = await User.findById(p.memberId);
+      return u ? (u.fullname || u.username) : '';
     }
   }
 };

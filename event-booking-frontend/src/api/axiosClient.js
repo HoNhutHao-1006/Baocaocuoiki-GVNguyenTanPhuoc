@@ -14,7 +14,8 @@ export const fetchGraphQL = async (query, variables = {}) => {
     }
   }
 
-  const response = await fetch(import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000/graphql', {
+  const apiBase = import.meta.env.VITE_API_BASE_URL || `http://${window.location.hostname}:4000/graphql`;
+  const response = await fetch(apiBase, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

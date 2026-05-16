@@ -7,7 +7,7 @@ const contractSchema = new mongoose.Schema({
     proposalId: { type: mongoose.Schema.Types.ObjectId, ref: 'EventProposal' },
     details: { type: String, required: true },
     totalAmount: { type: Number, default: 0 },
-    status: { type: String, enum: ['Pending', 'Approved', 'Deposited', 'Paid', 'Cancelled'], default: 'Pending' },
+    status: { type: String, enum: ['Pending', 'MemberConfirmed', 'MemberRejected', 'EmployeeConfirmed', 'Approved', 'Deposited', 'Paid', 'Cancelled'], default: 'Pending' },
     fileUrl: { type: String, default: '' },
     fileName: { type: String, default: '' },
     createdAt: { type: Date, default: Date.now }

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { fetchGraphQL } from '../api/axiosClient';
 import SettingsPage from './SettingsPage';
-import { FileText, CheckCircle, XCircle, Clock, DollarSign, Ticket, AlertCircle, RefreshCw, Search } from 'lucide-react';
+import EmployeeSetupModal from '../features/dashboard/EmployeeSetupModal';
+import { FileText, CheckCircle, XCircle, Clock, DollarSign, Ticket, AlertCircle, RefreshCw, Search, AlertTriangle, MapPin, Package } from 'lucide-react';
 
 export default function EmployeePage({ view, currentUser }) {
   const [scanResult, setScanResult] = useState(null);
@@ -11,6 +12,9 @@ export default function EmployeePage({ view, currentUser }) {
   const [allContracts, setAllContracts] = useState([]);
   const [events, setEvents] = useState([]);
   const [proposals, setProposals] = useState([]);
+  const [setupModal, setSetupModal] = useState(null);
+  const [setupData, setSetupData] = useState(null);
+  const [setupLoading, setSetupLoading] = useState(false);
 
   useEffect(() => {
     if (view === 'dashboard' && currentUser) loadMyContracts();
@@ -76,6 +80,9 @@ export default function EmployeePage({ view, currentUser }) {
   const statusBadge = (status) => {
     const map = {
       'Pending': { bg: 'rgba(245,158,11,0.15)', color: '#F59E0B', icon: <Clock size={14} /> },
+      'MemberConfirmed': { bg: 'rgba(59,130,246,0.15)', color: '#3B82F6', icon: <CheckCircle size={14} /> },
+      'MemberRejected': { bg: 'rgba(239,68,68,0.15)', color: '#EF4444', icon: <XCircle size={14} /> },
+      'EmployeeConfirmed': { bg: 'rgba(16,185,129,0.15)', color: '#10B981', icon: <CheckCircle size={14} /> },
       'Approved': { bg: 'rgba(16,185,129,0.15)', color: '#10B981', icon: <CheckCircle size={14} /> },
       'Deposited': { bg: 'rgba(59,130,246,0.15)', color: '#3B82F6', icon: <DollarSign size={14} /> },
       'Paid': { bg: 'rgba(16,185,129,0.15)', color: '#10B981', icon: <CheckCircle size={14} /> },
@@ -92,33 +99,72 @@ export default function EmployeePage({ view, currentUser }) {
   const formatMoney = (v) => v ? v.toLocaleString('vi-VN') + ' ₫' : '—';
   const formatDate = (d) => d ? new Date(d).toLocaleDateString('vi-VN') : '—';
 
-  // ═══ QR SCANNER ═══
-  if (view === 'scanner') return (
-    <div>
-      <h2 className="page-title">🎫 Cổng Kiểm Soát Vé (Staff Scanner)</h2>
-      <div className="panel" style={{ maxWidth: 600, margin: '0 auto', textAlign: 'center' }}>
-        <div style={{ width: 80, height: 80, borderRadius: 20, background: 'linear-gradient(135deg, rgba(0,240,255,0.2), rgba(255,0,229,0.2))', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
-          <Ticket size={36} color="#00F0FF" />
-        </div>
-        <p style={{ color: 'var(--text-muted)', marginBottom: 20 }}>Nhập mã Ticket ID hoặc quét chuỗi QR để xác thực vé vào cổng.</p>
-        <form onSubmit={handleScan} style={{ display: 'flex', gap: 10 }}>
-          <input className="form-control" style={{ flex: 1 }} placeholder="Nhập mã Ticket ID..." value={ticketId} onChange={e => setTicketId(e.target.value)} required />
-          <button type="submit" className="btn" style={{ padding: '12px 24px' }}>
-            <Search size={18} /> QUÉT VÉ
-          </button>
-        </form>
-        {scanResult && (
-          <div style={{ marginTop: 30, padding: 24, borderRadius: 16, background: scanResult.success ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)', border: `2px solid ${scanResult.success ? '#10B981' : '#EF4444'}` }}>
-            <div style={{ fontSize: '3rem', marginBottom: 10 }}>{scanResult.success ? '✅' : '❌'}</div>
-            <h2 style={{ color: scanResult.success ? '#10B981' : '#EF4444', margin: '0 0 8px' }}>
-              {scanResult.success ? 'VÉ HỢP LỆ' : 'TỪ CHỐI'}
-            </h2>
-            <p style={{ fontSize: '1.1rem', color: 'var(--text-muted)' }}>{scanResult.message}</p>
+  // ═══ QR SCANNER (Camera + Manual) ═══
+  if (view === 'scanner') {
+    const startCamera = () => {
+      import('html5-qrcode').then(({ Html5Qrcode }) => {
+        const scanner = new Html5Qrcode('qr-reader');
+        scanner.start(
+          { facingMode: 'environment' },
+          { fps: 10, qrbox: { width: 250, height: 250 } },
+          (decodedText) => {
+            scanner.stop().catch(() => {});
+            setTicketId(decodedText);
+            // Auto verify
+            fetchGraphQL(`mutation { verifyTicketCheckin(ticketId: "${decodedText}", otp: "dummy") { success message } }`)
+              .then(r => setScanResult(r.verifyTicketCheckin))
+              .catch(err => setScanResult({ success: false, message: err.message }));
+          }
+        ).catch(err => {
+          console.error('Camera error:', err);
+          setScanResult({ success: false, message: 'Không thể truy cập camera. Vui lòng cấp quyền hoặc nhập mã thủ công.' });
+        });
+      });
+    };
+
+    return (
+      <div>
+        <h2 className="page-title">🎫 Cổng Kiểm Soát Vé</h2>
+        <div className="panel" style={{ maxWidth: 500, margin: '0 auto', textAlign: 'center' }}>
+          <div style={{ width: 70, height: 70, borderRadius: 18, background: 'linear-gradient(135deg, rgba(0,240,255,0.2), rgba(255,0,229,0.2))', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+            <Ticket size={32} color="#00F0FF" />
           </div>
-        )}
+
+          {/* Camera QR Scanner */}
+          <div id="qr-reader" style={{ width: '100%', maxWidth: 400, margin: '0 auto 16px', borderRadius: 16, overflow: 'hidden', border: '2px solid var(--border-color)' }}></div>
+
+          <button className="btn" onClick={() => { setScanResult(null); startCamera(); }} style={{ width: '100%', padding: '14px', fontSize: '1rem', background: 'linear-gradient(135deg, #8B5CF6, #6D28D9)', marginBottom: 16, borderRadius: 12, justifyContent: 'center' }}>
+            📸 Mở Camera Quét QR
+          </button>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, margin: '12px 0' }}>
+            <div style={{ flex: 1, height: 1, background: 'var(--border-color)' }}></div>
+            <span style={{ color: '#666', fontSize: '0.82rem' }}>hoặc nhập mã thủ công</span>
+            <div style={{ flex: 1, height: 1, background: 'var(--border-color)' }}></div>
+          </div>
+
+          <form onSubmit={handleScan} style={{ display: 'flex', gap: 8 }}>
+            <input className="form-control" style={{ flex: 1 }} placeholder="Nhập Ticket ID..." value={ticketId} onChange={e => setTicketId(e.target.value)} required />
+            <button type="submit" className="btn" style={{ padding: '12px 20px' }}>
+              <Search size={16} /> Soát vé
+            </button>
+          </form>
+
+          {/* Result */}
+          {scanResult && (
+            <div style={{ marginTop: 24, padding: 24, borderRadius: 16, background: scanResult.success ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)', border: `2px solid ${scanResult.success ? '#10B981' : '#EF4444'}`, animation: 'fadeIn 0.3s' }}>
+              <div style={{ fontSize: '3.5rem', marginBottom: 8 }}>{scanResult.success ? '✅' : '❌'}</div>
+              <h2 style={{ color: scanResult.success ? '#10B981' : '#EF4444', margin: '0 0 8px', fontFamily: 'Outfit' }}>
+                {scanResult.success ? 'VÉ HỢP LỆ — CHÀO MỪNG!' : 'TỪ CHỐI'}
+              </h2>
+              <p style={{ fontSize: '1rem', color: 'var(--text-muted)' }}>{scanResult.message}</p>
+              <button className="btn outline" style={{ marginTop: 12, padding: '10px 24px' }} onClick={() => { setScanResult(null); setTicketId(''); }}>🔄 Quét vé tiếp</button>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 
   // ═══ HỢP ĐỒNG CÁ NHÂN ═══
   if (view === 'dashboard') return (
@@ -189,31 +235,35 @@ export default function EmployeePage({ view, currentUser }) {
                       📄 Tải file
                     </a>
                   )}
+                  {c.status === 'MemberConfirmed' && (
+                    <button className="btn" style={{ padding: '6px 14px', fontSize: '0.8rem', background: 'linear-gradient(135deg, #3B82F6, #2563EB)' }} onClick={() => setSetupModal(c)}>
+                      <Package size={14} /> Kiểm tra & Xác nhận
+                    </button>
+                  )}
+                  {c.status === 'EmployeeConfirmed' && (
+                    <button className="btn outline" style={{ padding: '6px 14px', fontSize: '0.8rem', borderColor: '#10B981', color: '#10B981' }} onClick={() => { setSetupModal({...c, showProgress: true}); }}>
+                      <CheckCircle size={14} /> Cập nhật tiến độ
+                    </button>
+                  )}
                   {c.status === 'Pending' && (
-                    <>
-                      <button className="btn" style={{ padding: '6px 14px', fontSize: '0.8rem', background: 'linear-gradient(135deg, #10B981, #059669)' }} onClick={() => updateContractStatus(c.id, 'Approved')}>
-                        <CheckCircle size={14} /> Duyệt
-                      </button>
-                      <button className="btn outline" style={{ padding: '6px 14px', fontSize: '0.8rem', borderColor: '#EF4444', color: '#EF4444' }} onClick={() => updateContractStatus(c.id, 'Rejected')}>
-                        <XCircle size={14} /> Từ chối
-                      </button>
-                    </>
-                  )}
-                  {c.status === 'Approved' && (
-                    <button className="btn" style={{ padding: '6px 14px', fontSize: '0.8rem', background: 'linear-gradient(135deg, #3B82F6, #2563EB)' }} onClick={() => updateContractStatus(c.id, 'Deposited')}>
-                      <DollarSign size={14} /> Xác nhận đặt cọc
-                    </button>
-                  )}
-                  {c.status === 'Deposited' && (
-                    <button className="btn" style={{ padding: '6px 14px', fontSize: '0.8rem', background: 'linear-gradient(135deg, #10B981, #059669)' }} onClick={() => updateContractStatus(c.id, 'Paid')}>
-                      <CheckCircle size={14} /> Thanh toán đủ
-                    </button>
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '6px 14px', borderRadius: 8, background: 'rgba(245,158,11,0.15)', color: '#F59E0B', fontWeight: 700, fontSize: '0.8rem' }}>
+                      <Clock size={14} /> Chờ khách hàng xác nhận
+                    </span>
                   )}
                 </div>
               </div>
             </div>
           ))}
         </div>
+      )}
+
+      {/* ═══ SETUP MODAL (Component) ═══ */}
+      {setupModal && (
+        <EmployeeSetupModal
+          contract={setupModal}
+          onClose={() => setSetupModal(null)}
+          onConfirmed={() => { setSetupModal(null); loadMyContracts(); }}
+        />
       )}
     </div>
   );

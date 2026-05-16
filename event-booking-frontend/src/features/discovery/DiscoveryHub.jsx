@@ -69,15 +69,15 @@ export default function DiscoveryHub({ currentUser, onLogin, onSelectEvent, setV
   };
 
   return (
-    <div style={{ overflowY: 'auto', height: '100vh', background: 'var(--bg-main)' }}>
+    <div className="discovery-root" style={{ overflowY: 'auto', height: '100vh', background: 'var(--bg-main)' }}>
       {/* ── NAVBAR ── */}
-      <nav style={{ padding: '15px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(11,11,15,0.9)', backdropFilter: 'blur(20px)', position: 'sticky', top: 0, zIndex: 1000, borderBottom: '1px solid var(--border-color)' }}>
+      <nav className="discovery-nav" style={{ padding: '15px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(11,11,15,0.9)', backdropFilter: 'blur(20px)', position: 'sticky', top: 0, zIndex: 1000, borderBottom: '1px solid var(--border-color)' }}>
         <div style={{ fontFamily: 'Outfit', fontWeight: 900, fontSize: '1.8rem', color: '#fff', letterSpacing: -1, flexShrink: 0 }}>
           Lu<span style={{ color: 'var(--primary-color)', textShadow: '0 0 15px rgba(0,240,255,0.5)' }}>mina</span>
         </div>
 
         {/* Search bar nâng cao */}
-        <div style={{ flex: 1, margin: '0 30px', position: 'relative' }}>
+        <div className="discovery-search" style={{ flex: 1, margin: '0 30px', position: 'relative' }}>
           <div style={{ display: 'flex', gap: 8, background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', borderRadius: 100, padding: '6px 16px', alignItems: 'center' }}>
             <Search size={16} color="#888" style={{ flexShrink: 0 }} />
             <input style={{ flex: 1, background: 'transparent', border: 'none', outline: 'none', color: '#fff', fontSize: '0.95rem', minWidth: 0 }}
@@ -94,7 +94,7 @@ export default function DiscoveryHub({ currentUser, onLogin, onSelectEvent, setV
         </div>
 
         {/* Social links + Auth */}
-        <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexShrink: 0 }}>
+        <div className="discovery-auth" style={{ display: 'flex', gap: 12, alignItems: 'center', flexShrink: 0 }}>
           <a href="https://facebook.com" target="_blank" rel="noreferrer" style={{ color: '#4267B2', display: 'flex', alignItems: 'center' }} title="Facebook"><IconFB /></a>
           <a href="https://instagram.com" target="_blank" rel="noreferrer" style={{ color: '#E1306C', display: 'flex', alignItems: 'center' }} title="Instagram"><IconIG /></a>
           <a href="https://zalo.me" target="_blank" rel="noreferrer" style={{ color: '#0068FF', fontWeight: 900, fontSize: '0.85rem', textDecoration: 'none', border: '1px solid #0068FF', borderRadius: 6, padding: '2px 8px' }} title="Zalo">Zalo</a>
@@ -114,7 +114,7 @@ export default function DiscoveryHub({ currentUser, onLogin, onSelectEvent, setV
       </nav>
 
       {/* ── HERO SLIDER ── */}
-      <div style={{ position: 'relative', height: '82vh', overflow: 'hidden' }}>
+      <div className="discovery-hero" style={{ position: 'relative', height: '82vh', overflow: 'hidden' }}>
         {BANNERS.map((b, idx) => (
           <div key={idx} style={{ position: 'absolute', inset: 0, opacity: idx === slideIdx ? 1 : 0, transition: 'opacity 1.2s ease', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 80px', background: `linear-gradient(to bottom, rgba(0,0,0,0.3) 30%, rgba(11,11,15,1) 100%), url('${b.img}') center/cover` }}>
             <div style={{ display: 'flex', gap: 10, marginBottom: 20 }}>
@@ -142,7 +142,7 @@ export default function DiscoveryHub({ currentUser, onLogin, onSelectEvent, setV
       </div>
 
       {/* ── PROMO BANNER ── */}
-      <div style={{ background: 'linear-gradient(90deg, rgba(0,240,255,0.12), rgba(255,0,229,0.12))', borderTop: '1px solid rgba(0,240,255,0.2)', borderBottom: '1px solid rgba(255,0,229,0.2)', padding: '28px 60px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 20 }}>
+      <div className="discovery-promo" style={{ background: 'linear-gradient(90deg, rgba(0,240,255,0.12), rgba(255,0,229,0.12))', borderTop: '1px solid rgba(0,240,255,0.2)', borderBottom: '1px solid rgba(255,0,229,0.2)', padding: '28px 60px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 20 }}>
         <div>
           <div style={{ fontFamily: 'Outfit', fontWeight: 800, fontSize: '1.3rem', color: '#fff' }}>🎁 Chương Trình Ưu Đãi Đặc Biệt</div>
           <div style={{ color: 'var(--text-muted)', marginTop: 4, fontSize: '0.95rem' }}>Nhập mã để nhận giảm giá ngay — <strong style={{ color: 'var(--warning)' }}>EARLY20 | TECH30 | VIP15 | KOSMIK10</strong></div>
@@ -162,12 +162,12 @@ export default function DiscoveryHub({ currentUser, onLogin, onSelectEvent, setV
       </div>
 
       {/* ── ABOUT & SERVICES ── */}
-      <div style={{ padding: '70px 60px', background: 'linear-gradient(180deg, var(--bg-main) 0%, rgba(0,240,255,0.02) 50%, var(--bg-main) 100%)' }}>
+      <div className="discovery-about" style={{ padding: '70px 60px', background: 'linear-gradient(180deg, var(--bg-main) 0%, rgba(0,240,255,0.02) 50%, var(--bg-main) 100%)' }}>
         <div style={{ textAlign: 'center', marginBottom: 50 }}>
           <h2 style={{ fontSize: '2.5rem', fontFamily: 'Outfit', fontWeight: 900 }}>Về <span style={{ color: 'var(--primary-color)' }}>Lumina</span></h2>
           <p style={{ color: 'var(--text-muted)', marginTop: 10, fontSize: '1.05rem', maxWidth: 700, margin: '10px auto 0' }}>Nền tảng quản lý và đặt vé sự kiện hàng đầu Việt Nam — Kết nối Ban Tổ Chức với hàng triệu khán giả thông qua công nghệ hiện đại.</p>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 24, maxWidth: 900, margin: '0 auto 60px' }}>
+        <div className="discovery-stats" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 24, maxWidth: 900, margin: '0 auto 60px' }}>
           {[
             { num: '10K+', label: 'Vé đã bán', icon: '🎟️' },
             { num: '200+', label: 'Sự kiện tổ chức', icon: '📅' },
@@ -207,7 +207,7 @@ export default function DiscoveryHub({ currentUser, onLogin, onSelectEvent, setV
       </div>
 
       {/* ── EVENT LIST ── */}
-      <div id="events" style={{ padding: '70px 60px', background: 'var(--bg-main)' }}>
+      <div id="events" className="discovery-events" style={{ padding: '70px 60px', background: 'var(--bg-main)' }}>
         <div style={{ textAlign: 'center', marginBottom: 50 }}>
           <h2 style={{ fontSize: '2.5rem', fontFamily: 'Outfit', fontWeight: 900 }}>Sự Kiện Hot Nhất</h2>
           <p style={{ color: 'var(--text-muted)', marginTop: 10, fontSize: '1.05rem' }}>Lựa chọn sự kiện phù hợp với Gu của bạn</p>
@@ -224,7 +224,7 @@ export default function DiscoveryHub({ currentUser, onLogin, onSelectEvent, setV
         </div>
 
         {/* Event Cards */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 30, maxWidth: 1300, margin: '0 auto' }}>
+        <div className="discovery-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 30, maxWidth: 1300, margin: '0 auto' }}>
           {events.length === 0
             ? <p style={{ textAlign: 'center', gridColumn: '1/-1', color: 'var(--text-muted)', padding: '60px 0', fontSize: '1.1rem' }}>Không tìm thấy sự kiện nào phù hợp.</p>
             : events.map(e => (
@@ -256,8 +256,8 @@ export default function DiscoveryHub({ currentUser, onLogin, onSelectEvent, setV
       </div>
 
       {/* ── FOOTER WITH SOCIAL ── */}
-      <footer style={{ background: '#050510', borderTop: '1px solid var(--border-color)', padding: '60px 60px 30px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1.5fr', gap: 40, marginBottom: 40 }}>
+      <footer className="discovery-footer" style={{ background: '#050510', borderTop: '1px solid var(--border-color)', padding: '60px 60px 30px' }}>
+        <div className="discovery-footer-grid" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1.5fr', gap: 40, marginBottom: 40 }}>
           <div>
             <div style={{ fontFamily: 'Outfit', fontWeight: 900, fontSize: '2rem', background: 'linear-gradient(90deg, var(--primary-color), var(--accent-color))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: 15 }}>Lumina</div>
             <p style={{ color: '#666', lineHeight: 1.8, fontSize: '0.9rem', maxWidth: 280 }}>Nền tảng tổ chức và đặt vé sự kiện hàng đầu Việt Nam. Kết nối bạn với những trải nghiệm không thể quên.</p>

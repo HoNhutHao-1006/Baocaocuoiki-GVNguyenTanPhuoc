@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { fetchGraphQL } from '../../api/axiosClient';
 
-export default function GenericCRUD({ title, dataQuery, dataKey, columns, createMutation, formFields = [], dataFilter = null, headerIllustration = null, emptyMessage = null }) {
+export default function GenericCRUD({ title, dataQuery, dataKey, columns, createMutation, formFields = [], dataFilter = null, headerIllustration = null, emptyMessage = null, enableDateFilter = false, dateFilterKey = 'createdAt' }) {
   const [data, setData] = useState([]);
   const [search, setSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({});
   const [page, setPage] = useState(1);
+  const [dateFrom, setDateFrom] = useState('');
+  const [dateTo, setDateTo] = useState('');
   const limit = 10;
 
   const loadData = () => {
@@ -46,7 +48,18 @@ export default function GenericCRUD({ title, dataQuery, dataKey, columns, create
     } catch (err) { alert(err.message); }
   };
 
-  const filtered = data.filter(d => JSON.stringify(d).toLowerCase().includes(search.toLowerCase()));
+  const filtered = data.filter(d => {
+    const matchSearch = JSON.stringify(d).toLowerCase().includes(search.toLowerCase());
+    if (!enableDateFilter || (!dateFrom && !dateTo)) return matchSearch;
+    const raw = d[dateFilterKey];
+    if (!raw) return matchSearch;
+    const itemDate = new Date(isNaN(raw) ? raw : parseInt(raw));
+    if (isNaN(itemDate)) return matchSearch;
+    const item = itemDate.toISOString().slice(0, 10);
+    if (dateFrom && item < dateFrom) return false;
+    if (dateTo && item > dateTo) return false;
+    return matchSearch;
+  });
 
   return (
     <div>
@@ -82,7 +95,20 @@ export default function GenericCRUD({ title, dataQuery, dataKey, columns, create
       </div>
 
       <div className="panel">
-        <input className="form-control" placeholder="🔍 Tìm kiếm dữ liệu..." value={search} onChange={e => setSearch(e.target.value)} style={{ marginBottom: 20 }} />
+        <div style={{ display: 'flex', gap: 10, marginBottom: 16, flexWrap: 'wrap', alignItems: 'center' }}>
+          <input className="form-control" placeholder="🔍 Tim kiem du lieu..." value={search} onChange={e => setSearch(e.target.value)} style={{ flex: 1, minWidth: 180 }} />
+          {enableDateFilter && (
+            <>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.8rem', color: '#888' }}>
+                <span>📅 Tu:</span>
+                <input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} style={{ padding: '8px 10px', borderRadius: 8, border: '1px solid #444', background: '#111', color: '#fff', fontSize: '0.82rem', outline: 'none' }} />
+                <span>→ Den:</span>
+                <input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} style={{ padding: '8px 10px', borderRadius: 8, border: '1px solid #444', background: '#111', color: '#fff', fontSize: '0.82rem', outline: 'none' }} />
+                {(dateFrom || dateTo) && <button onClick={() => { setDateFrom(''); setDateTo(''); }} style={{ padding: '6px 10px', borderRadius: 6, border: '1px solid rgba(239,68,68,0.3)', background: 'rgba(239,68,68,0.1)', color: '#EF4444', cursor: 'pointer', fontSize: '0.72rem' }}>✕ Xoa</button>}
+              </div>
+            </>
+          )}
+        </div>
         <div style={{ overflowX: 'auto' }}>
           <table style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse' }}>
             <thead>

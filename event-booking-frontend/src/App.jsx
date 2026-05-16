@@ -49,10 +49,10 @@ export default function App() {
     }
 
     return (
-      <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+      <div className="dashboard-layout">
         <Sidebar currentUser={currentUser} view={view} setView={setView} onLogout={handleLogout} />
         <div className="main-content" style={{ flex: 1, overflowY: 'auto' }}>
-          <Topbar currentUser={currentUser} />
+          <Topbar currentUser={currentUser} onUserUpdate={(updated) => { setCurrentUser(updated); localStorage.setItem('currentUser', JSON.stringify(updated)); }} />
           <div className="page-wrapper">
             {currentUser.role === 'ADMIN' && <AdminPage view={view} />}
             {currentUser.role === 'ORGANIZER' && <OrganizerPage view={view} currentUser={currentUser} />}
