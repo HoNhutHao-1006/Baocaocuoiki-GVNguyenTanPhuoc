@@ -1,10 +1,23 @@
 # 🎫 HỆ THỐNG QUẢN LÝ SỰ KIỆN VÀ ĐẶT VÉ (EMS)
 
-## 1. Giới thiệu
+## 1. Giới thiệu tổng quan (System Overview)
 
-Hệ thống Event Management & Booking Platform là nền tảng full-stack cho phép quản lý sự kiện, đặt vé trực tuyến, quản lý hợp đồng và thư mời. Hệ thống hỗ trợ cả mô hình B2B (tổ chức sự kiện theo hợp đồng) và B2C (bán vé trực tuyến).
+**Hệ thống Quản lý Sự kiện & Đặt vé (Event Management & Booking Platform - EMS)** là một nền tảng toàn diện (full-stack) được thiết kế chuyên sâu nhằm số hóa và tối ưu hóa quy trình quản lý sự kiện. Hệ thống đáp ứng đồng thời hai mô hình kinh doanh cốt lõi:
+- **B2C (Business-to-Consumer):** Cung cấp trải nghiệm mua vé trực tuyến mượt mà cho khách hàng cá nhân. Bao gồm duyệt sự kiện, chọn ghế qua sơ đồ tương tác thực tế (Interactive Seatmap), thanh toán, nhận vé điện tử (QR Code) và quản lý tủ vé cá nhân.
+- **B2B (Business-to-Business):** Cung cấp giải pháp cho khách hàng doanh nghiệp hoặc cá nhân có nhu cầu thuê dịch vụ tổ chức sự kiện trọn gói. Bao gồm quy trình tạo đề xuất sự kiện (Proposal), ký kết hợp đồng số, quản lý thanh toán/đặt cọc, đến việc theo dõi tiến độ tổ chức và quản lý danh sách khách mời (RSVP).
 
-**Tech Stack:** React (Vite) + GraphQL + MongoDB + Socket.IO + RabbitMQ
+**Các tính năng nổi bật của hệ thống:**
+1. **Quản lý linh hoạt đa đối tượng:** Phân quyền chặt chẽ với 5 nhóm người dùng (Guest, Member, Organizer, Employee, Admin) với các dashboard chuyên biệt.
+2. **Sơ đồ ghế ngồi trực quan:** Tích hợp Seatmap tương tác cho phép chọn/giữ chỗ realtime và khóa ghế để tránh trùng lặp khi đặt vé.
+3. **Quản lý hợp đồng & Đề xuất (B2B):** Tự động hóa luồng phê duyệt từ lúc khách hàng gửi yêu cầu đến lúc chốt hợp đồng và tổ chức.
+4. **Kiểm soát ra vào thông minh:** Ứng dụng quét mã QR cho phép nhân viên (Employee) check-in nhanh chóng tại sự kiện.
+5. **Real-time & Hiệu năng cao:** Sử dụng Socket.IO và RabbitMQ để xử lý luồng dữ liệu thời gian thực (realtime notification, giữ chỗ) và các tác vụ nặng chạy nền.
+
+**Công nghệ sử dụng (Tech Stack):**
+- **Frontend:** React.js (Vite), TailwindCSS, UI Components hiện đại.
+- **Backend:** Node.js, Express, GraphQL (Apollo Server).
+- **Database:** MongoDB (Mongoose) - thiết kế schema phức tạp hỗ trợ nhiều luồng nghiệp vụ.
+- **Message Broker & Realtime:** RabbitMQ, Socket.IO.
 
 ---
 
