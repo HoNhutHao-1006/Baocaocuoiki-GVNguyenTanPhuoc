@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fetchGraphQL } from '../api/axiosClient';
+import { resolveFileUrl } from '../api/config';
 import GenericCRUD from '../features/dashboard/GenericCRUD';
 import ContractDetailModal from '../features/dashboard/ContractDetailModal';
 import AdvancedDashboard from '../features/dashboard/AdvancedDashboard';
@@ -162,7 +163,7 @@ export default function AdminPage({ view }) {
         createMutation={`mutation M($username: String!, $role: String!, $fullname: String) { registerAuth(username: $username, password: "123456", role: $role, fullname: $fullname) { id } }`} 
         formFields={[{ name: 'username', label: 'Username' }, { name: 'fullname', label: 'Họ tên' }, { name: 'role', label: 'Vai trò', type: 'select', options: [{ value: 'ORGANIZER', label: 'ORGANIZER' }, { value: 'EMPLOYEE', label: 'EMPLOYEE' }] }]} 
         columns={[
-          { key: 'avatar', label: '', render: r => { const initials = (r.fullname || r.username || '?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(); const src = r.avatar ? (r.avatar.startsWith('/') ? `http://localhost:4000${r.avatar}` : r.avatar) : null; return src ? <img src={src} alt="" style={{ width: 36, height: 36, borderRadius: '50%', objectFit: 'cover' }} onError={e => e.target.style.display='none'} /> : <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(135deg, #4ECDC4, #45B7D1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.75rem', color: '#fff' }}>{initials}</div>; } },
+          { key: 'avatar', label: '', render: r => { const initials = (r.fullname || r.username || '?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(); const src = r.avatar ? resolveFileUrl(r.avatar) : null; return src ? <img src={src} alt="" style={{ width: 36, height: 36, borderRadius: '50%', objectFit: 'cover' }} onError={e => e.target.style.display='none'} /> : <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(135deg, #4ECDC4, #45B7D1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.75rem', color: '#fff' }}>{initials}</div>; } },
           { key: 'username', label: 'Username' }, 
           { key: 'fullname', label: 'Tên' }, 
           { key: 'email', label: 'Email' },
@@ -217,7 +218,7 @@ export default function AdminPage({ view }) {
         headerIllustration={<IllustrationMember />}
         dataQuery="query U($page: Int, $limit: Int) { getAllUsers(page: $page, limit: $limit) { id username fullname role status email avatar } }" dataKey="getAllUsers" dataFilter={u => u.role === 'MEMBER'}
         columns={[
-          { key: 'avatar', label: '', render: r => { const initials = (r.fullname || r.username || '?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(); const src = r.avatar ? (r.avatar.startsWith('/') ? `http://localhost:4000${r.avatar}` : r.avatar) : null; return src ? <img src={src} alt="" style={{ width: 36, height: 36, borderRadius: '50%', objectFit: 'cover' }} onError={e => e.target.style.display='none'} /> : <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(135deg, #FF6B6B, #DDA0DD)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.75rem', color: '#fff' }}>{initials}</div>; } },
+          { key: 'avatar', label: '', render: r => { const initials = (r.fullname || r.username || '?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(); const src = r.avatar ? resolveFileUrl(r.avatar) : null; return src ? <img src={src} alt="" style={{ width: 36, height: 36, borderRadius: '50%', objectFit: 'cover' }} onError={e => e.target.style.display='none'} /> : <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(135deg, #FF6B6B, #DDA0DD)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.75rem', color: '#fff' }}>{initials}</div>; } },
           { key: 'username', label: 'Tên Đăng Nhập' }, 
           { key: 'fullname', label: 'Họ Tên' }, 
           { key: 'email', label: 'Email' },

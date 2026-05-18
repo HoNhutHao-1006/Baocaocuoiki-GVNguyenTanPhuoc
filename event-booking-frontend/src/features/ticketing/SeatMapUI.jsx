@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fetchGraphQL } from '../../api/axiosClient';
+import { API_URL } from '../../api/config';
 
 function StadiumOverview({ zones, activeZoneId, onSelectZone }) {
   const [hov, setHov] = useState(null);
@@ -164,7 +165,7 @@ export default function SeatMapUI({ eventId, currentUser, onSeatHeld }) {
 
   useEffect(() => {
     if (typeof window !== 'undefined' && window.io) {
-      const socket = window.io('http://localhost:4000');
+      const socket = window.io(API_URL);
       socket.on('seat-updated', ({ seatId, status, eventId: evtId }) => {
         if (evtId && evtId !== eventId) return;
         setZones(prev => prev.map(z => ({ ...z, seats: z.seats.map(s => s.id === seatId ? { ...s, status } : s) })));

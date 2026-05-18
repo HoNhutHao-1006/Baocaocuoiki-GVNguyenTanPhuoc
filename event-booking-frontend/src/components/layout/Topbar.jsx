@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { fetchGraphQL } from '../../api/axiosClient';
+import { resolveFileUrl, UPLOAD_AVATAR_URL } from '../../api/config';
 
 function AvatarDisplay({ user, size = 36 }) {
   if (user?.avatar) {
-    const src = user.avatar.startsWith('/') ? `http://localhost:4000${user.avatar}` : user.avatar;
+    const src = resolveFileUrl(user.avatar);
     return <img src={src} alt="" style={{ width: size, height: size, borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--primary-color)' }} />;
   }
   const initials = (user?.fullname || user?.username || '?').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
@@ -54,7 +55,7 @@ export default function Topbar({ currentUser, onUserUpdate }) {
     const formData = new FormData();
     formData.append('avatar', file);
     try {
-      const resp = await fetch('http://localhost:4000/upload-avatar', { method: 'POST', body: formData });
+      const resp = await fetch(UPLOAD_AVATAR_URL, { method: 'POST', body: formData });
       const data = await resp.json();
       if (data.success) {
         setPreviewUrl(data.fileUrl);

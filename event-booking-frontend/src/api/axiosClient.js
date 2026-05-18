@@ -1,6 +1,8 @@
 /**
  * Custom fetch wrapper to replace fetchGraphQL
  */
+import { GRAPHQL_URL } from './config';
+
 export const fetchGraphQL = async (query, variables = {}) => {
   const currentUser = localStorage.getItem('currentUser');
   let token = '';
@@ -14,7 +16,7 @@ export const fetchGraphQL = async (query, variables = {}) => {
     }
   }
 
-  const apiBase = import.meta.env.VITE_API_BASE_URL || `http://${window.location.hostname}:4000/graphql`;
+  const apiBase = import.meta.env.VITE_API_BASE_URL || GRAPHQL_URL;
   const response = await fetch(apiBase, {
     method: 'POST',
     headers: {

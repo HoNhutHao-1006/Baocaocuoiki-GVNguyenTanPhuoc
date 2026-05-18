@@ -1,23 +1,157 @@
-# 🎫 HỆ THỐNG QUẢN LÝ SỰ KIỆN VÀ ĐẶT VÉ (EMS)
+﻿# 🎫 LUMINA EMS — HỆ THỐNG TỔ CHỨC QUẢN LÝ SỰ KIỆN VÀ ĐẶT VÉ
 
 ## 1. Giới thiệu tổng quan (System Overview)
 
-**Hệ thống Quản lý Sự kiện & Đặt vé (Event Management & Booking Platform - EMS)** là một nền tảng toàn diện (full-stack) được thiết kế chuyên sâu nhằm số hóa và tối ưu hóa quy trình quản lý sự kiện. Hệ thống đáp ứng đồng thời hai mô hình kinh doanh cốt lõi:
-- **B2C (Business-to-Consumer):** Cung cấp trải nghiệm mua vé trực tuyến mượt mà cho khách hàng cá nhân. Bao gồm duyệt sự kiện, chọn ghế qua sơ đồ tương tác thực tế (Interactive Seatmap), thanh toán, nhận vé điện tử (QR Code) và quản lý tủ vé cá nhân.
-- **B2B (Business-to-Business):** Cung cấp giải pháp cho khách hàng doanh nghiệp hoặc cá nhân có nhu cầu thuê dịch vụ tổ chức sự kiện trọn gói. Bao gồm quy trình tạo đề xuất sự kiện (Proposal), ký kết hợp đồng số, quản lý thanh toán/đặt cọc, đến việc theo dõi tiến độ tổ chức và quản lý danh sách khách mời (RSVP).
+**Lumina EMS (Event Management & Booking Platform)** là một nền tảng full-stack toàn diện được thiết kế nhằm số hóa và tối ưu hóa toàn bộ quy trình quản lý sự kiện — từ khâu đề xuất ý tưởng, ký kết hợp đồng, bán vé trực tuyến, đến soát vé check-in tại chỗ. Hệ thống phục vụ đồng thời hai mô hình kinh doanh:
 
-**Các tính năng nổi bật của hệ thống:**
-1. **Quản lý linh hoạt đa đối tượng:** Phân quyền chặt chẽ với 5 nhóm người dùng (Guest, Member, Organizer, Employee, Admin) với các dashboard chuyên biệt.
-2. **Sơ đồ ghế ngồi trực quan:** Tích hợp Seatmap tương tác cho phép chọn/giữ chỗ realtime và khóa ghế để tránh trùng lặp khi đặt vé.
-3. **Quản lý hợp đồng & Đề xuất (B2B):** Tự động hóa luồng phê duyệt từ lúc khách hàng gửi yêu cầu đến lúc chốt hợp đồng và tổ chức.
-4. **Kiểm soát ra vào thông minh:** Ứng dụng quét mã QR cho phép nhân viên (Employee) check-in nhanh chóng tại sự kiện.
-5. **Real-time & Hiệu năng cao:** Sử dụng Socket.IO và RabbitMQ để xử lý luồng dữ liệu thời gian thực (realtime notification, giữ chỗ) và các tác vụ nặng chạy nền.
+| Mô hình | Đối tượng | Mô tả |
+|---------|-----------|-------|
+| **B2C** | Khách hàng cá nhân | Duyệt sự kiện → Chọn ghế trên Seatmap tương tác → Thanh toán → Nhận vé điện tử QR Code → Check-in |
+| **B2B** | Doanh nghiệp / Cá nhân | Tạo đề xuất sự kiện → Admin duyệt → Ký hợp đồng số → Đặt cọc & thanh toán → Quản lý thư mời RSVP |
 
-**Công nghệ sử dụng (Tech Stack):**
-- **Frontend:** React.js (Vite), TailwindCSS, UI Components hiện đại.
-- **Backend:** Node.js, Express, GraphQL (Apollo Server).
-- **Database:** MongoDB (Mongoose) - thiết kế schema phức tạp hỗ trợ nhiều luồng nghiệp vụ.
-- **Message Broker & Realtime:** RabbitMQ, Socket.IO.
+---
+
+## 1.1. Danh sách các chức năng chính hiện có
+
+### 👤 Khách vãng lai (Guest)
+1. Duyệt danh sách sự kiện công khai
+2. Tìm kiếm sự kiện (theo tên, địa điểm, danh mục)
+3. Xem chi tiết sự kiện
+4. Gửi phản hồi RSVP (không cần đăng nhập)
+
+### 🧑 Khách hàng (Member)
+5. Đăng ký tài khoản (xác thực Email OTP)
+6. Đăng nhập / Đăng xuất (JWT Token)
+7. Cập nhật hồ sơ cá nhân (họ tên, email, SĐT, ngân hàng)
+8. Upload ảnh đại diện (Avatar)
+9. Đổi mật khẩu
+10. Xem sơ đồ chỗ ngồi tương tác (Interactive Seatmap)
+11. Chọn ghế & Giữ chỗ (Hold Seat — tối đa 10 ghế, giữ 10 phút)
+12. Thanh toán vé & Nhận QR Code
+13. Hủy vé & Hoàn tiền tự động
+14. Xem tủ vé cá nhân (My Tickets) & QR Code động
+15. Tạo đề xuất sự kiện (Event Proposal Wizard)
+16. Theo dõi trạng thái đề xuất
+17. Tạo hợp đồng (liên kết đề xuất đã duyệt)
+18. Upload file hợp đồng (PDF/DOC)
+19. Xác nhận / Từ chối hợp đồng (từ phía Member)
+20. Đặt cọc & Thanh toán hợp đồng
+21. Thêm khách mời vào danh sách
+22. Gửi thư mời Email (đơn lẻ hoặc hàng loạt)
+23. Xóa khách mời
+24. Theo dõi trạng thái RSVP (Pending/Sent/Confirmed/Declined)
+25. Gửi yêu cầu hỗ trợ cho Admin (Admin Request)
+
+### 🎭 Người tổ chức (Organizer)
+26. Tạo sự kiện mới (PUBLIC / PRIVATE, bật/tắt Ticketing)
+27. Quản lý khách mời RSVP
+28. Xếp bàn tiệc (Seating Arrangement)
+29. Lên kịch bản & Task Checklist
+
+### 🔧 Nhân viên (Employee)
+30. Quét QR / Nhập mã soát vé Check-in
+31. Xem hợp đồng được phân công
+32. Xác nhận hợp đồng (từ phía nhân viên)
+33. Cập nhật thông tin cá nhân & Đổi mật khẩu
+
+### 👑 Quản trị viên (Admin)
+34. Xem thống kê tổng quan (doanh thu, vé, sự kiện, hoàn tiền)
+35. Dashboard Analytics nâng cao (biểu đồ doanh thu, tỷ lệ chuyển đổi)
+36. AI Insights — Phân tích SWOT & Xu hướng (Gemini 2.0 Flash)
+37. Duyệt / Từ chối sự kiện (kiểm tra trùng lịch tự động)
+38. Duyệt / Từ chối đề xuất sự kiện
+39. Duyệt / Hủy hợp đồng
+40. Phân công nhân viên phụ trách hợp đồng
+41. Quản lý Địa điểm (CRUD Location)
+42. Quản lý Dịch vụ (CRUD Service)
+43. Quản lý Thiết bị (CRUD Device)
+44. Quản lý nhân sự nội bộ (Employee)
+45. Quản lý khách hàng (Member)
+46. Khóa / Mở khóa tài khoản
+47. Xử lý yêu cầu hỗ trợ từ Member
+
+### ⚡ Hệ thống (System)
+48. Realtime cập nhật ghế ngồi (Socket.IO)
+49. Realtime thông báo mua vé, check-in, đề xuất mới
+50. Xử lý tác vụ nền qua RabbitMQ (email, ticket worker)
+51. Kiểm tra trùng lịch & Tài nguyên tự động
+52. Prometheus Metrics cho monitoring hệ thống
+53. Upload & lưu trữ file (Avatar, Hợp đồng) — Multer
+
+---
+
+## 1.2. Phân tích chức năng hệ thống
+
+### 🔐 Module 1: Xác thực & Quản lý tài khoản (Authentication)
+- **Đăng ký tài khoản** với xác thực Email OTP (gửi mã qua Gmail SMTP thật).
+- **Đăng nhập JWT** — Token 8 giờ, phân luồng tự động theo role (Admin/Member/Organizer/Employee).
+- **Quản lý hồ sơ:** Cập nhật thông tin cá nhân, upload avatar (Multer, giới hạn 5MB), đổi mật khẩu (bcrypt hash).
+- **Khóa/Mở khóa tài khoản** bởi Admin.
+
+### 🔍 Module 2: Khám phá sự kiện (Discovery Hub)
+- **Trang chủ DiscoveryHub:** Hiển thị danh sách sự kiện đã duyệt (`status: Approved, eventType: PUBLIC`).
+- **Tìm kiếm đa tiêu chí:** Theo từ khóa (tên, địa điểm) và lọc theo danh mục (Category).
+- **Xem chi tiết sự kiện (InfoModal):** Mô tả, ngày tổ chức, địa điểm, ảnh bìa, danh sách hạng vé (TicketTier) kèm giá.
+- **Gửi phản hồi RSVP:** Khách vãng lai (Guest) có thể RSVP trực tiếp mà không cần đăng nhập.
+
+### 🎟️ Module 3: Đặt vé trực tuyến — B2C Ticketing
+- **Sơ đồ chỗ ngồi tương tác (SeatMapUI):** Hiển thị zone màu sắc, trạng thái ghế realtime (`available / held / booked`).
+- **Giữ chỗ (Hold Seat):** Chọn 1–10 ghế, hệ thống khóa ghế trong 10 phút. Socket.IO phát sự kiện `seat-updated` cho tất cả người dùng.
+- **Thanh toán (Checkout):** Tạo QR Code vé điện tử, ghế chuyển sang `booked`, phát thông báo `ticket-purchased`.
+- **Hủy vé & Hoàn tiền:** Tự động tính refund, giải phóng ghế, khôi phục số lượng vé, ghi log hoàn tiền qua tài khoản ngân hàng.
+- **Tủ vé cá nhân (My Tickets):** Xem lịch sử đặt vé, trạng thái, QR Code động theo thời gian.
+
+### 📋 Module 4: Đề xuất sự kiện & Hợp đồng — B2B
+- **Tạo đề xuất (EventProposalWizard):** Wizard nhiều bước — nhập tên, mô tả, loại sự kiện, ngày, địa điểm, ngân sách. Tự động kiểm tra trùng lịch trước khi gửi.
+- **Quản lý hợp đồng (Contract):** Luồng trạng thái 8 bước: `Pending → MemberConfirmed → EmployeeConfirmed → Approved → Deposited → Paid` (hoặc `MemberRejected / Cancelled`).
+- **Upload file hợp đồng:** Hỗ trợ PDF/DOC (Multer, giới hạn 20MB), lưu trữ server-side.
+- **Phân công nhân viên:** Admin gán Employee phụ trách hợp đồng, Employee xem & xác nhận từ dashboard riêng.
+- **Xem chi tiết hợp đồng (ContractFull):** Tổng hợp thông tin member, proposal, event, dịch vụ, thiết bị.
+
+### ✉️ Module 5: Quản lý thư mời & RSVP
+- **Tạo danh sách khách mời:** Thêm tên, email, điện thoại, chế độ ăn, số người đi kèm.
+- **Gửi thư mời Email:** Gửi từng thư hoặc gửi hàng loạt qua Gmail SMTP, kèm mã QR xác nhận.
+- **Theo dõi trạng thái RSVP:** Dashboard thống kê `Pending / Sent / Confirmed / Declined`.
+
+### 👔 Module 6: Nhân viên — Employee Operations
+- **Quét QR soát vé (Check-in):** Nhập Ticket ID → hệ thống xác thực trạng thái vé → cập nhật `CheckedIn` → phát sự kiện Socket.IO `check-in-success`.
+- **Xem hợp đồng được phân công:** Dashboard riêng hiển thị các hợp đồng đã gán, hỗ trợ xác nhận từ phía nhân viên.
+- **Giao diện responsive mobile-first:** Tối ưu cho nhân viên sử dụng điện thoại tại hiện trường.
+
+### 🏢 Module 7: Quản lý tổ chức sự kiện — Organizer
+- **Tạo sự kiện mới:** Chọn danh mục, nhập thông tin, upload ảnh bìa, chọn loại (PUBLIC/PRIVATE), bật/tắt ticketing.
+- **Quản lý khách mời RSVP:** Xem danh sách, xếp bàn tiệc (Seating).
+- **Kịch bản & Task Checklist:** Lên lịch trình chạy sự kiện, phân công công việc.
+
+### 👑 Module 8: Quản trị viên — Admin Dashboard
+- **Thống kê tổng quan (Stats):** Doanh thu, số vé bán, người dùng, sự kiện, đề xuất chờ duyệt, hợp đồng, hoàn tiền.
+- **Analytics nâng cao (AdvancedDashboard):** Biểu đồ doanh thu theo tháng, phân bố loại sự kiện, trạng thái hợp đồng/đơn hàng, tỷ lệ chuyển đổi.
+- **AI Insights (Gemini 2.0 Flash):** Phân tích SWOT, xu hướng thị trường, khuyến nghị chiến lược, roadmap phát triển — dựa trên dữ liệu thực của hệ thống.
+- **Phê duyệt:** Duyệt/từ chối sự kiện (kiểm tra trùng lịch tự động), đề xuất sự kiện, hợp đồng.
+- **Quản lý tài nguyên (GenericCRUD):** CRUD Địa điểm (Location), Dịch vụ (Service), Thiết bị (Device) — component tái sử dụng.
+- **Quản lý người dùng:** Xem danh sách nhân sự, khách hàng, khóa/mở khóa tài khoản.
+- **Xử lý yêu cầu (AdminRequest):** Tiếp nhận & giải quyết yêu cầu hỗ trợ từ Member.
+
+### ⚡ Module 9: Realtime & Hệ thống nền
+- **Socket.IO:** Cập nhật trạng thái ghế, thông báo mua vé, check-in, đề xuất mới — tất cả realtime.
+- **RabbitMQ:** Message queue xử lý tác vụ nặng (gửi email hàng loạt, xử lý vé async) qua `ticket.worker.js`.
+- **Prometheus Metrics:** Endpoint `/metrics` cho monitoring hiệu năng hệ thống.
+- **Kiểm tra tài nguyên:** API `checkResourceAvailability` kiểm tra trùng địa điểm/ngày và tình trạng thiết bị.
+
+---
+
+## 1.2. Công nghệ sử dụng (Tech Stack)
+
+| Tầng | Công nghệ | Chi tiết |
+|------|-----------|----------|
+| **Frontend** | React.js (Vite) | SPA với 7 trang chính, 6 feature modules, component tái sử dụng |
+| **Backend** | Node.js + Express | Apollo Server GraphQL, Multer file upload, JWT auth |
+| **Database** | MongoDB (Mongoose) | 13 models, index tối ưu, quan hệ ObjectId ref |
+| **Realtime** | Socket.IO | Bi-directional events cho seat updates, notifications |
+| **Message Queue** | RabbitMQ | Async worker cho ticket processing, email queue |
+| **AI** | Google Gemini 2.0 Flash | Phân tích kinh doanh SWOT, xu hướng, roadmap |
+| **Email** | Nodemailer + Gmail SMTP | OTP xác thực, thư mời RSVP |
+| **Monitoring** | Prometheus (prom-client) | Thu thập metrics mặc định + custom |
 
 ---
 
@@ -531,6 +665,4 @@ npm run dev    # Port 5173
 
 ---
 
-> **Tác giả:** Sinh viên Năm 4 — Cuối kỳ Thầy Phước
-#   B a o c a o c u o i k i - G V N g u y e n T a n P h u o c  
- 
+> **Tác giả:** Hồ Nhựt Hào — Sinh viên Năm 4 | Báo cáo cuối kỳ — GV: Nguyễn Tấn Phước

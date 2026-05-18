@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Ticket, Clock, PlusCircle, Send, Eye, FileText, AlertTriangle } from 'lucide-react';
 import { fetchGraphQL } from '../api/axiosClient';
+import { API_URL } from '../api/config';
 import SettingsPage from './SettingsPage';
 import GenericCRUD from '../features/dashboard/GenericCRUD';
 import MemberContractDetailModal from '../features/dashboard/MemberContractDetailModal';
@@ -148,7 +149,7 @@ export default function MemberPage({ view, currentUser }) {
 
   useEffect(() => {
     if (typeof window !== 'undefined' && window.io) {
-      const socket = window.io('http://localhost:4000');
+      const socket = window.io(API_URL);
       socket.on('check-in-success', (data) => {
         setRealtimeNotif(data);
         setTimeout(() => setRealtimeNotif(null), 5000);

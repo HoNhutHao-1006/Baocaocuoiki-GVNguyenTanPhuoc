@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { fetchGraphQL } from '../api/axiosClient';
+import { resolveFileUrl, UPLOAD_AVATAR_URL } from '../api/config';
 import { Camera } from 'lucide-react';
 
 export default function SettingsPage({ currentUser }) {
@@ -22,7 +23,7 @@ export default function SettingsPage({ currentUser }) {
     try {
       const formData = new FormData();
       formData.append('avatar', file);
-      const res = await fetch('http://localhost:4000/upload-avatar', { method: 'POST', body: formData });
+      const res = await fetch(UPLOAD_AVATAR_URL, { method: 'POST', body: formData });
       const data = await res.json();
       if (data.success) {
         await fetchGraphQL(`mutation { updateAvatar(userId: "${currentUser.id}", avatar: "${data.fileUrl}") { id avatar } }`);
@@ -36,7 +37,7 @@ export default function SettingsPage({ currentUser }) {
     setUploading(false);
   };
 
-  const avatarSrc = avatar ? (avatar.startsWith('/') ? `http://localhost:4000${avatar}` : avatar) : null;
+  const avatarSrc = avatar ? resolveFileUrl(avatar) : null;
   const initials = (fn || currentUser?.username || '?').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
 
   const saveProfile = async () => {

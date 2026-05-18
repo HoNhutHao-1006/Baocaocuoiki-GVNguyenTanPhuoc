@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fetchGraphQL } from '../api/axiosClient';
+import { resolveFileUrl } from '../api/config';
 import SettingsPage from './SettingsPage';
 import EmployeeSetupModal from '../features/dashboard/EmployeeSetupModal';
 import { FileText, CheckCircle, XCircle, Clock, DollarSign, Ticket, AlertCircle, RefreshCw, Search, AlertTriangle, MapPin, Package } from 'lucide-react';
@@ -231,7 +232,7 @@ export default function EmployeePage({ view, currentUser }) {
                 </div>
                 <div style={{ display: 'flex', gap: 8 }}>
                   {c.fileUrl && (
-                    <a href={`http://localhost:4000${c.fileUrl}`} target="_blank" rel="noreferrer" className="btn outline" style={{ padding: '6px 14px', fontSize: '0.8rem', textDecoration: 'none' }}>
+                    <a href={resolveFileUrl(c.fileUrl)} target="_blank" rel="noreferrer" className="btn outline" style={{ padding: '6px 14px', fontSize: '0.8rem', textDecoration: 'none' }}>
                       📄 Tải file
                     </a>
                   )}
