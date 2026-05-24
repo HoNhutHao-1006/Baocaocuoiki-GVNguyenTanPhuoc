@@ -104,15 +104,15 @@ export default function AdvancedDashboard() {
       .catch(() => setAiLoading(false));
   }, []);
 
-  if (!stats) return <div style={{ padding: 60, textAlign: 'center' }}><div style={{ fontSize: 40, marginBottom: 10 }}>📊</div><div style={{ color: '#888', fontFamily: 'Outfit' }}>Dang tai du lieu phan tich...</div></div>;
+  if (!stats) return <div style={{ padding: 60, textAlign: 'center' }}><div style={{ fontSize: 40, marginBottom: 10 }}>📊</div><div style={{ color: '#888', fontFamily: 'Outfit' }}>Đang tải dữ liệu phân tích...</div></div>;
 
   const kpiCards = [
-    { label: 'Tong Doanh Thu', value: (stats.totalRevenue || 0), fmt: v => `${v.toLocaleString()}d`, icon: <DollarSign size={20} />, color: '#00F0FF', trend: '+12%', up: true },
-    { label: 'Ve Da Ban', value: stats.totalTicketsSold, fmt: v => v.toLocaleString(), icon: <ShoppingCart size={20} />, color: '#FF00E5', trend: `${stats.cancelledCount || 0} huy`, up: false },
-    { label: 'Thanh Vien', value: analytics?.totalMembers || stats.activeUsers, fmt: v => v.toLocaleString(), icon: <Users size={20} />, color: '#10B981', trend: `+${analytics?.newMembersThisMonth || 0} moi`, up: true },
-    { label: 'Su Kien', value: stats.totalEvents, fmt: v => v.toLocaleString(), icon: <Calendar size={20} />, color: '#F59E0B', trend: `${stats.pendingProposals} cho`, up: false },
-    { label: 'TB/Don Hang', value: Math.round(analytics?.avgOrderValue || 0), fmt: v => `${v.toLocaleString()}d`, icon: <Target size={20} />, color: '#8B5CF6', trend: `CR: ${(analytics?.conversionRate || 0).toFixed(0)}%`, up: true },
-    { label: 'Hop Dong', value: stats.totalContracts, fmt: v => v.toLocaleString(), icon: <FileText size={20} />, color: '#FF6B35', trend: 'Toan he thong', up: true },
+    { label: 'Tổng Doanh Thu', value: (stats.totalRevenue || 0), fmt: v => `${v.toLocaleString()}đ`, icon: <DollarSign size={20} />, color: '#00F0FF', trend: '+12%', up: true },
+    { label: 'Vé Đã Bán', value: stats.totalTicketsSold, fmt: v => v.toLocaleString(), icon: <ShoppingCart size={20} />, color: '#FF00E5', trend: `${stats.cancelledCount || 0} hủy`, up: false },
+    { label: 'Thành Viên', value: analytics?.totalMembers || stats.activeUsers, fmt: v => v.toLocaleString(), icon: <Users size={20} />, color: '#10B981', trend: `+${analytics?.newMembersThisMonth || 0} mới`, up: true },
+    { label: 'Sự Kiện', value: stats.totalEvents, fmt: v => v.toLocaleString(), icon: <Calendar size={20} />, color: '#F59E0B', trend: `${stats.pendingProposals} chờ`, up: false },
+    { label: 'TB/Đơn Hàng', value: Math.round(analytics?.avgOrderValue || 0), fmt: v => `${v.toLocaleString()}đ`, icon: <Target size={20} />, color: '#8B5CF6', trend: `CR: ${(analytics?.conversionRate || 0).toFixed(0)}%`, up: true },
+    { label: 'Hợp Đồng', value: stats.totalContracts, fmt: v => v.toLocaleString(), icon: <FileText size={20} />, color: '#FF6B35', trend: 'Toàn hệ thống', up: true },
   ];
 
   const mr = analytics?.monthlyRevenue || [];
@@ -140,9 +140,9 @@ export default function AdvancedDashboard() {
 
   // Anomaly detection
   const anomalies = [];
-  if (stats.totalRefunded > stats.totalRevenue * 0.2) anomalies.push({ msg: 'Ty le hoan tien cao bat thuong (>20% doanh thu)', severity: 'high' });
-  if (stats.cancelledCount > stats.totalTicketsSold * 0.3) anomalies.push({ msg: 'Ty le huy ve vuot nguong canh bao (>30%)', severity: 'high' });
-  if (stats.pendingProposals > 5) anomalies.push({ msg: `${stats.pendingProposals} de xuat dang cho duyet`, severity: 'medium' });
+  if (stats.totalRefunded > stats.totalRevenue * 0.2) anomalies.push({ msg: 'Tỷ lệ hoàn tiền cao bất thường (>20% doanh thu)', severity: 'high' });
+  if (stats.cancelledCount > stats.totalTicketsSold * 0.3) anomalies.push({ msg: 'Tỷ lệ hủy vé vượt ngưỡng cảnh báo (>30%)', severity: 'high' });
+  if (stats.pendingProposals > 5) anomalies.push({ msg: `${stats.pendingProposals} đề xuất đang chờ duyệt`, severity: 'medium' });
 
   return (
     <div>
@@ -153,18 +153,18 @@ export default function AdvancedDashboard() {
             <BarChart3 size={28} color="#00F0FF" />
           </div>
           <div>
-            <h2 className="page-title" style={{ marginBottom: 0 }}>Thong Ke & Bao Cao Toan Cau</h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', margin: 0 }}>Dashboard phan tich du lieu thoi gian thuc | Cap nhat: {lastUpdate.toLocaleTimeString('vi-VN')}</p>
+            <h2 className="page-title" style={{ marginBottom: 0 }}>Thống Kê & Báo Cáo Toàn Cầu</h2>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', margin: 0 }}>Dashboard phân tích dữ liệu thời gian thực | Cập nhật: {lastUpdate.toLocaleTimeString('vi-VN')}</p>
           </div>
         </div>
         <div style={{ display: 'flex', gap: 8 }}>
           {['all', '7d', '30d', '90d'].map(f => (
             <button key={f} onClick={() => setTimeFilter(f)} style={{ padding: '6px 14px', borderRadius: 8, border: `1px solid ${timeFilter === f ? '#00F0FF' : '#333'}`, background: timeFilter === f ? 'rgba(0,240,255,0.15)' : 'transparent', color: timeFilter === f ? '#00F0FF' : '#888', cursor: 'pointer', fontSize: '0.78rem', fontWeight: 600 }}>
-              {f === 'all' ? 'Tat ca' : f === '7d' ? '7 ngay' : f === '30d' ? '30 ngay' : '90 ngay'}
+              {f === 'all' ? 'Tất cả' : f === '7d' ? '7 ngày' : f === '30d' ? '30 ngày' : '90 ngày'}
             </button>
           ))}
           <button onClick={loadData} style={{ padding: '6px 12px', borderRadius: 8, border: '1px solid #333', background: 'transparent', color: '#888', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}>
-            <RefreshCw size={14} className={refreshing ? 'spin' : ''} /> Lam moi
+            <RefreshCw size={14} className={refreshing ? 'spin' : ''} /> Làm mới
           </button>
         </div>
       </div>
@@ -202,16 +202,16 @@ export default function AdvancedDashboard() {
       {/* Gauge Row */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 14, marginBottom: 22 }}>
         <div className="panel" style={{ padding: '16px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <GaugeChart value={analytics?.conversionRate || 0} max={100} label="Ty le chuyen doi" color="#10B981" />
+          <GaugeChart value={analytics?.conversionRate || 0} max={100} label="Tỷ lệ chuyển đổi" color="#10B981" />
         </div>
         <div className="panel" style={{ padding: '16px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <GaugeChart value={stats.totalTicketsSold} max={stats.totalTicketsSold + (stats.cancelledCount || 0)} label="Ty le giu ve" color="#00F0FF" />
+          <GaugeChart value={stats.totalTicketsSold} max={stats.totalTicketsSold + (stats.cancelledCount || 0)} label="Tỷ lệ giữ vé" color="#00F0FF" />
         </div>
         <div className="panel" style={{ padding: '16px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <GaugeChart value={stats.totalEvents - stats.pendingProposals} max={stats.totalEvents || 1} label="SK da duyet" color="#F59E0B" />
+          <GaugeChart value={stats.totalEvents - stats.pendingProposals} max={stats.totalEvents || 1} label="SK đã duyệt" color="#F59E0B" />
         </div>
         <div className="panel" style={{ padding: '16px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <GaugeChart value={stats.totalRevenue - (stats.totalRefunded || 0)} max={stats.totalRevenue || 1} label="Doanh thu thuc" color="#FF00E5" />
+          <GaugeChart value={stats.totalRevenue - (stats.totalRefunded || 0)} max={stats.totalRevenue || 1} label="Doanh thu thực" color="#FF00E5" />
         </div>
       </div>
 
@@ -220,10 +220,10 @@ export default function AdvancedDashboard() {
         {/* Revenue + Forecast */}
         <div className="panel">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}><TrendingUp size={18} color="#00F0FF" /><h3 style={{ margin: 0, fontSize: '0.9rem' }}>Doanh Thu & Du Bao</h3></div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}><TrendingUp size={18} color="#00F0FF" /><h3 style={{ margin: 0, fontSize: '0.9rem' }}>Doanh Thu & Dự Báo</h3></div>
             <div style={{ display: 'flex', gap: 12, fontSize: '0.7rem' }}>
-              <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><div style={{ width: 10, height: 4, borderRadius: 2, background: '#00F0FF' }} /> Thuc te</span>
-              <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><div style={{ width: 10, height: 4, borderRadius: 2, background: '#FF00E5', opacity: 0.5 }} /> Du bao</span>
+              <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><div style={{ width: 10, height: 4, borderRadius: 2, background: '#00F0FF' }} /> Thực tế</span>
+              <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><div style={{ width: 10, height: 4, borderRadius: 2, background: '#FF00E5', opacity: 0.5 }} /> Dự báo</span>
             </div>
           </div>
           <div style={{ height: 200, display: 'flex', alignItems: 'flex-end', gap: 4, paddingBottom: 22 }}>
@@ -239,15 +239,15 @@ export default function AdvancedDashboard() {
               );
             })}
           </div>
-          {drillDown && <div style={{ padding: '10px 14px', background: 'rgba(0,240,255,0.05)', borderRadius: 8, border: '1px solid rgba(0,240,255,0.15)', fontSize: '0.8rem', color: '#ccc' }}>📋 Drill-down: Thang {drillDown} — {mr.find(m => m.month === drillDown)?.orders || 0} don hang, doanh thu {(mr.find(m => m.month === drillDown)?.revenue || 0).toLocaleString()}d</div>}
+          {drillDown && <div style={{ padding: '10px 14px', background: 'rgba(0,240,255,0.05)', borderRadius: 8, border: '1px solid rgba(0,240,255,0.15)', fontSize: '0.8rem', color: '#ccc' }}>📋 Drill-down: Tháng {drillDown} — {mr.find(m => m.month === drillDown)?.orders || 0} đơn hàng, doanh thu {(mr.find(m => m.month === drillDown)?.revenue || 0).toLocaleString()}đ</div>}
         </div>
 
         {/* Donut - Event Types */}
         <div className="panel">
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18 }}><PieChart size={18} color="#FF00E5" /><h3 style={{ margin: 0, fontSize: '0.9rem' }}>Loai Su Kien</h3></div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18 }}><PieChart size={18} color="#FF00E5" /><h3 style={{ margin: 0, fontSize: '0.9rem' }}>Loại Sự Kiện</h3></div>
           <DonutChart data={analytics?.eventTypeStats || []} colors={etColors} />
           <div style={{ marginTop: 16, borderTop: '1px solid #333', paddingTop: 12 }}>
-            <div style={{ fontSize: '0.75rem', color: '#999', marginBottom: 6 }}>Trang thai don hang (Funnel)</div>
+            <div style={{ fontSize: '0.75rem', color: '#999', marginBottom: 6 }}>Trạng thái đơn hàng (Funnel)</div>
             <FunnelChart data={osData} colors={funnelColors} />
           </div>
         </div>
@@ -257,7 +257,7 @@ export default function AdvancedDashboard() {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
         {/* Contract Status */}
         <div className="panel">
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}><FileText size={16} color="#8B5CF6" /><h3 style={{ margin: 0, fontSize: '0.88rem' }}>Hop Dong</h3></div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}><FileText size={16} color="#8B5CF6" /><h3 style={{ margin: 0, fontSize: '0.88rem' }}>Hợp Đồng</h3></div>
           {(analytics?.contractStatusStats || []).map((cs, i) => {
             const total = (analytics?.contractStatusStats || []).reduce((s, c) => s + c.count, 0) || 1;
             const pct = Math.round((cs.count / total) * 100);
@@ -277,60 +277,60 @@ export default function AdvancedDashboard() {
 
         {/* Recent Contracts Table */}
         <div className="panel" style={{ gridColumn: 'span 2' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}><Activity size={16} color="var(--accent-color)" /><h3 style={{ margin: 0, fontSize: '0.88rem' }}>Bang Giao Dich Gan Day</h3></div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}><Activity size={16} color="var(--accent-color)" /><h3 style={{ margin: 0, fontSize: '0.88rem' }}>Bảng Giao Dịch Gần Đây</h3></div>
           <div style={{ overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.78rem' }}>
               <thead><tr style={{ borderBottom: '1px solid #444' }}>
-                <th style={{ padding: '8px 10px', textAlign: 'left', color: '#00F0FF', fontWeight: 600, fontSize: '0.72rem', textTransform: 'uppercase' }}>Ngay</th>
-                <th style={{ padding: '8px 10px', textAlign: 'left', color: '#00F0FF', fontWeight: 600, fontSize: '0.72rem', textTransform: 'uppercase' }}>Du an</th>
-                <th style={{ padding: '8px 10px', textAlign: 'right', color: '#00F0FF', fontWeight: 600, fontSize: '0.72rem', textTransform: 'uppercase' }}>Gia tri</th>
-                <th style={{ padding: '8px 10px', textAlign: 'center', color: '#00F0FF', fontWeight: 600, fontSize: '0.72rem', textTransform: 'uppercase' }}>Trang thai</th>
+                <th style={{ padding: '8px 10px', textAlign: 'left', color: '#00F0FF', fontWeight: 600, fontSize: '0.72rem', textTransform: 'uppercase' }}>Ngày</th>
+                <th style={{ padding: '8px 10px', textAlign: 'left', color: '#00F0FF', fontWeight: 600, fontSize: '0.72rem', textTransform: 'uppercase' }}>Dự án</th>
+                <th style={{ padding: '8px 10px', textAlign: 'right', color: '#00F0FF', fontWeight: 600, fontSize: '0.72rem', textTransform: 'uppercase' }}>Giá trị</th>
+                <th style={{ padding: '8px 10px', textAlign: 'center', color: '#00F0FF', fontWeight: 600, fontSize: '0.72rem', textTransform: 'uppercase' }}>Trạng thái</th>
               </tr></thead>
               <tbody>
                 {contracts.slice(0, 8).map((c, i) => (
                   <tr key={i} style={{ borderBottom: '1px solid #2a2a2a' }} onMouseEnter={e => e.currentTarget.style.background = 'rgba(0,240,255,0.03)'} onMouseLeave={e => e.currentTarget.style.background = ''}>
                     <td style={{ padding: '8px 10px', color: '#999' }}>{c.createdAt ? new Date(c.createdAt).toLocaleDateString('vi-VN') : '—'}</td>
                     <td style={{ padding: '8px 10px', color: '#ddd', maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{c.proposalTitle || c.details?.slice(0, 30) || '—'}</td>
-                    <td style={{ padding: '8px 10px', textAlign: 'right', color: '#fff', fontWeight: 600, fontFamily: 'Outfit' }}>{(c.totalAmount || 0).toLocaleString()}d</td>
+                    <td style={{ padding: '8px 10px', textAlign: 'right', color: '#fff', fontWeight: 600, fontFamily: 'Outfit' }}>{(c.totalAmount || 0).toLocaleString()}đ</td>
                     <td style={{ padding: '8px 10px', textAlign: 'center' }}>
                       <span className={`badge ${c.status === 'Paid' ? 'success' : c.status === 'Approved' ? 'blue' : c.status === 'Pending' ? 'warning' : 'error'}`}>{c.status}</span>
                     </td>
                   </tr>
                 ))}
-                {contracts.length === 0 && <tr><td colSpan={4} style={{ padding: 30, textAlign: 'center', color: '#666' }}>Chua co du lieu</td></tr>}
+                {contracts.length === 0 && <tr><td colSpan={4} style={{ padding: 30, textAlign: 'center', color: '#666' }}>Chưa có dữ liệu</td></tr>}
               </tbody>
             </table>
           </div>
         </div>
       </div>
 
-      {/* ═══ PHAN TICH DU BAO & CHIEN LUOC (AI-Powered) ═══ */}
+      {/* ═══ PHÂN TÍCH DỰ BÁO & CHIẾN LƯỢC (AI-Powered) ═══ */}
       <div style={{ marginTop: 22, padding: '20px 24px', background: 'linear-gradient(135deg,rgba(139,92,246,0.08),rgba(255,0,229,0.05))', borderRadius: 14, border: '1px solid rgba(139,92,246,0.2)' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <div style={{ width: 36, height: 36, borderRadius: 10, background: 'rgba(139,92,246,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>🔮</div>
             <div>
-              <h3 style={{ margin: 0, fontSize: '1rem', fontFamily: 'Outfit' }}>Phan Tich Du Bao & Chien Luoc (AI-Powered)</h3>
-              <div style={{ fontSize: '0.72rem', color: '#888' }}>Gemini AI | Data Mining | SWOT | Market Trends {aiInsights?.generatedAt ? `| Cap nhat: ${new Date(aiInsights.generatedAt).toLocaleString('vi-VN')}` : ''}</div>
+              <h3 style={{ margin: 0, fontSize: '1rem', fontFamily: 'Outfit' }}>Phân Tích Dự Báo & Chiến Lược (AI-Powered)</h3>
+              <div style={{ fontSize: '0.72rem', color: '#888' }}>Gemini AI | Data Mining | SWOT | Market Trends {aiInsights?.generatedAt ? `| Cập nhật: ${new Date(aiInsights.generatedAt).toLocaleString('vi-VN')}` : ''}</div>
             </div>
           </div>
           <button onClick={() => { setAiLoading(true); fetchGraphQL(`query { getAIInsights { swotStrengths swotWeaknesses swotOpportunities swotThreats marketTrends strategicRecommendations roadmapPhases { phase title items } generatedAt } }`).then(d => { setAiInsights(d.getAIInsights); setAiLoading(false); }).catch(() => setAiLoading(false)); }} style={{ padding: '6px 14px', borderRadius: 8, border: '1px solid rgba(139,92,246,0.4)', background: 'rgba(139,92,246,0.15)', color: '#8B5CF6', cursor: 'pointer', fontSize: '0.75rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6 }}>
-            {aiLoading ? '⏳ AI dang phan tich...' : '🤖 Phan tich lai bang AI'}
+            {aiLoading ? '⏳ AI đang phân tích...' : '🤖 Phân tích lại bằng AI'}
           </button>
         </div>
 
         {aiLoading && !aiInsights ? (
-          <div style={{ textAlign: 'center', padding: 40 }}><div style={{ fontSize: 30, marginBottom: 10 }}>🤖</div><div style={{ color: '#8B5CF6', fontFamily: 'Outfit' }}>Gemini AI dang phan tich du lieu he thong...</div></div>
+          <div style={{ textAlign: 'center', padding: 40 }}><div style={{ fontSize: 30, marginBottom: 10 }}>🤖</div><div style={{ color: '#8B5CF6', fontFamily: 'Outfit' }}>Gemini AI đang phân tích dữ liệu hệ thống...</div></div>
         ) : (
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
           {/* SWOT Analysis - AI Generated */}
           <div className="panel" style={{ padding: 18 }}>
-            <h4 style={{ margin: '0 0 14px', fontSize: '0.88rem', color: '#00F0FF' }}>📊 Phan Tich SWOT <span style={{ fontSize: '0.65rem', background: 'rgba(139,92,246,0.2)', padding: '2px 8px', borderRadius: 10, color: '#8B5CF6', marginLeft: 8 }}>🤖 AI Generated</span></h4>
+            <h4 style={{ margin: '0 0 14px', fontSize: '0.88rem', color: '#00F0FF' }}>📊 Phân Tích SWOT <span style={{ fontSize: '0.65rem', background: 'rgba(139,92,246,0.2)', padding: '2px 8px', borderRadius: 10, color: '#8B5CF6', marginLeft: 8 }}>🤖 AI Generated</span></h4>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-              {[{ title: '💪 Diem Manh', data: aiInsights?.swotStrengths, bg: 'rgba(16,185,129,0.08)', border: 'rgba(16,185,129,0.2)', color: '#10B981' },
-                { title: '⚠️ Diem Yeu', data: aiInsights?.swotWeaknesses, bg: 'rgba(239,68,68,0.08)', border: 'rgba(239,68,68,0.2)', color: '#EF4444' },
-                { title: '🚀 Co Hoi', data: aiInsights?.swotOpportunities, bg: 'rgba(0,240,255,0.08)', border: 'rgba(0,240,255,0.2)', color: '#00F0FF' },
-                { title: '🔥 Thach Thuc', data: aiInsights?.swotThreats, bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.2)', color: '#F59E0B' },
+              {[{ title: '💪 Điểm Mạnh', data: aiInsights?.swotStrengths, bg: 'rgba(16,185,129,0.08)', border: 'rgba(16,185,129,0.2)', color: '#10B981' },
+                { title: '⚠️ Điểm Yếu', data: aiInsights?.swotWeaknesses, bg: 'rgba(239,68,68,0.08)', border: 'rgba(239,68,68,0.2)', color: '#EF4444' },
+                { title: '🚀 Cơ Hội', data: aiInsights?.swotOpportunities, bg: 'rgba(0,240,255,0.08)', border: 'rgba(0,240,255,0.2)', color: '#00F0FF' },
+                { title: '🔥 Thách Thức', data: aiInsights?.swotThreats, bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.2)', color: '#F59E0B' },
               ].map((section, idx) => (
                 <div key={idx} style={{ padding: 12, borderRadius: 10, background: section.bg, border: `1px solid ${section.border}` }}>
                   <div style={{ fontWeight: 700, color: section.color, fontSize: '0.78rem', marginBottom: 6 }}>{section.title}</div>
@@ -344,8 +344,8 @@ export default function AdvancedDashboard() {
 
           {/* Market Trends + Strategic Recommendations - AI Generated */}
           <div className="panel" style={{ padding: 18 }}>
-            <h4 style={{ margin: '0 0 14px', fontSize: '0.88rem', color: '#FF00E5' }}>📈 Xu Huong & Khuyen Nghi <span style={{ fontSize: '0.65rem', background: 'rgba(139,92,246,0.2)', padding: '2px 8px', borderRadius: 10, color: '#8B5CF6', marginLeft: 8 }}>🤖 AI Generated</span></h4>
-            <div style={{ fontSize: '0.75rem', color: '#00F0FF', fontWeight: 600, marginBottom: 8 }}>Xu huong thi truong:</div>
+            <h4 style={{ margin: '0 0 14px', fontSize: '0.88rem', color: '#FF00E5' }}>📈 Xu Hướng & Khuyến Nghị <span style={{ fontSize: '0.65rem', background: 'rgba(139,92,246,0.2)', padding: '2px 8px', borderRadius: 10, color: '#8B5CF6', marginLeft: 8 }}>🤖 AI Generated</span></h4>
+            <div style={{ fontSize: '0.75rem', color: '#00F0FF', fontWeight: 600, marginBottom: 8 }}>Xu hướng thị trường:</div>
             {(aiInsights?.marketTrends || []).map((t, i) => {
               const etC = ['#00F0FF', '#FF00E5', '#8B5CF6', '#10B981', '#F59E0B'];
               const numMatch = t.match(/(\d+)%?/);
@@ -361,12 +361,12 @@ export default function AdvancedDashboard() {
                 </div>
               );
             })}
-            <div style={{ fontSize: '0.75rem', color: '#F59E0B', fontWeight: 600, margin: '14px 0 8px' }}>🎯 Khuyen nghi chien luoc:</div>
+            <div style={{ fontSize: '0.75rem', color: '#F59E0B', fontWeight: 600, margin: '14px 0 8px' }}>🎯 Khuyến nghị chiến lược:</div>
             <ul style={{ margin: 0, paddingLeft: 16, fontSize: '0.7rem', color: '#ccc', lineHeight: 1.8 }}>
               {(aiInsights?.strategicRecommendations || []).map((r, i) => <li key={i}>{r}</li>)}
             </ul>
             <div style={{ marginTop: 12, padding: '8px 12px', background: 'rgba(139,92,246,0.08)', borderRadius: 8, border: '1px solid rgba(139,92,246,0.15)', fontSize: '0.68rem', color: '#8B5CF6' }}>
-              🤖 Phan tich boi Google Gemini AI dua tren du lieu thuc cua he thong Lumina EMS
+              🤖 Phân tích bởi Google Gemini AI dựa trên dữ liệu thực của hệ thống Lumina EMS
             </div>
           </div>
         </div>
@@ -374,14 +374,14 @@ export default function AdvancedDashboard() {
 
         {/* Strategic Roadmap - AI Generated */}
         <div className="panel" style={{ padding: 18 }}>
-          <h4 style={{ margin: '0 0 14px', fontSize: '0.88rem', color: '#F59E0B' }}>🗺️ Lo Trinh Chien Luoc <span style={{ fontSize: '0.65rem', background: 'rgba(139,92,246,0.2)', padding: '2px 8px', borderRadius: 10, color: '#8B5CF6', marginLeft: 8 }}>🤖 AI Generated</span></h4>
+          <h4 style={{ margin: '0 0 14px', fontSize: '0.88rem', color: '#F59E0B' }}>🗺️ Lộ Trình Chiến Lược <span style={{ fontSize: '0.65rem', background: 'rgba(139,92,246,0.2)', padding: '2px 8px', borderRadius: 10, color: '#8B5CF6', marginLeft: 8 }}>🤖 AI Generated</span></h4>
           <div style={{ display: 'flex', gap: 0, position: 'relative' }}>
             <div style={{ position: 'absolute', top: 20, left: 30, right: 30, height: 3, background: 'linear-gradient(90deg, #00F0FF, #FF00E5, #F59E0B, #10B981)', borderRadius: 2, zIndex: 0 }} />
             {(aiInsights?.roadmapPhases || [
-              { phase: 'Q3/2026', title: 'Toi uu hoa', items: ['Dang cho AI...'] },
-              { phase: 'Q4/2026', title: 'Ca nhan hoa', items: ['Dang cho AI...'] },
-              { phase: 'Q1/2027', title: 'Mo rong', items: ['Dang cho AI...'] },
-              { phase: 'Q2/2027', title: 'Dai duong xanh', items: ['Dang cho AI...'] },
+              { phase: 'Q3/2026', title: 'Tối ưu hóa', items: ['Đang chờ AI...'] },
+              { phase: 'Q4/2026', title: 'Cá nhân hóa', items: ['Đang chờ AI...'] },
+              { phase: 'Q1/2027', title: 'Mở rộng', items: ['Đang chờ AI...'] },
+              { phase: 'Q2/2027', title: 'Đại dương xanh', items: ['Đang chờ AI...'] },
             ]).map((p, i) => {
               const colors = ['#00F0FF', '#FF00E5', '#F59E0B', '#10B981'];
               const icons = ['⚡', '🎯', '🚀', '🌊'];
@@ -402,10 +402,10 @@ export default function AdvancedDashboard() {
         {/* Data Mining Tools */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 10, marginTop: 16 }}>
           {[
-            { name: 'SimilarWeb', desc: 'Luu luong & nguon KH', icon: '🌐', color: '#00F0FF' },
-            { name: 'SEMrush', desc: 'SEO & Quang cao', icon: '🔍', color: '#FF00E5' },
-            { name: 'BuzzSumo', desc: 'Noi dung viral', icon: '📱', color: '#F59E0B' },
-            { name: 'Gemini AI', desc: 'Phan tich tu dong', icon: '🤖', color: '#10B981' },
+            { name: 'SimilarWeb', desc: 'Lưu lượng & nguồn KH', icon: '🌐', color: '#00F0FF' },
+            { name: 'SEMrush', desc: 'SEO & Quảng cáo', icon: '🔍', color: '#FF00E5' },
+            { name: 'BuzzSumo', desc: 'Nội dung viral', icon: '📱', color: '#F59E0B' },
+            { name: 'Gemini AI', desc: 'Phân tích tự động', icon: '🤖', color: '#10B981' },
           ].map((tool, i) => (
             <div key={i} style={{ padding: '12px 14px', borderRadius: 10, background: `${tool.color}08`, border: `1px solid ${tool.color}20`, textAlign: 'center', cursor: 'pointer', transition: 'transform 0.2s' }} onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.03)'} onMouseLeave={e => e.currentTarget.style.transform = ''}>
               <div style={{ fontSize: 22, marginBottom: 4 }}>{tool.icon}</div>
@@ -417,13 +417,13 @@ export default function AdvancedDashboard() {
 
         <div style={{ marginTop: 14, padding: '10px 16px', background: 'rgba(245,158,11,0.06)', borderRadius: 8, border: '1px solid rgba(245,158,11,0.15)', fontSize: '0.72rem', color: '#999', display: 'flex', alignItems: 'center', gap: 8 }}>
           <AlertTriangle size={14} color="#F59E0B" />
-          Luu y: Phan tich SWOT va xu huong duoc tao tu dong boi Gemini AI dua tren du lieu THUC TE cua he thong. Nhan nut "Phan tich lai" de cap nhat moi nhat.
+          Lưu ý: Phân tích SWOT và xu hướng được tạo tự động bởi Gemini AI dựa trên dữ liệu THỰC TẾ của hệ thống. Nhấn nút "Phân tích lại" để cập nhật mới nhất.
         </div>
       </div>
 
       {/* Footer info */}
       <div style={{ marginTop: 20, padding: '12px 18px', background: 'rgba(0,240,255,0.03)', borderRadius: 10, border: '1px solid rgba(0,240,255,0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.72rem', color: '#666' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}><Clock size={12} /> Tu dong cap nhat moi 30 giay | Da nang trang (Responsive) | Phan quyen Admin</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}><Clock size={12} /> Tự động cập nhật mỗi 30 giây | Đa nền tảng (Responsive) | Phân quyền Admin</div>
         <div style={{ display: 'flex', gap: 12 }}>
           <span>🔗 Real-time WebSocket</span>
           <span>📊 {mr.length} thang du lieu</span>

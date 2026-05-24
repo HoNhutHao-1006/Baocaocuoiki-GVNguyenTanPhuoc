@@ -3,29 +3,29 @@ import { fetchGraphQL } from '../../api/axiosClient';
 
 const EVENT_CATEGORIES = [
   { value: 'Concert', label: '🎵 Concert', icon: '🎵' },
-  { value: 'Wedding', label: '💒 Dam cuoi', icon: '💒' },
+  { value: 'Wedding', label: '💒 Đám cưới', icon: '💒' },
   { value: 'Workshop', label: '📚 Workshop', icon: '📚' },
   { value: 'TeamBuilding', label: '🏕️ Team Building', icon: '🏕️' },
-  { value: 'Conference', label: '🎤 Hoi thao', icon: '🎤' },
-  { value: 'Birthday', label: '🎂 Sinh nhat', icon: '🎂' },
-  { value: 'Sports', label: '⚽ The thao', icon: '⚽' },
-  { value: 'Exhibition', label: '🎨 Trien lam', icon: '🎨' },
+  { value: 'Conference', label: '🎤 Hội thảo', icon: '🎤' },
+  { value: 'Birthday', label: '🎂 Sinh nhật', icon: '🎂' },
+  { value: 'Sports', label: '⚽ Thể thao', icon: '⚽' },
+  { value: 'Exhibition', label: '🎨 Triển lãm', icon: '🎨' },
 ];
 
 const STEPS = [
-  { id: 1, title: 'Thong tin co ban', icon: '🏷️' },
-  { id: 2, title: 'Hau can & Thoi gian', icon: '📍' },
-  { id: 3, title: 'Ve & RSVP', icon: '🎫' },
-  { id: 4, title: 'Noi dung & Nhan su', icon: '👥' },
-  { id: 5, title: 'Tai chinh', icon: '💰' },
+  { id: 1, title: 'Thông tin cơ bản', icon: '🏷️' },
+  { id: 2, title: 'Hậu cần & Thời gian', icon: '📍' },
+  { id: 3, title: 'Vé & RSVP', icon: '🎫' },
+  { id: 4, title: 'Nội dung & Nhân sự', icon: '👥' },
+  { id: 5, title: 'Tài chính', icon: '💰' },
 ];
 
 const WEDDING_STEPS = [
-  { id: 1, title: 'Thong tin Cap doi', icon: '💕' },
-  { id: 2, title: 'Hau can Dam cuoi', icon: '📍' },
-  { id: 3, title: 'RSVP & Thuc don', icon: '🍽️' },
-  { id: 4, title: 'Cho ngoi & Qua tang', icon: '🎁' },
-  { id: 5, title: 'Tai chinh', icon: '💰' },
+  { id: 1, title: 'Thông tin Cặp đôi', icon: '💕' },
+  { id: 2, title: 'Hậu cần Đám cưới', icon: '📍' },
+  { id: 3, title: 'RSVP & Thực đơn', icon: '🍽️' },
+  { id: 4, title: 'Chỗ ngồi & Quà tặng', icon: '🎁' },
+  { id: 5, title: 'Tài chính', icon: '💰' },
 ];
 
 const inputStyle = { width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid #444', background: '#111', color: '#fff', fontSize: '0.88rem', fontFamily: 'Outfit', outline: 'none', boxSizing: 'border-box' };
@@ -100,8 +100,8 @@ export default function EventProposalWizard({ onClose, onSubmit, currentUser }) 
   if (step === 0) return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={e => e.stopPropagation()} style={{ width: 620, maxHeight: '85vh', overflowY: 'auto' }}>
-        <h2 style={{ fontFamily: 'Outfit', fontWeight: 800, textAlign: 'center', marginBottom: 8 }}>🎉 Tao De Xuat Su Kien</h2>
-        <p style={{ textAlign: 'center', color: '#888', fontSize: '0.88rem', marginBottom: 24 }}>Chon loai hinh su kien de bat dau</p>
+        <h2 style={{ fontFamily: 'Outfit', fontWeight: 800, textAlign: 'center', marginBottom: 8 }}>🎉 Tạo Đề Xuất Sự Kiện</h2>
+        <p style={{ textAlign: 'center', color: '#888', fontSize: '0.88rem', marginBottom: 24 }}>Chọn loại hình sự kiện để bắt đầu</p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
           {EVENT_CATEGORIES.map(c => (
             <div key={c.value} onClick={() => { setCategory(c.value); setStep(1); }}
@@ -113,7 +113,7 @@ export default function EventProposalWizard({ onClose, onSubmit, currentUser }) 
             </div>
           ))}
         </div>
-        <button className="btn outline" style={{ marginTop: 20, width: '100%' }} onClick={onClose}>Huy</button>
+        <button className="btn outline" style={{ marginTop: 20, width: '100%' }} onClick={onClose}>Hủy</button>
       </div>
     </div>
   );
@@ -123,35 +123,35 @@ export default function EventProposalWizard({ onClose, onSubmit, currentUser }) 
       switch (step) {
         case 1: return (<>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-            <div style={sectionStyle}><label style={labelStyle}>💒 Ten su kien *</label><input style={inputStyle} required value={form.title} onChange={e => set('title', e.target.value)} placeholder="VD: Dam cuoi Van Loc - Thanh Thu" /></div>
-            <div style={sectionStyle}><label style={labelStyle}>📋 Phan loai</label><select style={inputStyle} value={form.eventType} onChange={e => set('eventType', e.target.value)}><option value="PUBLIC">Cong khai</option><option value="PRIVATE">Rieng tu</option></select></div>
+            <div style={sectionStyle}><label style={labelStyle}>💒 Tên sự kiện *</label><input style={inputStyle} required value={form.title} onChange={e => set('title', e.target.value)} placeholder="VD: Đám cưới Văn Lộc - Thanh Thư" /></div>
+            <div style={sectionStyle}><label style={labelStyle}>📋 Phân loại</label><select style={inputStyle} value={form.eventType} onChange={e => set('eventType', e.target.value)}><option value="PUBLIC">Công khai</option><option value="PRIVATE">Riêng tư</option></select></div>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-            <div style={sectionStyle}><label style={labelStyle}>👰 Ho ten Co dau *</label><input style={inputStyle} value={form.brideName} onChange={e => set('brideName', e.target.value)} placeholder="Nguyen Thi Thanh Thu" /></div>
-            <div style={sectionStyle}><label style={labelStyle}>🤵 Ho ten Chu re *</label><input style={inputStyle} value={form.groomName} onChange={e => set('groomName', e.target.value)} placeholder="Tran Van Loc" /></div>
+            <div style={sectionStyle}><label style={labelStyle}>👰 Họ tên Cô dâu *</label><input style={inputStyle} value={form.brideName} onChange={e => set('brideName', e.target.value)} placeholder="Nguyễn Thị Thanh Thư" /></div>
+            <div style={sectionStyle}><label style={labelStyle}>🤵 Họ tên Chú rể *</label><input style={inputStyle} value={form.groomName} onChange={e => set('groomName', e.target.value)} placeholder="Trần Văn Lộc" /></div>
           </div>
-          <div style={sectionStyle}><label style={labelStyle}>💕 Cau chuyen tinh yeu</label><textarea style={{ ...inputStyle, minHeight: 80, resize: 'vertical' }} value={form.loveStory} onChange={e => set('loveStory', e.target.value)} placeholder="Ke ve hanh trinh tu luc quen nhau den khi ket hon..." /></div>
-          <div style={sectionStyle}><label style={labelStyle}>📝 Mo ta su kien *</label><textarea style={{ ...inputStyle, minHeight: 60, resize: 'vertical' }} required value={form.description} onChange={e => set('description', e.target.value)} placeholder="Muc dich, thong diep gui den khach moi..." /></div>
-          <div style={sectionStyle}><label style={labelStyle}>🖼️ Anh bia (URL)</label><input style={inputStyle} value={form.coverImg} onChange={e => set('coverImg', e.target.value)} placeholder="Link anh pre-wedding hoac banner" /></div>
+          <div style={sectionStyle}><label style={labelStyle}>💕 Câu chuyện tình yêu</label><textarea style={{ ...inputStyle, minHeight: 80, resize: 'vertical' }} value={form.loveStory} onChange={e => set('loveStory', e.target.value)} placeholder="Kể về hành trình từ lúc quen nhau đến khi kết hôn..." /></div>
+          <div style={sectionStyle}><label style={labelStyle}>📝 Mô tả sự kiện *</label><textarea style={{ ...inputStyle, minHeight: 60, resize: 'vertical' }} required value={form.description} onChange={e => set('description', e.target.value)} placeholder="Mục đích, thông điệp gửi đến khách mời..." /></div>
+          <div style={sectionStyle}><label style={labelStyle}>🖼️ Ảnh bìa (URL)</label><input style={inputStyle} value={form.coverImg} onChange={e => set('coverImg', e.target.value)} placeholder="Link ảnh pre-wedding hoặc banner" /></div>
         </>);
         case 2: return (<>
           <div style={{ padding: 14, borderRadius: 10, background: 'rgba(255,0,229,0.05)', border: '1px solid rgba(255,0,229,0.15)', marginBottom: 14 }}>
-            <div style={{ fontWeight: 700, color: '#FF00E5', fontSize: '0.85rem', marginBottom: 10 }}>🏠 Le Gia Tien</div>
+            <div style={{ fontWeight: 700, color: '#FF00E5', fontSize: '0.85rem', marginBottom: 10 }}>🏠 Lễ Gia Tiên</div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-              <div style={sectionStyle}><label style={labelStyle}>📍 Dia chi nha trai/gai</label><input style={inputStyle} value={form.ceremonyAddress} onChange={e => set('ceremonyAddress', e.target.value)} /></div>
-              <div style={sectionStyle}><label style={labelStyle}>⏰ Thoi gian lam le</label><input type="time" style={inputStyle} value={form.ceremonyTime} onChange={e => set('ceremonyTime', e.target.value)} /></div>
+              <div style={sectionStyle}><label style={labelStyle}>📍 Địa chỉ nhà trai/gái</label><input style={inputStyle} value={form.ceremonyAddress} onChange={e => set('ceremonyAddress', e.target.value)} /></div>
+              <div style={sectionStyle}><label style={labelStyle}>⏰ Thời gian làm lễ</label><input type="time" style={inputStyle} value={form.ceremonyTime} onChange={e => set('ceremonyTime', e.target.value)} /></div>
             </div>
           </div>
           <div style={{ padding: 14, borderRadius: 10, background: 'rgba(0,240,255,0.05)', border: '1px solid rgba(0,240,255,0.15)', marginBottom: 14 }}>
-            <div style={{ fontWeight: 700, color: '#00F0FF', fontSize: '0.85rem', marginBottom: 10 }}>🎊 Tiec Cuoi</div>
+            <div style={{ fontWeight: 700, color: '#00F0FF', fontSize: '0.85rem', marginBottom: 10 }}>🎊 Tiệc Cưới</div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-              <div style={sectionStyle}><label style={labelStyle}>📅 Ngay cuoi *</label><input type="date" style={inputStyle} required value={form.expectedDate} onChange={e => set('expectedDate', e.target.value)} /></div>
-              <div style={sectionStyle}><label style={labelStyle}>🏛️ Ten sanh tiec</label><input style={inputStyle} value={form.receptionVenue} onChange={e => set('receptionVenue', e.target.value)} placeholder="VD: Sanh Diamond, GEM Center" /></div>
+              <div style={sectionStyle}><label style={labelStyle}>📅 Ngày cưới *</label><input type="date" style={inputStyle} required value={form.expectedDate} onChange={e => set('expectedDate', e.target.value)} /></div>
+              <div style={sectionStyle}><label style={labelStyle}>🏛️ Tên sảnh tiệc</label><input style={inputStyle} value={form.receptionVenue} onChange={e => set('receptionVenue', e.target.value)} placeholder="VD: Sảnh Diamond, GEM Center" /></div>
             </div>
             <div style={sectionStyle}>
-              <label style={labelStyle}>📍 Dia diem *</label>
+              <label style={labelStyle}>📍 Địa điểm *</label>
               <select style={inputStyle} required value={form.expectedLocation} onChange={e => set('expectedLocation', e.target.value)}>
-                <option value="">-- Chon dia diem --</option>
+                <option value="">-- Chọn địa điểm --</option>
                 {locations.map(loc => (<option key={loc.id} value={loc.name}>{loc.name} {loc.address ? `(${loc.address})` : ''}</option>))}
               </select>
               <div style={{ marginTop: 6, display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -166,58 +166,58 @@ export default function EventProposalWizard({ onClose, onSubmit, currentUser }) 
               {dateConflict.conflictingEvents.map((e, i) => (<div key={i} style={{ fontSize: '0.82rem', color: '#ff8888' }}>• "{e.title}" — {e.date}</div>))}
             </div>
           )}
-          <div style={sectionStyle}><label style={labelStyle}>📋 Lich trinh (Timeline)</label><textarea style={{ ...inputStyle, minHeight: 70, resize: 'vertical' }} value={form.weddingTimeline} onChange={e => set('weddingTimeline', e.target.value)} placeholder="17:30 Don khach → 19:00 Le chinh → 19:30 Nhap tiec → 21:00 Tiec tan" /></div>
+          <div style={sectionStyle}><label style={labelStyle}>📋 Lịch trình (Timeline)</label><textarea style={{ ...inputStyle, minHeight: 70, resize: 'vertical' }} value={form.weddingTimeline} onChange={e => set('weddingTimeline', e.target.value)} placeholder="17:30 Đón khách → 19:00 Lễ chính → 19:30 Nhập tiệc → 21:00 Tiệc tàn" /></div>
         </>);
         case 3: return (<>
           <div style={{ padding: 14, borderRadius: 10, background: 'rgba(16,185,129,0.05)', border: '1px solid rgba(16,185,129,0.15)', marginBottom: 14 }}>
-            <div style={{ fontWeight: 700, color: '#10B981', fontSize: '0.85rem', marginBottom: 10 }}>📋 Cau hinh RSVP</div>
-            <div style={sectionStyle}><label style={labelStyle}>👥 Nhom khach moi</label><textarea style={{ ...inputStyle, minHeight: 60, resize: 'vertical' }} value={form.guestGroups} onChange={e => set('guestGroups', e.target.value)} placeholder="Ho noi, Ho ngoai, Ban dai hoc, Dong nghiep..." /></div>
+            <div style={{ fontWeight: 700, color: '#10B981', fontSize: '0.85rem', marginBottom: 10 }}>📋 Cấu hình RSVP</div>
+            <div style={sectionStyle}><label style={labelStyle}>👥 Nhóm khách mời</label><textarea style={{ ...inputStyle, minHeight: 60, resize: 'vertical' }} value={form.guestGroups} onChange={e => set('guestGroups', e.target.value)} placeholder="Họ nội, Họ ngoại, Bạn đại học, Đồng nghiệp..." /></div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-              <div style={sectionStyle}><label style={labelStyle}>📅 Han chot xac nhan</label><input type="date" style={inputStyle} value={form.rsvpDeadline} onChange={e => set('rsvpDeadline', e.target.value)} /></div>
-              <div style={sectionStyle}><label style={labelStyle}>🍽️ Yeu cau an uong</label><input style={inputStyle} value={form.dietaryOptions} onChange={e => set('dietaryOptions', e.target.value)} placeholder="Chay, di ung dau phong, hai san..." /></div>
+              <div style={sectionStyle}><label style={labelStyle}>📅 Hạn chót xác nhận</label><input type="date" style={inputStyle} value={form.rsvpDeadline} onChange={e => set('rsvpDeadline', e.target.value)} /></div>
+              <div style={sectionStyle}><label style={labelStyle}>🍽️ Yêu cầu ăn uống</label><input style={inputStyle} value={form.dietaryOptions} onChange={e => set('dietaryOptions', e.target.value)} placeholder="Chay, dị ứng đậu phộng, hải sản..." /></div>
             </div>
           </div>
-          <div style={sectionStyle}><label style={labelStyle}>❓ Cau hoi RSVP them</label><textarea style={{ ...inputStyle, minHeight: 50, resize: 'vertical' }} value={form.rsvpQuestions} onChange={e => set('rsvpQuestions', e.target.value)} placeholder="Can ho tro xe dua don? Co tre em di cung?" /></div>
+          <div style={sectionStyle}><label style={labelStyle}>❓ Câu hỏi RSVP thêm</label><textarea style={{ ...inputStyle, minHeight: 50, resize: 'vertical' }} value={form.rsvpQuestions} onChange={e => set('rsvpQuestions', e.target.value)} placeholder="Cần hỗ trợ xe đưa đón? Có trẻ em đi cùng?" /></div>
         </>);
         case 4: return (<>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-            <div style={sectionStyle}><label style={labelStyle}>🍽️ So ban tiec</label><input type="number" style={inputStyle} value={form.tableCount} onChange={e => set('tableCount', e.target.value)} placeholder="VD: 30" /></div>
-            <div style={sectionStyle}><label style={labelStyle}>💺 So ghe/ban</label><input type="number" style={inputStyle} value={form.seatsPerTable} onChange={e => set('seatsPerTable', e.target.value)} placeholder="VD: 10" /></div>
+            <div style={sectionStyle}><label style={labelStyle}>🍽️ Số bàn tiệc</label><input type="number" style={inputStyle} value={form.tableCount} onChange={e => set('tableCount', e.target.value)} placeholder="VD: 30" /></div>
+            <div style={sectionStyle}><label style={labelStyle}>💺 Số ghế/bàn</label><input type="number" style={inputStyle} value={form.seatsPerTable} onChange={e => set('seatsPerTable', e.target.value)} placeholder="VD: 10" /></div>
           </div>
-          <div style={sectionStyle}><label style={labelStyle}>🎁 Danh sach qua tang (Gift Registry)</label><textarea style={{ ...inputStyle, minHeight: 60, resize: 'vertical' }} value={form.giftRegistry} onChange={e => set('giftRegistry', e.target.value)} placeholder="May pha ca phe, lo vi song, bo chan ga..." /></div>
-          <div style={sectionStyle}><label style={labelStyle}>🎶 Dich vu can thue</label><textarea style={{ ...inputStyle, minHeight: 50, resize: 'vertical' }} value={form.services} onChange={e => set('services', e.target.value)} placeholder="Am thanh, anh sang, quay phim, chup anh, MC..." /></div>
+          <div style={sectionStyle}><label style={labelStyle}>🎁 Danh sách quà tặng (Gift Registry)</label><textarea style={{ ...inputStyle, minHeight: 60, resize: 'vertical' }} value={form.giftRegistry} onChange={e => set('giftRegistry', e.target.value)} placeholder="Máy pha cà phê, lò vi sóng, bộ chăn ga..." /></div>
+          <div style={sectionStyle}><label style={labelStyle}>🎶 Dịch vụ cần thuê</label><textarea style={{ ...inputStyle, minHeight: 50, resize: 'vertical' }} value={form.services} onChange={e => set('services', e.target.value)} placeholder="Âm thanh, ánh sáng, quay phim, chụp ảnh, MC..." /></div>
         </>);
         default: return null;
       }
     } else {
       switch (step) {
         case 1: return (<>
-          <div style={sectionStyle}><label style={labelStyle}>🏷️ Ten su kien *</label><input style={inputStyle} required value={form.title} onChange={e => set('title', e.target.value)} placeholder="VD: Hoi thao AI 2026" /></div>
+          <div style={sectionStyle}><label style={labelStyle}>🏷️ Tên sự kiện *</label><input style={inputStyle} required value={form.title} onChange={e => set('title', e.target.value)} placeholder="VD: Hội thảo AI 2026" /></div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-            <div style={sectionStyle}><label style={labelStyle}>📋 Loai hinh</label>
+            <div style={sectionStyle}><label style={labelStyle}>📋 Loại hình</label>
               <select style={inputStyle} value={category} onChange={e => setCategory(e.target.value)}>
                 {EVENT_CATEGORIES.filter(c => c.value !== 'Wedding').map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
               </select>
             </div>
-            <div style={sectionStyle}><label style={labelStyle}>🔒 Phan loai</label><select style={inputStyle} value={form.eventType} onChange={e => set('eventType', e.target.value)}><option value="PUBLIC">Cong khai</option><option value="PRIVATE">Rieng tu</option></select></div>
+            <div style={sectionStyle}><label style={labelStyle}>🔒 Phân loại</label><select style={inputStyle} value={form.eventType} onChange={e => set('eventType', e.target.value)}><option value="PUBLIC">Công khai</option><option value="PRIVATE">Riêng tư</option></select></div>
           </div>
-          <div style={sectionStyle}><label style={labelStyle}>📝 Mo ta su kien *</label><textarea style={{ ...inputStyle, minHeight: 80, resize: 'vertical' }} required value={form.description} onChange={e => set('description', e.target.value)} placeholder="Noi dung tom tat, muc dich va thong diep..." /></div>
-          <div style={sectionStyle}><label style={labelStyle}>🖼️ Anh dai dien (URL)</label><input style={inputStyle} value={form.coverImg} onChange={e => set('coverImg', e.target.value)} placeholder="Link anh banner/cover" /></div>
+          <div style={sectionStyle}><label style={labelStyle}>📝 Mô tả sự kiện *</label><textarea style={{ ...inputStyle, minHeight: 80, resize: 'vertical' }} required value={form.description} onChange={e => set('description', e.target.value)} placeholder="Nội dung tóm tắt, mục đích và thông điệp..." /></div>
+          <div style={sectionStyle}><label style={labelStyle}>🖼️ Ảnh đại diện (URL)</label><input style={inputStyle} value={form.coverImg} onChange={e => set('coverImg', e.target.value)} placeholder="Link ảnh banner/cover" /></div>
         </>);
         case 2: return (<>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-            <div style={sectionStyle}><label style={labelStyle}>📅 Ngay bat dau *</label><input type="date" style={inputStyle} required value={form.expectedDate} onChange={e => set('expectedDate', e.target.value)} /></div>
-            <div style={sectionStyle}><label style={labelStyle}>📅 Ngay ket thuc</label><input type="date" style={inputStyle} value={form.endDate} onChange={e => set('endDate', e.target.value)} /></div>
+            <div style={sectionStyle}><label style={labelStyle}>📅 Ngày bắt đầu *</label><input type="date" style={inputStyle} required value={form.expectedDate} onChange={e => set('expectedDate', e.target.value)} /></div>
+            <div style={sectionStyle}><label style={labelStyle}>📅 Ngày kết thúc</label><input type="date" style={inputStyle} value={form.endDate} onChange={e => set('endDate', e.target.value)} /></div>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-            <div style={sectionStyle}><label style={labelStyle}>⏰ Gio bat dau</label><input type="time" style={inputStyle} value={form.startTime} onChange={e => set('startTime', e.target.value)} /></div>
-            <div style={sectionStyle}><label style={labelStyle}>⏰ Gio ket thuc</label><input type="time" style={inputStyle} value={form.endTime} onChange={e => set('endTime', e.target.value)} /></div>
+            <div style={sectionStyle}><label style={labelStyle}>⏰ Giờ bắt đầu</label><input type="time" style={inputStyle} value={form.startTime} onChange={e => set('startTime', e.target.value)} /></div>
+            <div style={sectionStyle}><label style={labelStyle}>⏰ Giờ kết thúc</label><input type="time" style={inputStyle} value={form.endTime} onChange={e => set('endTime', e.target.value)} /></div>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 12 }}>
             <div style={sectionStyle}>
-              <label style={labelStyle}>📍 Dia diem *</label>
+              <label style={labelStyle}>📍 Địa điểm *</label>
               <select style={inputStyle} required value={form.expectedLocation} onChange={e => set('expectedLocation', e.target.value)}>
-                <option value="">-- Chon dia diem --</option>
+                <option value="">-- Chọn địa điểm --</option>
                 {locations.map(loc => (
                   <option key={loc.id} value={loc.name}>{loc.name} {loc.address ? `(${loc.address})` : ''} {loc.capacity ? `— ${loc.capacity} chỗ` : ''}</option>
                 ))}
@@ -227,9 +227,9 @@ export default function EventProposalWizard({ onClose, onSubmit, currentUser }) 
                 <button type="button" onClick={() => setShowLocationRequest(true)} style={{ background: 'none', border: '1px solid rgba(0,240,255,0.3)', color: '#00F0FF', borderRadius: 6, padding: '3px 10px', fontSize: '0.75rem', cursor: 'pointer', fontFamily: 'Outfit' }}>+ Yêu cầu địa điểm mới</button>
               </div>
             </div>
-            <div style={sectionStyle}><label style={labelStyle}>🌐 Hinh thuc</label>
+            <div style={sectionStyle}><label style={labelStyle}>🌐 Hình thức</label>
               <select style={inputStyle} value={form.locationType} onChange={e => set('locationType', e.target.value)}>
-                <option value="offline">Truc tiep</option><option value="online">Truc tuyen</option><option value="hybrid">Hybrid</option>
+                <option value="offline">Trực tiếp</option><option value="online">Trực tuyến</option><option value="hybrid">Hybrid</option>
               </select>
             </div>
           </div>
@@ -247,25 +247,25 @@ export default function EventProposalWizard({ onClose, onSubmit, currentUser }) 
             <div style={{ fontSize: '0.82rem', color: '#10B981', marginBottom: 10 }}>✅ Không có sự kiện trùng lịch tại địa điểm này.</div>
           )}
           {(form.locationType === 'online' || form.locationType === 'hybrid') && (
-            <div style={sectionStyle}><label style={labelStyle}>🔗 Link truc tuyen</label><input style={inputStyle} value={form.onlineLink} onChange={e => set('onlineLink', e.target.value)} placeholder="Zoom, Google Meet..." /></div>
+            <div style={sectionStyle}><label style={labelStyle}>🔗 Link trực tuyến</label><input style={inputStyle} value={form.onlineLink} onChange={e => set('onlineLink', e.target.value)} placeholder="Zoom, Google Meet..." /></div>
           )}
-          <div style={sectionStyle}><label style={labelStyle}>📋 Lich trinh chi tiet</label><textarea style={{ ...inputStyle, minHeight: 60, resize: 'vertical' }} value={form.timeline} onChange={e => set('timeline', e.target.value)} placeholder="08:00 Don khach → 09:00 Khai mac → 12:00 Nghi trua..." /></div>
+          <div style={sectionStyle}><label style={labelStyle}>📋 Lịch trình chi tiết</label><textarea style={{ ...inputStyle, minHeight: 60, resize: 'vertical' }} value={form.timeline} onChange={e => set('timeline', e.target.value)} placeholder="08:00 Đón khách → 09:00 Khai mạc → 12:00 Nghỉ trưa..." /></div>
         </>);
         case 3: return (<>
           <div style={{ padding: 14, borderRadius: 10, background: 'rgba(0,240,255,0.05)', border: '1px solid rgba(0,240,255,0.15)', marginBottom: 14 }}>
-            <div style={{ fontWeight: 700, color: '#00F0FF', fontSize: '0.85rem', marginBottom: 10 }}>🎫 Cau hinh Ve</div>
-            <div style={sectionStyle}><label style={labelStyle}>Cac loai ve (moi dong 1 loai)</label><textarea style={{ ...inputStyle, minHeight: 70, resize: 'vertical' }} value={form.ticketTiers} onChange={e => set('ticketTiers', e.target.value)} placeholder="VIP - 2,000,000d - 50 ve&#10;GA - 500,000d - 200 ve&#10;Early Bird - 350,000d - 100 ve" /></div>
+            <div style={{ fontWeight: 700, color: '#00F0FF', fontSize: '0.85rem', marginBottom: 10 }}>🎫 Cấu hình Vé</div>
+            <div style={sectionStyle}><label style={labelStyle}>Các loại vé (mỗi dòng 1 loại)</label><textarea style={{ ...inputStyle, minHeight: 70, resize: 'vertical' }} value={form.ticketTiers} onChange={e => set('ticketTiers', e.target.value)} placeholder={"VIP - 2,000,000đ - 50 vé\nGA - 500,000đ - 200 vé\nEarly Bird - 350,000đ - 100 vé"} /></div>
           </div>
           <div style={{ padding: 14, borderRadius: 10, background: 'rgba(16,185,129,0.05)', border: '1px solid rgba(16,185,129,0.15)' }}>
-            <div style={{ fontWeight: 700, color: '#10B981', fontSize: '0.85rem', marginBottom: 10 }}>📋 Cau hinh RSVP</div>
-            <div style={sectionStyle}><label style={labelStyle}>❓ Cau hoi xac nhan</label><textarea style={{ ...inputStyle, minHeight: 50, resize: 'vertical' }} value={form.rsvpQuestions} onChange={e => set('rsvpQuestions', e.target.value)} placeholder="Ban co tham gia? Co di cung ai? Yeu cau dac biet?" /></div>
-            <div style={sectionStyle}><label style={labelStyle}>📅 Han chot phan hoi</label><input type="date" style={inputStyle} value={form.rsvpDeadline} onChange={e => set('rsvpDeadline', e.target.value)} /></div>
+            <div style={{ fontWeight: 700, color: '#10B981', fontSize: '0.85rem', marginBottom: 10 }}>📋 Cấu hình RSVP</div>
+            <div style={sectionStyle}><label style={labelStyle}>❓ Câu hỏi xác nhận</label><textarea style={{ ...inputStyle, minHeight: 50, resize: 'vertical' }} value={form.rsvpQuestions} onChange={e => set('rsvpQuestions', e.target.value)} placeholder="Bạn có tham gia? Có đi cùng ai? Yêu cầu đặc biệt?" /></div>
+            <div style={sectionStyle}><label style={labelStyle}>📅 Hạn chót phản hồi</label><input type="date" style={inputStyle} value={form.rsvpDeadline} onChange={e => set('rsvpDeadline', e.target.value)} /></div>
           </div>
         </>);
         case 4: return (<>
-          <div style={sectionStyle}><label style={labelStyle}>🎤 Dien gia / Nghe si</label><textarea style={{ ...inputStyle, minHeight: 60, resize: 'vertical' }} value={form.speakers} onChange={e => set('speakers', e.target.value)} placeholder="Ho ten - Chuc danh - Tieu su ngan&#10;VD: Nguyen Van A - CEO ABC - Chuyen gia AI..." /></div>
-          <div style={sectionStyle}><label style={labelStyle}>📄 Tai lieu su kien</label><textarea style={{ ...inputStyle, minHeight: 50, resize: 'vertical' }} value={form.documents} onChange={e => set('documents', e.target.value)} placeholder="Slide thuyet trinh, PDF tai lieu, Kich ban MC..." /></div>
-          <div style={sectionStyle}><label style={labelStyle}>🔧 Dich vu can thue</label><textarea style={{ ...inputStyle, minHeight: 50, resize: 'vertical' }} value={form.services} onChange={e => set('services', e.target.value)} placeholder="Am thanh, anh sang, quay phim, chup anh, MC..." /></div>
+          <div style={sectionStyle}><label style={labelStyle}>🎤 Diễn giả / Nghệ sĩ</label><textarea style={{ ...inputStyle, minHeight: 60, resize: 'vertical' }} value={form.speakers} onChange={e => set('speakers', e.target.value)} placeholder={"Họ tên - Chức danh - Tiểu sử ngắn\nVD: Nguyễn Văn A - CEO ABC - Chuyên gia AI..."} /></div>
+          <div style={sectionStyle}><label style={labelStyle}>📄 Tài liệu sự kiện</label><textarea style={{ ...inputStyle, minHeight: 50, resize: 'vertical' }} value={form.documents} onChange={e => set('documents', e.target.value)} placeholder="Slide thuyết trình, PDF tài liệu, Kịch bản MC..." /></div>
+          <div style={sectionStyle}><label style={labelStyle}>🔧 Dịch vụ cần thuê</label><textarea style={{ ...inputStyle, minHeight: 50, resize: 'vertical' }} value={form.services} onChange={e => set('services', e.target.value)} placeholder="Âm thanh, ánh sáng, quay phim, chụp ảnh, MC..." /></div>
         </>);
         default: return null;
       }
@@ -276,15 +276,15 @@ export default function EventProposalWizard({ onClose, onSubmit, currentUser }) 
   const renderFinance = () => (
     <>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-        <div style={sectionStyle}><label style={labelStyle}>💰 Ngan sach tong (VND) *</label><input type="number" style={inputStyle} value={form.budget} onChange={e => set('budget', e.target.value)} placeholder="50,000,000" /></div>
-        <div style={sectionStyle}><label style={labelStyle}>🏦 Thong tin ngan hang</label><input style={inputStyle} value={form.bankInfo} onChange={e => set('bankInfo', e.target.value)} placeholder="STK - Ngan hang - Chu TK" /></div>
+        <div style={sectionStyle}><label style={labelStyle}>💰 Ngân sách tổng (VNĐ) *</label><input type="number" style={inputStyle} value={form.budget} onChange={e => set('budget', e.target.value)} placeholder="50,000,000" /></div>
+        <div style={sectionStyle}><label style={labelStyle}>🏦 Thông tin ngân hàng</label><input style={inputStyle} value={form.bankInfo} onChange={e => set('bankInfo', e.target.value)} placeholder="STK - Ngân hàng - Chủ TK" /></div>
       </div>
       {isWedding && (
-        <div style={sectionStyle}><label style={labelStyle}>📱 Ma QR mung cuoi (URL)</label><input style={inputStyle} value={form.bankQR} onChange={e => set('bankQR', e.target.value)} placeholder="Link anh ma QR" /></div>
+        <div style={sectionStyle}><label style={labelStyle}>📱 Mã QR mừng cưới (URL)</label><input style={inputStyle} value={form.bankQR} onChange={e => set('bankQR', e.target.value)} placeholder="Link ảnh mã QR" /></div>
       )}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-        <div style={sectionStyle}><label style={labelStyle}>🎟️ Ma giam gia</label><input style={inputStyle} value={form.couponCode} onChange={e => set('couponCode', e.target.value)} placeholder="VD: EARLY20" /></div>
-        <div style={sectionStyle}><label style={labelStyle}>📉 Muc chiet khau (%)</label><input type="number" style={inputStyle} min={0} max={100} value={form.couponDiscount} onChange={e => set('couponDiscount', e.target.value)} placeholder="20" /></div>
+        <div style={sectionStyle}><label style={labelStyle}>🎟️ Mã giảm giá</label><input style={inputStyle} value={form.couponCode} onChange={e => set('couponCode', e.target.value)} placeholder="VD: EARLY20" /></div>
+        <div style={sectionStyle}><label style={labelStyle}>📉 Mức chiết khấu (%)</label><input type="number" style={inputStyle} min={0} max={100} value={form.couponDiscount} onChange={e => set('couponDiscount', e.target.value)} placeholder="20" /></div>
       </div>
     </>
   );
@@ -299,8 +299,8 @@ export default function EventProposalWizard({ onClose, onSubmit, currentUser }) 
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
             <div style={{ fontSize: 28 }}>{isWedding ? '💒' : '🎉'}</div>
             <div>
-              <h2 style={{ margin: 0, fontFamily: 'Outfit', fontWeight: 800, fontSize: '1.1rem' }}>De Xuat Su Kien - {EVENT_CATEGORIES.find(c => c.value === category)?.label}</h2>
-              <div style={{ fontSize: '0.75rem', color: '#888' }}>Buoc {step}/5 • {currentStepData?.title}</div>
+              <h2 style={{ margin: 0, fontFamily: 'Outfit', fontWeight: 800, fontSize: '1.1rem' }}>Đề Xuất Sự Kiện - {EVENT_CATEGORIES.find(c => c.value === category)?.label}</h2>
+              <div style={{ fontSize: '0.75rem', color: '#888' }}>Bước {step}/5 • {currentStepData?.title}</div>
             </div>
           </div>
           <div style={{ display: 'flex', gap: 4 }}>
@@ -317,14 +317,14 @@ export default function EventProposalWizard({ onClose, onSubmit, currentUser }) 
         </div>
         <div style={{ padding: '14px 28px', borderTop: '1px solid #333', display: 'flex', justifyContent: 'space-between', gap: 10 }}>
           <button className="btn outline" onClick={() => step === 1 ? setStep(0) : setStep(step - 1)} style={{ padding: '8px 20px' }}>
-            ← {step === 1 ? 'Chon lai' : 'Quay lai'}
+            ← {step === 1 ? 'Chọn lại' : 'Quay lại'}
           </button>
           <div style={{ display: 'flex', gap: 8 }}>
-            <button className="btn outline" onClick={onClose} style={{ padding: '8px 16px' }}>Huy</button>
+            <button className="btn outline" onClick={onClose} style={{ padding: '8px 16px' }}>Hủy</button>
             {step < 5 ? (
-              <button className="btn" onClick={() => setStep(step + 1)} style={{ padding: '8px 24px' }}>Tiep theo →</button>
+              <button className="btn" onClick={() => setStep(step + 1)} style={{ padding: '8px 24px' }}>Tiếp theo →</button>
             ) : (
-              <button className="btn" onClick={handleSubmit} style={{ padding: '8px 24px', background: 'linear-gradient(135deg, #10B981, #059669)' }}>✅ Gui de xuat</button>
+              <button className="btn" onClick={handleSubmit} style={{ padding: '8px 24px', background: 'linear-gradient(135deg, #10B981, #059669)' }}>✅ Gửi đề xuất</button>
             )}
           </div>
         </div>

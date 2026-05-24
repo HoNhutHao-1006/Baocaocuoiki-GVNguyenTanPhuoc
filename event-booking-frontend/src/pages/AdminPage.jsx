@@ -188,24 +188,24 @@ export default function AdminPage({ view }) {
 
   if (view === 'contracts') return (<>
     <GenericCRUD key={view} 
-        title="Quan Ly Hop Dong Toan He Thong" 
+        title="Quản Lý Hợp Đồng Toàn Hệ Thống" 
         headerIllustration={<IllustrationContract />}
         dataQuery="query C($page: Int, $limit: Int) { getAllContracts(page: $page, limit: $limit) { id details totalAmount status createdAt memberId fileUrl fileName proposalTitle } }" dataKey="getAllContracts" 
         enableDateFilter={true}
         dateFilterKey="createdAt"
         columns={[
-          { key: 'createdAt', label: 'Ngay Tao', render: r => { try { const d = r.createdAt; if (!d) return '—'; const date = new Date(isNaN(d) ? d : parseInt(d)); return isNaN(date) ? '—' : date.toLocaleDateString('vi-VN'); } catch { return '—'; }}},
-          { key: 'proposalTitle', label: 'Du An', render: r => r.proposalTitle || '—' },
-          { key: 'details', label: 'Chi Tiet', render: r => <span style={{maxWidth:120,display:'inline-block',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{r.details?.slice(0,40)}</span> },
-          { key: 'totalAmount', label: 'Gia Tri', render: r => `${r.totalAmount?.toLocaleString()}d` },
-          { key: 'status', label: 'Trang Thai', render: r => <span className={`badge ${r.status === 'Paid' ? 'success' : r.status === 'Approved' ? 'blue' : r.status === 'Pending' ? 'warning' : 'error'}`}>{r.status}</span> },
+          { key: 'createdAt', label: 'Ngày Tạo', render: r => { try { const d = r.createdAt; if (!d) return '—'; const date = new Date(isNaN(d) ? d : parseInt(d)); return isNaN(date) ? '—' : date.toLocaleDateString('vi-VN'); } catch { return '—'; }}},
+          { key: 'proposalTitle', label: 'Dự Án', render: r => r.proposalTitle || '—' },
+          { key: 'details', label: 'Chi Tiết', render: r => <span style={{maxWidth:120,display:'inline-block',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{r.details?.slice(0,40)}</span> },
+          { key: 'totalAmount', label: 'Giá Trị', render: r => `${r.totalAmount?.toLocaleString()}đ` },
+          { key: 'status', label: 'Trạng Thái', render: r => <span className={`badge ${r.status === 'Paid' ? 'success' : r.status === 'Approved' ? 'blue' : r.status === 'Pending' ? 'warning' : 'error'}`}>{r.status}</span> },
           { label: 'Xem', render: (r) => (
-            <button className="btn outline" style={{padding:'6px 12px',fontSize:'0.8rem'}} onClick={() => setSelectedContract(r)}><Eye size={14} style={{marginRight:4}}/>Chi tiet</button>
+            <button className="btn outline" style={{padding:'6px 12px',fontSize:'0.8rem'}} onClick={() => setSelectedContract(r)}><Eye size={14} style={{marginRight:4}}/>Chi tiết</button>
           )},
-          { label: 'Duyet/Huy', render: (r, load) => (
+          { label: 'Duyệt/Hủy', render: (r, load) => (
             <div style={{ display: 'flex', gap: 5 }}>
-              <button className="btn outline" onClick={() => handleUpdateContract(r.id, 'Approved', load)} disabled={r.status !== 'Pending'}>Duyet</button>
-              <button className="btn outline" style={{ color: '#ff4444', borderColor: '#ff4444' }} onClick={() => handleUpdateContract(r.id, 'Cancelled', load)} disabled={r.status === 'Cancelled' || r.status === 'Paid'}>Huy</button>
+              <button className="btn outline" onClick={() => handleUpdateContract(r.id, 'Approved', load)} disabled={r.status !== 'Pending'}>Duyệt</button>
+              <button className="btn outline" style={{ color: '#ff4444', borderColor: '#ff4444' }} onClick={() => handleUpdateContract(r.id, 'Cancelled', load)} disabled={r.status === 'Cancelled' || r.status === 'Paid'}>Hủy</button>
             </div>
           )}
         ]} 

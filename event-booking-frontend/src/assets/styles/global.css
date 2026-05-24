@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap');
 
 :root {
   --primary-color: #00F0FF;     /* Neon Cyan */
@@ -25,7 +25,7 @@
 body { 
   background-color: var(--bg-main); 
   color: var(--text-main); 
-  font-family: 'Inter', sans-serif; 
+  font-family: 'Be Vietnam Pro', 'Inter', sans-serif; 
   line-height: 1.5; 
   overflow-x: hidden;
   background-image: radial-gradient(circle at 15% 50%, rgba(255,0,229,0.08), transparent 25%),

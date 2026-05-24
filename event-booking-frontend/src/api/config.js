@@ -1,8 +1,7 @@
 /**
- * API Configuration — Centralized URL for both Web & Capacitor (Mobile)
+ * API Configuration — Centralized URL for Web
  * 
- * On web: uses current hostname (e.g., localhost:4000)
- * On mobile (Capacitor): uses VITE_API_URL env var or fallback to LAN IP
+ * Uses VITE_API_URL env var if set, otherwise auto-detects from current hostname
  */
 
 const getApiBaseUrl = () => {
@@ -11,13 +10,7 @@ const getApiBaseUrl = () => {
     return import.meta.env.VITE_API_URL;
   }
 
-  // Priority 2: Capacitor native app — need explicit IP since localhost won't work
-  if (window.Capacitor?.isNativePlatform()) {
-    // Change this to your computer's LAN IP when testing on real device
-    return 'http://192.168.1.16:4000';
-  }
-
-  // Priority 3: Web browser — use current hostname
+  // Priority 2: Web browser — use current hostname
   return `http://${window.location.hostname}:4000`;
 };
 

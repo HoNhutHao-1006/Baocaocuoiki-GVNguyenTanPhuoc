@@ -4,11 +4,11 @@ import { X, FileText, ClipboardList, CheckSquare, FileCheck, CreditCard, Printer
 import { ServiceContract, ContractAppendix, AcceptanceReport, LiquidationReport, PaymentRequest } from './ContractDocuments';
 
 const TABS = [
-  { key: 'contract', label: 'Hop dong dich vu', icon: FileText, color: '#00F0FF' },
-  { key: 'appendix', label: 'Phu luc hop dong', icon: ClipboardList, color: '#FF00E5' },
-  { key: 'acceptance', label: 'BB Nghiem thu', icon: CheckSquare, color: '#10B981' },
-  { key: 'liquidation', label: 'BB Thanh ly', icon: FileCheck, color: '#F59E0B' },
-  { key: 'payment', label: 'De nghi thanh toan', icon: CreditCard, color: '#8B5CF6' },
+  { key: 'contract', label: 'Hợp đồng dịch vụ', icon: FileText, color: '#00F0FF' },
+  { key: 'appendix', label: 'Phụ lục hợp đồng', icon: ClipboardList, color: '#FF00E5' },
+  { key: 'acceptance', label: 'BB Nghiệm thu', icon: CheckSquare, color: '#10B981' },
+  { key: 'liquidation', label: 'BB Thanh lý', icon: FileCheck, color: '#F59E0B' },
+  { key: 'payment', label: 'Đề nghị thanh toán', icon: CreditCard, color: '#8B5CF6' },
 ];
 
 export default function ContractDetailModal({ contract, onClose }) {
@@ -35,7 +35,7 @@ export default function ContractDetailModal({ contract, onClose }) {
     const content = document.getElementById('contract-doc-content');
     if (!content) return;
     const w = window.open('', '_blank');
-    w.document.write(`<html><head><title>Hop Dong</title><style>body{font-family:'Times New Roman',serif;padding:40px;color:#1a1a1a}table{border-collapse:collapse;width:100%}th,td{border:1px solid #999;padding:8px}</style></head><body>${content.innerHTML}</body></html>`);
+    w.document.write(`<html><head><title>Hợp Đồng</title><style>body{font-family:'Times New Roman',serif;padding:40px;color:#1a1a1a}table{border-collapse:collapse;width:100%}th,td{border:1px solid #999;padding:8px}</style></head><body>${content.innerHTML}</body></html>`);
     w.document.close();
     w.print();
   };
@@ -57,7 +57,7 @@ export default function ContractDetailModal({ contract, onClose }) {
         {/* Sidebar tabs */}
         <div style={{ width:220,background:'rgba(0,0,0,0.3)',borderRight:'1px solid rgba(255,255,255,0.08)',padding:'20px 0',display:'flex',flexDirection:'column' }}>
           <div style={{ padding:'10px 20px 25px',borderBottom:'1px solid rgba(255,255,255,0.08)' }}>
-            <h3 style={{ color:'#fff',fontSize:'1rem',fontFamily:'Outfit',margin:0 }}>Chi Tiet Hop Dong</h3>
+            <h3 style={{ color:'#fff',fontSize:'1rem',fontFamily:'Outfit',margin:0 }}>Chi Tiết Hợp Đồng</h3>
             <div style={{ fontSize:'0.8rem',color:'var(--text-muted)',marginTop:4 }}>HD-{(d.id||'').slice(-6).toUpperCase()}</div>
             <div style={{ marginTop:8 }}>
               <span style={{ padding:'3px 10px',borderRadius:20,fontSize:'0.75rem',fontWeight:600,background: d.status==='Paid'?'rgba(16,185,129,0.2)':d.status==='Approved'?'rgba(0,240,255,0.2)':'rgba(245,158,11,0.2)',color: d.status==='Paid'?'#10B981':d.status==='Approved'?'#00F0FF':'#F59E0B' }}>{d.status}</span>
@@ -92,7 +92,7 @@ export default function ContractDetailModal({ contract, onClose }) {
             <button onClick={onClose} style={{ background:'rgba(255,255,255,0.1)',border:'none',borderRadius:8,padding:6,cursor:'pointer',color:'#fff',display:'flex' }}><X size={18}/></button>
           </div>
           <div id="contract-doc-content" style={{ flex:1,overflowY:'auto',padding:25 }}>
-            {loading ? <div style={{ textAlign:'center',padding:60,color:'var(--text-muted)' }}>Dang tai du lieu...</div> : renderDoc()}
+            {loading ? <div style={{ textAlign:'center',padding:60,color:'var(--text-muted)' }}>Đang tải dữ liệu...</div> : renderDoc()}
           </div>
         </div>
       </div>
