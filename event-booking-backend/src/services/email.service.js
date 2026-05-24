@@ -1,4 +1,28 @@
 const nodemailer = require('nodemailer');
+const os = require('os');
+
+function getLocalIpAddress() {
+    const interfaces = os.networkInterfaces();
+    // Try to find common local network subnets first
+    for (const name of Object.keys(interfaces)) {
+        for (const iface of interfaces[name]) {
+            if (iface.family === 'IPv4' && !iface.internal) {
+                if (iface.address.startsWith('192.168.') || iface.address.startsWith('10.') || iface.address.startsWith('172.')) {
+                    return iface.address;
+                }
+            }
+        }
+    }
+    // Fallback to any non-internal IPv4
+    for (const name of Object.keys(interfaces)) {
+        for (const iface of interfaces[name]) {
+            if (iface.family === 'IPv4' && !iface.internal) {
+                return iface.address;
+            }
+        }
+    }
+    return 'localhost';
+}
 
 // Configure transporter — uses env vars or fallback to Ethereal test account
 let transporter = null;
@@ -86,7 +110,9 @@ async function sendVerificationEmail(toEmail, code, fullname) {
 
 async function sendEventInvitationEmail(toEmail, { guestName, eventTitle, eventDescription, eventDate, eventLocation, senderName, senderPhone, senderEmail, qrCode, eventId }) {
     const t = await getTransporter();
-    const rsvpUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/?rsvp=${eventId}`;
+    const localIp = getLocalIpAddress();
+    const defaultFrontend = `http://${localIp}:5173`;
+    const rsvpUrl = `${process.env.FRONTEND_URL || defaultFrontend}/?rsvp=${eventId}`;
     const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${qrCode}`;
 
     const htmlBody = `
