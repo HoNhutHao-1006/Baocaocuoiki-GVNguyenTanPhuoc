@@ -106,9 +106,9 @@ const startServer = async () => {
     }));
     
     const PORT = process.env.PORT || 4000;
-    httpServer.listen(PORT, () => {
-        console.log(`🚀 Server ready at http://localhost:${PORT}`);
-        console.log(`🚀 GraphQL at http://localhost:${PORT}/graphql`);
+    httpServer.listen(PORT, '0.0.0.0', () => {
+        console.log(`🚀 Server ready at http://0.0.0.0:${PORT}`);
+        console.log(`🚀 GraphQL at http://0.0.0.0:${PORT}/graphql`);
     });
 };
 

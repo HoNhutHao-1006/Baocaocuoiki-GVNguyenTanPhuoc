@@ -10,8 +10,8 @@ const getApiBaseUrl = () => {
     return import.meta.env.VITE_API_URL;
   }
 
-  // Priority 2: Web browser — use current hostname
-  return `http://${window.location.hostname}:4000`;
+  // Priority 2: Use relative path to leverage Vite proxy in development
+  return '';
 };
 
 export const API_URL = getApiBaseUrl();

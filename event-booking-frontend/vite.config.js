@@ -8,6 +8,25 @@ export default defineConfig({
   server: {
     host: true,
     port: 5173,
+    proxy: {
+      '/graphql': {
+        target: 'http://localhost:4000',
+        changeOrigin: true,
+        ws: true
+      },
+      '/uploads': {
+        target: 'http://localhost:4000',
+        changeOrigin: true
+      },
+      '/upload-avatar': {
+        target: 'http://localhost:4000',
+        changeOrigin: true
+      },
+      '/upload-contract': {
+        target: 'http://localhost:4000',
+        changeOrigin: true
+      }
+    }
   },
   build: {
     outDir: 'dist',

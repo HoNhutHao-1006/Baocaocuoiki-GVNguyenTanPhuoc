@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { fetchGraphQL } from '../api/axiosClient';
 
+// Helper to validate MongoDB ObjectId
+const isValidObjectId = (id) => /^[0-9a-fA-F]{24}$/.test(id);
+
 // Helper to format date nicely
 const formatEventDate = (dateStr) => {
   try {
@@ -53,13 +56,24 @@ export default function RsvpPage({ eventId }) {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [submittedData, setSubmittedData] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    if (!eventId || !isValidObjectId(eventId)) {
+      setError("Mã thiệp mời (ID) không hợp lệ hoặc thiếu. Vui lòng kiểm tra lại liên kết trong email.");
+      return;
+    }
+
     fetchGraphQL(`query Get($id: ID!) { getEventDetail(id: $id) { id title date location coverImg description } }`, { id: eventId })
       .then(d => {
         if (d && d.getEventDetail) {
           setEvent(d.getEventDetail);
+        } else {
+          setError("Không tìm thấy thông tin sự kiện hoặc đề xuất tương ứng với mã này.");
         }
+      })
+      .catch(err => {
+        setError(`Không thể kết nối đến máy chủ API: ${err.message}. Vui lòng kiểm tra kết nối mạng của thiết bị.`);
       });
   }, [eventId]);
 
@@ -93,6 +107,22 @@ export default function RsvpPage({ eventId }) {
       setSubmitting(false);
     }
   };
+
+  if (error) {
+    return (
+      <div style={{ minHeight: '100vh', background: '#f8fafc', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '20px', fontFamily: "'Be Vietnam Pro', 'Outfit', sans-serif" }}>
+        <div style={{ background: '#fff', padding: '40px 30px', borderRadius: '24px', boxShadow: '0 20px 40px rgba(0,0,0,0.05)', textAlign: 'center', maxWidth: '450px', border: '1px solid #e2e8f0' }}>
+          <div style={{ fontSize: '48px', marginBottom: '16px' }}>⚠️</div>
+          <h3 style={{ margin: '0 0 10px 0', color: '#0f172a', fontSize: '18px', fontWeight: 700 }}>Không Thể Tải Thiệp Mời</h3>
+          <p style={{ fontSize: '14px', color: '#64748b', margin: '0 0 24px 0', lineHeight: 1.6 }}>{error}</p>
+          <button onClick={() => window.location.reload()} style={{ width: '100%', padding: '12px', background: '#1e3c72', color: '#fff', border: 'none', borderRadius: '8px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s' }}
+                  onMouseEnter={e => e.currentTarget.style.background = '#2a5298'} onMouseLeave={e => e.currentTarget.style.background = '#1e3c72'}>
+            Tải lại trang
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (!event) {
     return (
