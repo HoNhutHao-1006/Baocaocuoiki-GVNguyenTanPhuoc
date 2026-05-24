@@ -238,7 +238,7 @@ const resolvers = {
   },
   Guest: {
     id: (p) => p._id?.toString() || p.id,
-    eventId: (p) => p.eventId?.toString(),
+    eventId: (p) => p.eventId?.toString() || p.proposalId?.toString() || '',
     tableId: (p) => p.tableId ? p.tableId.toString() : null
   },
   Location: { id: (p) => p._id?.toString() || p.id },
@@ -296,7 +296,23 @@ const resolvers = {
       return await Event.find().skip((page - 1) * limit).limit(limit);
     },
 
-    getEventDetail: async (_, { id }) => await Event.findById(id),
+    getEventDetail: async (_, { id }) => {
+      let event = await Event.findById(id);
+      if (!event) {
+        const prop = await EventProposal.findById(id);
+        if (prop) {
+          event = {
+            id: prop._id.toString(),
+            title: prop.title,
+            date: prop.expectedDate,
+            location: prop.expectedLocation,
+            description: prop.description,
+            coverImg: 'https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=600'
+          };
+        }
+      }
+      return event;
+    },
 
     getOrganizerEvents: async (_, { organizerId }) => await Event.find({ organizerId }),
 
@@ -746,7 +762,40 @@ Hay tra loi CHINH XAC theo format JSON sau (KHONG giai thich them, CHI tra ve JS
     },
 
     submitRSVP: async (_, args) => {
-      return await Rsvp.findOneAndUpdate({ phone: args.phone, eventId: args.eventId }, args, { upsert: true, new: true });
+      let rsvp = await Rsvp.findOne({
+        phone: args.phone,
+        $or: [
+          { eventId: args.eventId },
+          { proposalId: args.eventId }
+        ]
+      });
+
+      if (rsvp) {
+        rsvp.status = args.status;
+        if (args.dietary !== undefined) rsvp.dietary = args.dietary;
+        if (args.plusOnes !== undefined) rsvp.plusOnes = args.plusOnes;
+        if (args.note !== undefined) rsvp.note = args.note;
+        if (args.name) rsvp.name = args.name;
+        await rsvp.save();
+      } else {
+        const isProposal = (await EventProposal.findById(args.eventId)) !== null;
+        const createData = {
+          name: args.name,
+          phone: args.phone,
+          status: args.status,
+          dietary: args.dietary || '',
+          plusOnes: args.plusOnes || 0,
+          note: args.note || '',
+          qrCode: `INV-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
+        };
+        if (isProposal) {
+          createData.proposalId = args.eventId;
+        } else {
+          createData.eventId = args.eventId;
+        }
+        rsvp = await Rsvp.create(createData);
+      }
+      return rsvp;
     },
 
     verifyTicketCheckin: async (_, { ticketId, otp }) => {
