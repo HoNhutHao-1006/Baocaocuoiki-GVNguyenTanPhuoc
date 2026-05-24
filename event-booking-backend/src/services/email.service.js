@@ -84,4 +84,122 @@ async function sendVerificationEmail(toEmail, code, fullname) {
     return info;
 }
 
-module.exports = { generateVerificationCode, sendVerificationEmail };
+async function sendEventInvitationEmail(toEmail, { guestName, eventTitle, eventDescription, eventDate, eventLocation, senderName, senderPhone, senderEmail, qrCode, eventId }) {
+    const t = await getTransporter();
+    const rsvpUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/?rsvp=${eventId}`;
+    const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${qrCode}`;
+
+    const htmlBody = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Thư Mời Tham Dự Sự Kiện</title>
+    </head>
+    <body style="margin:0;padding:0;background-color:#f4f6f8;font-family:'Segoe UI',Arial,sans-serif;-webkit-font-smoothing:antialiased;">
+      <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color:#f4f6f8;padding: 40px 0;">
+        <tr>
+          <td align="center">
+            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;background-color:#ffffff;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.05);border:1px solid #e1e8ed;overflow:hidden;">
+              <!-- Header Banner -->
+              <tr>
+                <td align="center" style="background:linear-gradient(135deg,#1e3c72 0%,#2a5298 100%);padding:40px 30px;color:#ffffff;">
+                  <h1 style="margin:0;font-size:26px;font-weight:700;letter-spacing:1px;font-family:'Outfit','Segoe UI',sans-serif;">LUMINA EMS</h1>
+                  <p style="margin:10px 0 0 0;font-size:14px;color:rgba(255,255,255,0.85);text-transform:uppercase;letter-spacing:2px;">THƯ MỜI TRÂN TRỌNG</p>
+                </td>
+              </tr>
+              <!-- Content Body -->
+              <tr>
+                <td style="padding:40px 30px;color:#333333;font-size:15px;line-height:1.6;">
+                  <p style="margin:0 0 20px 0;font-size:16px;">Kính gửi Anh/Chị <strong style="color:#1e3c72;font-size:17px;">${guestName}</strong>,</p>
+                  
+                  <p style="margin:0 0 20px 0;">Thay mặt ban tổ chức, chúng tôi trân trọng kính mời Anh/Chị tham dự sự kiện chuyên đề:</p>
+                  
+                  <h2 style="margin:0 0 20px 0;font-size:20px;color:#111111;font-weight:700;line-height:1.4;font-family:'Outfit','Segoe UI',sans-serif;">${eventTitle}</h2>
+                  
+                  ${eventDescription ? `
+                  <div style="background-color:#f8fafc;border-left:4px solid #1e3c72;padding:15px 20px;margin:20px 0;border-radius:0 8px 8px 0;color:#555555;font-style:italic;">
+                    ${eventDescription.replace(/\n/g, '<br/>')}
+                  </div>
+                  ` : ''}
+                  
+                  <div style="background-color:#f1f5f9;border-radius:10px;padding:20px;margin:25px 0;">
+                    <h3 style="margin:0 0 12px 0;font-size:15px;color:#1e3c72;text-transform:uppercase;letter-spacing:1px;">📅 Thông Tin Sự Kiện</h3>
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="font-size:14px;color:#444444;">
+                      <tr>
+                        <td width="30" valign="top" style="padding-bottom:10px;">📅</td>
+                        <td style="padding-bottom:10px;"><strong>Thời gian:</strong> ${eventDate}</td>
+                      </tr>
+                      <tr>
+                        <td width="30" valign="top">📍</td>
+                        <td><strong>Địa điểm:</strong> ${eventLocation}</td>
+                      </tr>
+                    </table>
+                  </div>
+
+                  <!-- QR Code section -->
+                  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:30px 0;background-color:#ffffff;border:1px dashed #cbd5e1;border-radius:10px;padding:20px;text-align:center;">
+                    <tr>
+                      <td align="center">
+                        <img src="${qrImageUrl}" alt="Mã QR Check-in" width="150" height="150" style="display:block;border:5px solid #ffffff;box-shadow:0 4px 10px rgba(0,0,0,0.1);" />
+                        <p style="margin:15px 0 0 0;font-size:13px;color:#64748b;font-weight:600;">MÃ QR CHECK-IN CỦA BẠN</p>
+                        <p style="margin:4px 0 0 0;font-size:12px;color:#94a3b8;">Vui lòng xuất trình mã này tại quầy đón tiếp để check-in vào sự kiện.</p>
+                      </td>
+                    </tr>
+                  </table>
+
+                  <!-- RSVP CTA Button -->
+                  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:30px 0;text-align:center;">
+                    <tr>
+                      <td align="center">
+                        <a href="${rsvpUrl}" target="_blank" style="background:linear-gradient(135deg,#1e3c72 0%,#2a5298 100%);color:#ffffff;padding:14px 30px;border-radius:8px;text-decoration:none;display:inline-block;font-weight:700;font-size:15px;box-shadow:0 4px 15px rgba(30,60,114,0.3);letter-spacing:0.5px;">XÁC NHẬN THAM DỰ (RSVP)</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="center" style="padding-top:10px;">
+                        <span style="font-size:12px;color:#94a3b8;">(Vui lòng nhấn nút trên để xác nhận tham dự trước ngày sự kiện diễn ra)</span>
+                      </td>
+                    </tr>
+                  </table>
+                  
+                  <p style="margin:25px 0 0 0;">Rất mong được đón tiếp Anh/Chị tại sự kiện.</p>
+                  
+                  <!-- Signature -->
+                  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-top:35px;padding-top:20px;border-top:1px solid #f1f5f9;font-size:14px;color:#64748b;">
+                    <tr>
+                      <td>
+                        Trân trọng,<br/>
+                        <strong style="color:#1e3c72;font-size:15px;">${senderName}</strong><br/>
+                        ${senderPhone ? `📞 Hotline: ${senderPhone}<br/>` : ''}
+                        ${senderEmail ? `📧 Email: ${senderEmail}` : ''}
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <!-- Footer Footer -->
+              <tr>
+                <td align="center" style="background-color:#f8fafc;padding:20px 30px;border-top:1px solid #e2e8f0;color:#94a3b8;font-size:12px;">
+                  <p style="margin:0 0 5px 0;">Email này được gửi tự động bởi hệ thống quản lý sự kiện <strong>Lumina EMS</strong>.</p>
+                  <p style="margin:0;">© 2026 Lumina EMS. Mọi quyền được bảo lưu.</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </body>
+    </html>`;
+
+    const info = await t.sendMail({
+        from: `"Lumina EMS" <${process.env.GMAIL_USER || process.env.SMTP_USER || 'noreply@lumina.vn'}>`,
+        to: toEmail,
+        subject: `[Lời mời] Trân trọng kính mời tham dự: ${eventTitle}`,
+        html: htmlBody
+    });
+
+    return info;
+}
+
+module.exports = { generateVerificationCode, sendVerificationEmail, sendEventInvitationEmail };

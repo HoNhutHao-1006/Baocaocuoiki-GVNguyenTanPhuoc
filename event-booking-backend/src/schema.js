@@ -12,7 +12,7 @@ const Contract = require('./models/Contract');
 const EventProposal = require('./models/EventProposal');
 const AdminRequest = require('./models/AdminRequest');
 const { generateDynamicQR, verifyOTP } = require('./services/qr.service');
-const { generateVerificationCode, sendVerificationEmail } = require('./services/email.service');
+const { generateVerificationCode, sendVerificationEmail, sendEventInvitationEmail } = require('./services/email.service');
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -918,11 +918,25 @@ Hai bên cam kết thực hiện đúng các điều khoản
     },
 
     sendInvitation: async (_, { invitationId }) => {
-      const inv = await Rsvp.findById(invitationId);
+      const inv = await Rsvp.findById(invitationId)
+        .populate('proposalId')
+        .populate('eventId')
+        .populate('memberId');
       if (!inv) throw new Error('Không tìm thấy thư mời.');
       if (inv.email) {
         try {
-          await sendVerificationEmail(inv.email, `Bạn được mời tham dự sự kiện!\nMã QR: ${inv.qrCode}\nTên: ${inv.name}`);
+          await sendEventInvitationEmail(inv.email, {
+            guestName: inv.name,
+            eventTitle: inv.eventId?.title || inv.proposalId?.title || 'Sự kiện đặc biệt',
+            eventDescription: inv.eventId?.description || inv.proposalId?.description || 'Chúng tôi trân trọng kính mời bạn tham dự sự kiện của chúng tôi.',
+            eventDate: inv.eventId?.date || inv.proposalId?.expectedDate || 'Đang cập nhật',
+            eventLocation: inv.eventId?.location || inv.proposalId?.expectedLocation || 'Đang cập nhật',
+            senderName: inv.memberId?.fullname || inv.memberId?.username || 'Ban Tổ Chức',
+            senderPhone: inv.memberId?.phone || '',
+            senderEmail: inv.memberId?.email || '',
+            qrCode: inv.qrCode,
+            eventId: inv.eventId?._id?.toString() || inv.proposalId?._id?.toString() || ''
+          });
         } catch (err) { console.error('[Email] Send invite failed:', err.message); }
       }
       inv.status = 'Sent';
@@ -934,10 +948,28 @@ Hai bên cam kết thực hiện đúng các điều khoản
     sendAllInvitations: async (_, { memberId, proposalId }) => {
       const query = { memberId, status: 'Pending' };
       if (proposalId) query.proposalId = proposalId;
-      const invitations = await Rsvp.find(query);
+      const invitations = await Rsvp.find(query)
+        .populate('proposalId')
+        .populate('eventId')
+        .populate('memberId');
       for (const inv of invitations) {
         if (inv.email) {
-          try { await sendVerificationEmail(inv.email, `Bạn được mời tham dự!\nMã QR: ${inv.qrCode}`); } catch (e) {}
+          try {
+            await sendEventInvitationEmail(inv.email, {
+              guestName: inv.name,
+              eventTitle: inv.eventId?.title || inv.proposalId?.title || 'Sự kiện đặc biệt',
+              eventDescription: inv.eventId?.description || inv.proposalId?.description || 'Chúng tôi trân trọng kính mời bạn tham dự sự kiện của chúng tôi.',
+              eventDate: inv.eventId?.date || inv.proposalId?.expectedDate || 'Đang cập nhật',
+              eventLocation: inv.eventId?.location || inv.proposalId?.expectedLocation || 'Đang cập nhật',
+              senderName: inv.memberId?.fullname || inv.memberId?.username || 'Ban Tổ Chức',
+              senderPhone: inv.memberId?.phone || '',
+              senderEmail: inv.memberId?.email || '',
+              qrCode: inv.qrCode,
+              eventId: inv.eventId?._id?.toString() || inv.proposalId?._id?.toString() || ''
+            });
+          } catch (e) {
+            console.error('[Email] Send all invite failed:', e.message);
+          }
         }
         inv.status = 'Sent';
         inv.sentAt = new Date();
