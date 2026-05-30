@@ -11,6 +11,8 @@ const { SeatZone, Seat } = require('./models/Floorplan');
 const Contract = require('./models/Contract');
 const EventProposal = require('./models/EventProposal');
 const AdminRequest = require('./models/AdminRequest');
+const Organization = require('./models/Organization');
+const InternalRequest = require('./models/InternalRequest');
 const { generateDynamicQR, verifyOTP } = require('./services/qr.service');
 const { generateVerificationCode, sendVerificationEmail, sendEventInvitationEmail } = require('./services/email.service');
 
@@ -21,7 +23,7 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 const JWT_SECRET = process.env.JWT_SECRET || 'EMS_SUPER_SECRET_KEY';
 
 const typeDefs = `#graphql
-  type User { id: ID!, username: String!, role: String!, status: String!, fullname: String, email: String, phone: String, token: String, avatar: String, emailVerified: Boolean, bankName: String, bankAccount: String }
+  type User { id: ID!, username: String!, role: String!, status: String!, fullname: String, email: String, phone: String, token: String, avatar: String, emailVerified: Boolean, bankName: String, bankAccount: String, organizationId: String, organizationName: String }
   type Category { id: ID!, name: String! }
   type TicketTier { id: ID!, eventId: String!, tierName: String!, price: Float!, totalQuantity: Int!, availableQuantity: Int! }
   type TicketOrder { id: ID!, memberId: String!, eventId: String!, ticketTierId: String!, quantity: Int!, totalAmount: Float!, status: String!, qrCode: String, holdExpiresAt: String, seatId: String, seatLabel: String, zoneName: String, zoneColor: String, eventTitle: String, seatIds: [String], seatLabels: [String] }
@@ -34,12 +36,34 @@ const typeDefs = `#graphql
   type ServiceItem { id: ID!, name: String!, description: String, price: Float }
   type DeviceItem { id: ID!, name: String!, quantity: Int, price: Float, image: String }
   type Contract { id: ID!, memberId: String!, employeeId: String, eventId: String, details: String, totalAmount: Float, status: String, createdAt: String, fileUrl: String, fileName: String, proposalId: String, proposalTitle: String }
-  type Stats { totalRevenue: Float!, totalTicketsSold: Int!, activeUsers: Int!, totalEvents: Int!, pendingProposals: Int!, totalContracts: Int!, totalRefunded: Float, cancelledCount: Int }
+  type Stats { totalRevenue: Float!, totalTicketsSold: Int!, activeUsers: Int!, totalEvents: Int!, pendingProposals: Int!, totalContracts: Int!, totalRefunded: Float, cancelledCount: Int, approvedEventsCount: Int }
   type CheckinResult { success: Boolean!, message: String!, guestInfo: String }
   type DateConflictResult { hasConflict: Boolean!, conflictingEvents: [Event] }
   type ResourceCheck { available: Boolean!, locationConflicts: [String], deviceShortages: [String], conflictingEvents: [Event] }
   type SetupData { proposal: EventProposal, devices: [DeviceItem], locations: [Location], conflictingEvents: [Event], locationAvailable: Boolean! }
   type AdminRequest { id: ID!, memberId: String!, memberName: String, type: String!, subject: String!, content: String!, status: String!, adminNote: String, createdAt: String, resolvedAt: String }
+
+  type Organization {
+    id: ID!
+    name: String!
+    description: String
+    createdAt: String
+  }
+
+  type InternalRequest {
+    id: ID!
+    employeeId: ID!
+    employeeName: String!
+    organizationId: ID!
+    organizationName: String
+    type: String!
+    subject: String!
+    content: String!
+    amount: Float
+    status: String!
+    managerNote: String
+    createdAt: String
+  }
 
   type EventProposal {
     id: ID!
@@ -162,10 +186,16 @@ const typeDefs = `#graphql
     getAIInsights: AIInsights
     getAllAdminRequests: [AdminRequest]
     getMyAdminRequests(memberId: ID!): [AdminRequest]
+    getAllOrganizations: [Organization]
+    getInternalRequestsForEmployee(employeeId: ID!): [InternalRequest]
+    getInternalRequestsForManager(managerId: ID!): [InternalRequest]
   }
 
   type Mutation {
-    registerAuth(username: String!, password: String!, role: String!, fullname: String, email: String): User
+    registerAuth(username: String!, password: String!, role: String!, fullname: String, email: String, organizationId: String): User
+    createOrganization(name: String!, description: String): Organization
+    createInternalRequest(employeeId: ID!, type: String!, subject: String!, content: String!, amount: Float): InternalRequest
+    updateInternalRequestStatus(requestId: ID!, status: String!, managerNote: String): InternalRequest
     sendVerificationCode(email: String!): Boolean
     verifyEmailCode(email: String!, code: String!): Boolean
     updateAvatar(userId: ID!, avatar: String!): User
@@ -202,6 +232,82 @@ const typeDefs = `#graphql
     employeeConfirmContract(contractId: ID!): Contract
   }
 `;
+
+const ROWS = ['A','B','C','D','E','F','G','H','I','J'];
+
+const ZONE_CONFIGS = {
+    concert: [
+        { name: 'SVIP ⭐ Stage', zoneColor: '#FFD700', price: 3500000, rows: 2, seatsPerRow: 8 },
+        { name: 'VIP Golden Zone', zoneColor: '#FF6B35', price: 2000000, rows: 3, seatsPerRow: 10 },
+        { name: 'Standard GA', zoneColor: '#00F0FF', price: 800000, rows: 5, seatsPerRow: 15 },
+    ],
+    conference: [
+        { name: 'VIP Front Row', zoneColor: '#FFD700', price: 5000000, rows: 2, seatsPerRow: 10 },
+        { name: 'Business Zone', zoneColor: '#00F0FF', price: 1500000, rows: 4, seatsPerRow: 12 },
+    ],
+    exhibition: [
+        { name: 'VIP Guided', zoneColor: '#FF00E5', price: 500000, rows: 2, seatsPerRow: 8 },
+        { name: 'General', zoneColor: '#00F0FF', price: 150000, rows: 3, seatsPerRow: 10 },
+    ],
+    sports: [
+        { name: 'VIP Grandstand', zoneColor: '#FFD700', price: 1200000, rows: 3, seatsPerRow: 12 },
+        { name: 'Standard', zoneColor: '#10B981', price: 400000, rows: 5, seatsPerRow: 15 },
+    ],
+    default: [
+        { name: 'Khu VIP', zoneColor: '#FFD700', price: 1000000, rows: 2, seatsPerRow: 10 },
+        { name: 'Khu Thường', zoneColor: '#00F0FF', price: 300000, rows: 4, seatsPerRow: 12 },
+    ]
+};
+
+function getZoneConfig(title) {
+    const t = (title || '').toLowerCase();
+    if (t.includes('concert') || t.includes('nhạc') || t.includes('rap') || t.includes('singer') || t.includes('kosmik')) return ZONE_CONFIGS.concert;
+    if (t.includes('tech') || t.includes('summit') || t.includes('startup') || t.includes('demo')) return ZONE_CONFIGS.conference;
+    if (t.includes('expo') || t.includes('triển lãm') || t.includes('art') || t.includes('game')) return ZONE_CONFIGS.exhibition;
+    if (t.includes('marathon') || t.includes('sport') || t.includes('thể thao')) return ZONE_CONFIGS.sports;
+    return ZONE_CONFIGS.default;
+}
+
+async function autoInitializeEventSeats(event) {
+    if (!event || !event.ticketingEnabled) return;
+    
+    // Check if seats already exist to prevent duplicate creation
+    const existingZones = await SeatZone.findOne({ eventId: event._id });
+    if (existingZones) return; // Already initialized
+
+    console.log(`[Seats Auto-Init] 🚀 Initializing seat map and ticket tiers for event: "${event.title}"`);
+    const zones = getZoneConfig(event.title);
+
+    for (const zd of zones) {
+        // Create SeatZone
+        const zone = await SeatZone.create({ eventId: event._id, ...zd });
+        
+        // Create matching TicketTier for ticketing system
+        await TicketTier.create({
+            eventId: event._id,
+            tierName: zd.name,
+            price: zd.price,
+            totalQuantity: zd.rows * zd.seatsPerRow,
+            availableQuantity: zd.rows * zd.seatsPerRow
+        });
+
+        // Create seats
+        for (let rIdx = 0; rIdx < zd.rows; rIdx++) {
+            const rowChar = ROWS[rIdx];
+            for (let s = 1; s <= zd.seatsPerRow; s++) {
+                await Seat.create({
+                    eventId: event._id,
+                    zoneId: zone._id,
+                    row: rowChar,
+                    number: s,
+                    label: `${rowChar}${s}`,
+                    status: 'available'
+                });
+            }
+        }
+    }
+    console.log(`[Seats Auto-Init] ✅ Seat map initialized successfully for event: "${event.title}"`);
+}
 
 const resolvers = {
   Event: {
@@ -314,14 +420,26 @@ const resolvers = {
       return event;
     },
 
-    getOrganizerEvents: async (_, { organizerId }) => await Event.find({ organizerId }),
+    getOrganizerEvents: async (_, { organizerId }) => {
+      const directEvents = await Event.find({ organizerId });
+      const contracts = await Contract.find({ employeeId: organizerId });
+      const assignedEventIds = contracts.map(c => c.eventId).filter(Boolean);
+      const assignedEvents = await Event.find({ _id: { $in: assignedEventIds } });
+      const eventMap = new Map();
+      directEvents.forEach(e => eventMap.set(e._id.toString(), e));
+      assignedEvents.forEach(e => eventMap.set(e._id.toString(), e));
+      return Array.from(eventMap.values());
+    },
 
     getMyTicketOrders: async (_, { memberId }) => await Order.find({ memberId }).sort({ createdAt: -1 }),
 
     getSystemStats: async () => {
       const orders = await Order.find({ status: { $in: ['Paid', 'CheckedIn'] } });
       const cancelledOrders = await Order.find({ status: 'Cancelled', refundAmount: { $gt: 0 } });
-      const totalRevenue = orders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
+      const paidContracts = await Contract.find({ status: { $in: ['Paid', 'Deposited'] } });
+      
+      const contractRevenue = paidContracts.reduce((sum, c) => sum + (c.totalAmount || 0), 0);
+      const totalRevenue = orders.reduce((sum, o) => sum + (o.totalAmount || 0), 0) + contractRevenue;
       const totalRefunded = cancelledOrders.reduce((sum, o) => sum + (o.refundAmount || 0), 0);
       const totalTicketsSold = orders.length;
       const activeUsers = await User.countDocuments({ status: 'ACTIVE' });
@@ -329,13 +447,21 @@ const resolvers = {
       const pendingProposals = await EventProposal.countDocuments({ status: 'Pending' });
       const totalContracts = await Contract.countDocuments();
       const cancelledCount = cancelledOrders.length;
-      return { totalRevenue: totalRevenue - totalRefunded, totalTicketsSold, activeUsers, totalEvents, pendingProposals, totalContracts, totalRefunded, cancelledCount };
+      const approvedEventsCount = await Event.countDocuments({ status: 'Approved' });
+      return { totalRevenue: totalRevenue - totalRefunded, totalTicketsSold, activeUsers, totalEvents, pendingProposals, totalContracts, totalRefunded, cancelledCount, approvedEventsCount };
     },
 
     getEventGuests: async (_, { eventId }) => await Rsvp.find({ eventId }),
 
     getEventSeatMap: async (_, { eventId }) => {
-      const zones = await SeatZone.find({ eventId });
+      let zones = await SeatZone.find({ eventId });
+      if (zones.length === 0) {
+        const event = await Event.findById(eventId);
+        if (event && event.ticketingEnabled) {
+          await autoInitializeEventSeats(event);
+          zones = await SeatZone.find({ eventId });
+        }
+      }
       const result = [];
       for (const z of zones) {
         const seats = await Seat.find({ zoneId: z._id }).sort({ row: 1, number: 1 });
@@ -444,8 +570,19 @@ const resolvers = {
     getAnalyticsDashboard: async () => {
       const allOrders = await Order.find();
       const paidOrders = allOrders.filter(o => o.status === 'Paid' || o.status === 'CheckedIn');
+      const allContracts = await Contract.find();
+      const paidContracts = allContracts.filter(c => c.status === 'Paid' || c.status === 'Deposited');
+
       // Monthly revenue
       const monthlyMap = {};
+      const now = new Date();
+      // Pre-populate last 6 months to ensure chart has full data
+      for (let i = 5; i >= 0; i--) {
+        const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+        const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+        monthlyMap[key] = { month: key, revenue: 0, orders: 0 };
+      }
+
       paidOrders.forEach(o => {
         const d = o.createdAt || new Date();
         const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
@@ -453,63 +590,83 @@ const resolvers = {
         monthlyMap[key].revenue += o.totalAmount || 0;
         monthlyMap[key].orders += 1;
       });
+      paidContracts.forEach(c => {
+        const d = c.createdAt || new Date();
+        const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+        if (!monthlyMap[key]) monthlyMap[key] = { month: key, revenue: 0, orders: 0 };
+        monthlyMap[key].revenue += c.totalAmount || 0;
+        monthlyMap[key].orders += 1;
+      });
       const monthlyRevenue = Object.values(monthlyMap).sort((a,b) => a.month.localeCompare(b.month)).slice(-12);
+      
       // Event types
       const events = await Event.find();
       const etMap = {};
       events.forEach(e => { const t = e.eventType || 'PUBLIC'; etMap[t] = (etMap[t]||0)+1; });
       const eventTypeStats = Object.entries(etMap).map(([name,count]) => ({ name, count, amount: 0 }));
+      
       // Contract status
-      const contracts = await Contract.find();
       const csMap = {};
-      contracts.forEach(c => { const s = c.status||'Pending'; if(!csMap[s]) csMap[s]={count:0,amount:0}; csMap[s].count++; csMap[s].amount+=(c.totalAmount||0); });
+      allContracts.forEach(c => { const s = c.status||'Pending'; if(!csMap[s]) csMap[s]={count:0,amount:0}; csMap[s].count++; csMap[s].amount+=(c.totalAmount||0); });
       const contractStatusStats = Object.entries(csMap).map(([name,v]) => ({ name, count: v.count, amount: v.amount }));
+      
       // Order status
       const osMap = {};
       allOrders.forEach(o => { const s = o.status||'Held'; osMap[s] = (osMap[s]||0)+1; });
       const orderStatusStats = Object.entries(osMap).map(([name,count]) => ({ name, count, amount: 0 }));
+      
       // Members
       const totalMembers = await User.countDocuments({ role: 'MEMBER' });
       const som = new Date(); som.setDate(1); som.setHours(0,0,0,0);
       const newMembersThisMonth = await User.countDocuments({ role: 'MEMBER', createdAt: { $gte: som } });
-      const avgOrderValue = paidOrders.length > 0 ? paidOrders.reduce((s,o) => s+(o.totalAmount||0), 0) / paidOrders.length : 0;
-      const conversionRate = allOrders.length > 0 ? (paidOrders.length / allOrders.length) * 100 : 0;
+      
+      // Conversion Rate & Average Value
+      const totalTransactions = allOrders.length + allContracts.length;
+      const paidTransactions = paidOrders.length + paidContracts.length;
+      
+      const totalAmountSum = paidOrders.reduce((s,o) => s+(o.totalAmount||0), 0) + paidContracts.reduce((s,c) => s+(c.totalAmount||0), 0);
+      const avgOrderValue = paidTransactions > 0 ? totalAmountSum / paidTransactions : 0;
+      const conversionRate = totalTransactions > 0 ? (paidTransactions / totalTransactions) * 100 : 0;
+      
       return { monthlyRevenue, eventTypeStats, contractStatusStats, orderStatusStats, totalMembers, newMembersThisMonth, avgOrderValue, conversionRate };
     },
 
     getAIInsights: async () => {
+      // Gather real system data
+      const totalRevenueQuery = await Order.aggregate([{ $match: { status: { $in: ['Paid', 'CheckedIn'] } } }, { $group: { _id: null, total: { $sum: '$totalAmount' } } }]);
+      const totalOrders = await Order.countDocuments();
+      const paidOrders = await Order.countDocuments({ status: { $in: ['Paid', 'CheckedIn'] } });
+      const cancelledOrders = await Order.countDocuments({ status: 'Cancelled' });
+      const totalEvents = await Event.countDocuments();
+      const totalMembers = await User.countDocuments({ role: 'MEMBER' });
+      const totalContracts = await Contract.countDocuments();
+      const pendingProposals = await EventProposal.countDocuments({ status: 'Pending' });
+      const eventTypes = await Event.aggregate([{ $group: { _id: '$eventType', count: { $sum: 1 } } }]);
+      
+      const paidContracts = await Contract.find({ status: { $in: ['Paid', 'Deposited'] } });
+      const contractRevenue = paidContracts.reduce((sum, c) => sum + (c.totalAmount || 0), 0);
+      
+      const systemData = {
+        totalRevenue: (totalRevenueQuery[0]?.total || 0) + contractRevenue,
+        totalOrders, paidOrders, cancelledOrders,
+        conversionRate: totalOrders > 0 ? ((paidOrders / totalOrders) * 100) : 0,
+        cancelRate: totalOrders > 0 ? ((cancelledOrders / totalOrders) * 100) : 0,
+        totalEvents, totalMembers, totalContracts, pendingProposals,
+        eventTypes: eventTypes.map(e => `${e._id}: ${e.count}`).join(', ')
+      };
+
       try {
         const apiKey = process.env.GEMINI_API_KEY;
         if (!apiKey) throw new Error('GEMINI_API_KEY not configured');
         const genAI = new GoogleGenerativeAI(apiKey);
         const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
-        // Gather real system data
-        const totalRevenue = await Order.aggregate([{ $match: { status: { $in: ['Paid', 'CheckedIn'] } } }, { $group: { _id: null, total: { $sum: '$totalAmount' } } }]);
-        const totalOrders = await Order.countDocuments();
-        const paidOrders = await Order.countDocuments({ status: { $in: ['Paid', 'CheckedIn'] } });
-        const cancelledOrders = await Order.countDocuments({ status: 'Cancelled' });
-        const totalEvents = await Event.countDocuments();
-        const totalMembers = await User.countDocuments({ role: 'MEMBER' });
-        const totalContracts = await Contract.countDocuments();
-        const pendingProposals = await EventProposal.countDocuments({ status: 'Pending' });
-        const eventTypes = await Event.aggregate([{ $group: { _id: '$eventType', count: { $sum: 1 } } }]);
-
-        const systemData = {
-          totalRevenue: totalRevenue[0]?.total || 0,
-          totalOrders, paidOrders, cancelledOrders,
-          conversionRate: totalOrders > 0 ? ((paidOrders / totalOrders) * 100).toFixed(1) : 0,
-          cancelRate: totalOrders > 0 ? ((cancelledOrders / totalOrders) * 100).toFixed(1) : 0,
-          totalEvents, totalMembers, totalContracts, pendingProposals,
-          eventTypes: eventTypes.map(e => `${e._id}: ${e.count}`).join(', ')
-        };
-
         const prompt = `Ban la chuyen gia phan tich kinh doanh cho cong ty to chuc su kien "Lumina EMS". Dua tren du lieu he thong THUC TE sau:
 
 - Tong doanh thu: ${systemData.totalRevenue.toLocaleString()} VND
 - Tong don hang: ${systemData.totalOrders} (Da thanh toan: ${systemData.paidOrders}, Huy: ${systemData.cancelledOrders})
-- Ty le chuyen doi: ${systemData.conversionRate}%
-- Ty le huy: ${systemData.cancelRate}%
+- Ty le chuyen doi: ${systemData.conversionRate.toFixed(1)}%
+- Ty le huy: ${systemData.cancelRate.toFixed(1)}%
 - Tong su kien: ${systemData.totalEvents}
 - Tong thanh vien: ${systemData.totalMembers}
 - Tong hop dong: ${systemData.totalContracts}
@@ -540,26 +697,146 @@ Hay tra loi CHINH XAC theo format JSON sau (KHONG giai thich them, CHI tra ve JS
         const parsed = JSON.parse(jsonMatch[0]);
         return { ...parsed, generatedAt: new Date().toISOString() };
       } catch (err) {
-        console.error('AI Insights error:', err.message);
+        console.warn('AI insights fallback to dynamic engine:', err.message);
+
+        // Generate dynamic rule-based insights
+        const swotStrengths = [
+          'Hệ thống soát vé tự động qua QR Code tức thì',
+          'Dashboard thống kê & kiểm soát tài chính Real-time',
+          'Khả năng mở rộng tốt (GraphQL API hiệu năng cao)'
+        ];
+        if (systemData.totalRevenue > 100000000) {
+          swotStrengths.push(`Tài chính vững mạnh (${(systemData.totalRevenue / 1000000).toFixed(0)}M VNĐ doanh thu)`);
+        } else {
+          swotStrengths.push('Giao diện UX/UI Darkmode/Glassmorphism hiện đại');
+        }
+        if (systemData.totalContracts > 0) {
+          swotStrengths.push(`Mạng lưới đối tác B2B tốt (${systemData.totalContracts} hợp đồng doanh nghiệp)`);
+        }
+
+        const swotWeaknesses = [
+          'Chưa tối ưu hóa tự động hóa tiếp thị (Marketing Automation)',
+          'Chưa xây dựng ứng dụng di động (Mobile App) gốc'
+        ];
+        if (systemData.cancelRate > 15) {
+          swotWeaknesses.push(`Tỷ lệ hủy đơn hàng cao (${systemData.cancelRate.toFixed(1)}%) cần kiểm soát cọc`);
+        } else {
+          swotWeaknesses.push('Khả năng cá nhân hóa trải nghiệm người dùng còn hạn chế');
+        }
+        if (systemData.conversionRate < 45) {
+          swotWeaknesses.push(`Tỷ lệ chuyển đổi phễu mua vé thấp (${systemData.conversionRate.toFixed(1)}%)`);
+        }
+        if (systemData.pendingProposals > 2) {
+          swotWeaknesses.push(`Đề xuất sự kiện tồn đọng (${systemData.pendingProposals} yêu cầu chưa duyệt)`);
+        }
+
+        const swotOpportunities = [
+          'Nhu cầu chuyển đổi số ngành tổ chức sự kiện tăng mạnh năm 2026',
+          'Xu hướng tổ chức sự kiện lai (Hybrid Events)'
+        ];
+        if (systemData.totalContracts < 4) {
+          swotOpportunities.push('Tiềm năng khai phá sâu phân khúc B2B (Doanh nghiệp ký hợp đồng trọn gói)');
+        } else {
+          swotOpportunities.push('Mở rộng quy mô hợp tác với các nhà cung cấp thiết bị và địa điểm lớn');
+        }
+        if (systemData.totalEvents > 5) {
+          swotOpportunities.push('Tạo các gói dịch vụ tổ chức sự kiện định kỳ cho khách hàng thân thiết');
+        }
+
+        const swotThreats = [
+          'Sự cạnh tranh từ các nền tảng bán vé lớn lâu đời (Ticketbox, VNPAY)',
+          'Biến động kinh tế toàn cầu ảnh hưởng ngân sách giải trí của người dân'
+        ];
+        if (systemData.cancelRate > 10) {
+          swotThreats.push(`Thất thoát dòng tiền do tỷ lệ hủy đơn hàng cao (${systemData.cancelRate.toFixed(1)}%)`);
+        }
+        if (systemData.totalRevenue < 50000000) {
+          swotThreats.push('Rủi ro dòng tiền và tối ưu chi phí vận hành giai đoạn đầu');
+        }
+
+        const marketTrends = [
+          `Xu hướng sự kiện công cộng (B2C): ${systemData.totalEvents > 0 ? ((eventTypes.find(e => e._id === 'PUBLIC')?.count || 0) / systemData.totalEvents * 100).toFixed(0) : 65}%`,
+          `Nhu cầu sự kiện doanh nghiệp (B2B): ${systemData.totalContracts > 0 ? 'Tăng mạnh (+28%)' : 'Tiềm năng tăng trưởng cao'}`,
+          `Mức độ ưa chuộng check-in không chạm (QR Code): 89%`,
+          `Xu hướng sử dụng AI phân tích hành vi đặt vé: 52%`,
+          `Sự quan tâm của cộng đồng tới Green/Sustainable Events: 45%`
+        ];
+
+        const strategicRecommendations = [
+          'Triển khai gửi email tự động chăm sóc và lấy phản hồi sau sự kiện',
+          'Xây dựng chính sách ưu đãi thành viên thân thiết (Loyalty Program) để tăng tỷ lệ giữ chân'
+        ];
+        if (systemData.cancelRate > 15) {
+          strategicRecommendations.push(`Áp dụng hình thức cọc 10-20% giá vé hoặc phí phạt để hạn chế tỷ lệ hủy vé (${systemData.cancelRate.toFixed(1)}%)`);
+        }
+        if (systemData.conversionRate < 50) {
+          strategicRecommendations.push(`Rút ngắn phễu thanh toán mua vé, đa dạng phương thức chuyển khoản/ví điện tử để cải thiện CR (${systemData.conversionRate.toFixed(1)}%)`);
+        }
+        if (systemData.totalContracts > 0) {
+          const avgVal = contractRevenue / (systemData.totalContracts || 1);
+          strategicRecommendations.push(`Đẩy mạnh B2B vì doanh thu trung bình hợp đồng rất lớn (~${(avgVal/1000000).toFixed(1)}M VNĐ/HĐ)`);
+        }
+
+        const roadmapPhases = [
+          {
+            phase: 'Q3/2026',
+            title: 'Tối ưu hóa Phễu',
+            items: [
+              systemData.conversionRate < 45 ? 'Tối ưu hóa quy trình checkout thanh toán' : 'Cải thiện giao diện chi tiết sự kiện',
+              'Tích hợp Email Marketing tự động',
+              'A/B testing các nút kêu gọi hành động (CTA)'
+            ]
+          },
+          {
+            phase: 'Q4/2026',
+            title: 'Chống Bùng & Chăm sóc',
+            items: [
+              systemData.cancelRate > 15 ? 'Áp dụng hệ thống giữ chỗ có phí cọc' : 'Phát triển cổng hỗ trợ khách hàng đa kênh',
+              'Triển khai Loyalty Program tích điểm đổi quà',
+              'Tổ chức khóa đào tạo nhân sự sử dụng QR Check-in'
+            ]
+          },
+          {
+            phase: 'Q1/2027',
+            title: 'Mở rộng B2B',
+            items: [
+              'Ký kết hợp tác chiến lược với 3 chuỗi khách sạn lớn',
+              'Nâng cấp hệ thống quản lý thiết bị kỹ thuật tự động',
+              'Phát triển cổng thông tin dành riêng cho doanh nghiệp'
+            ]
+          },
+          {
+            phase: 'Q2/2027',
+            title: 'Đổi mới Sáng tạo',
+            items: [
+              'Thử nghiệm bán vé NFT cho các sự kiện âm nhạc quy mô lớn',
+              'Ra mắt ứng dụng di động native Lumina EMS trên iOS/Android',
+              'Mở rộng dịch vụ hỗ trợ sự kiện trực tuyến (Hybrid/Metaverse)'
+            ]
+          }
+        ];
+
         return {
-          swotStrengths: ['He thong QR check-in hien dai', 'Dashboard real-time analytics', 'GraphQL API hieu nang cao', 'Giao dien UX/UI chuyen nghiep'],
-          swotWeaknesses: ['Can toi uu ty le huy ve', 'Chua co mobile app', 'Can mo rong doi ngu ho tro', 'Thieu tinh nang loyalty program'],
-          swotOpportunities: ['Thi truong to chuc su kien tang 25%/nam (2026)', 'Xu huong hybrid events', 'AI personalization dang len ngoi', 'Mo rong sang B2B enterprise'],
-          swotThreats: ['Canh tranh gia tu doi thu', 'Chi phi van hanh tang cao', 'Thay doi xu huong nguoi dung nhanh', 'Rui ro bao mat va quy dinh GDPR'],
-          marketTrends: ['To chuc su kien truc tuyen: 78%', 'Hybrid events: 65%', 'AI-powered: 52%', 'Green events: 45%', 'Metaverse/VR: 28%'],
-          strategicRecommendations: ['Giam ty le huy ve bang chinh sach gia linh hoat', 'Tich hop AI de xuat su kien ca nhan hoa', 'Xay dung loyalty program tang retention', 'Mo rong B2B partnerships'],
-          roadmapPhases: [
-            { phase: 'Q3/2026', title: 'Toi uu hoa', items: ['Giam ty le huy ve', 'Nang cap CSKH', 'A/B testing UI'] },
-            { phase: 'Q4/2026', title: 'Ca nhan hoa', items: ['AI de xuat su kien', 'Email marketing', 'Loyalty program'] },
-            { phase: 'Q1/2027', title: 'Mo rong', items: ['Hybrid events', 'B2B partnerships', 'API marketplace'] },
-            { phase: 'Q2/2027', title: 'Dai duong xanh', items: ['Metaverse events', 'NFT ticketing', 'Global expansion'] }
-          ],
+          swotStrengths,
+          swotWeaknesses,
+          swotOpportunities,
+          swotThreats,
+          marketTrends,
+          strategicRecommendations,
+          roadmapPhases,
           generatedAt: new Date().toISOString()
         };
       }
     },
     getAllAdminRequests: async () => await AdminRequest.find().sort({ createdAt: -1 }),
-    getMyAdminRequests: async (_, { memberId }) => await AdminRequest.find({ memberId }).sort({ createdAt: -1 })
+    getMyAdminRequests: async (_, { memberId }) => await AdminRequest.find({ memberId }).sort({ createdAt: -1 }),
+    getAllOrganizations: async () => await Organization.find().sort({ createdAt: -1 }),
+    getInternalRequestsForEmployee: async (_, { employeeId }) => await InternalRequest.find({ employeeId }).sort({ createdAt: -1 }),
+    getInternalRequestsForManager: async (_, { managerId }) => {
+      const manager = await User.findById(managerId);
+      if (!manager || !manager.organizationId) return [];
+      return await InternalRequest.find({ organizationId: manager.organizationId }).sort({ createdAt: -1 });
+    }
   },
 
   Mutation: {
@@ -576,8 +853,35 @@ Hay tra loi CHINH XAC theo format JSON sau (KHONG giai thich them, CHI tra ve JS
         throw new Error('Vui lòng xác nhận email trước khi đăng ký.');
       }
       if (isEmailVerified) global._verifiedEmails.delete(args.email);
-      const user = await User.create({ ...args, emailVerified: isEmailVerified || args.role !== 'MEMBER' });
+      
+      let orgName = undefined;
+      if (args.organizationId) {
+        const org = await Organization.findById(args.organizationId);
+        if (org) orgName = org.name;
+      }
+      
+      const user = await User.create({ ...args, organizationName: orgName, emailVerified: isEmailVerified || args.role !== 'MEMBER' });
       return user;
+    },
+
+    createOrganization: async (_, args) => await Organization.create(args),
+    
+    createInternalRequest: async (_, args) => {
+      const employee = await User.findById(args.employeeId);
+      if (!employee) throw new Error('Nhân viên không tồn tại.');
+      if (!employee.organizationId) throw new Error('Nhân viên chưa thuộc tổ chức/chi nhánh nào.');
+      
+      return await InternalRequest.create({
+        ...args,
+        employeeName: employee.fullname || employee.username,
+        organizationId: employee.organizationId,
+        organizationName: employee.organizationName || 'Chưa rõ',
+        status: 'Pending'
+      });
+    },
+    
+    updateInternalRequestStatus: async (_, { requestId, status, managerNote }) => {
+      return await InternalRequest.findByIdAndUpdate(requestId, { status, managerNote }, { new: true });
     },
 
     sendVerificationCode: async (_, { email }) => {
@@ -660,7 +964,9 @@ Hay tra loi CHINH XAC theo format JSON sau (KHONG giai thich them, CHI tra ve JS
     },
 
     createEvent: async (_, args) => {
-      return await Event.create(args);
+      const event = await Event.create(args);
+      await autoInitializeEventSeats(event);
+      return event;
     },
 
     holdSeat: async (_, { memberId, seatId }) => {
@@ -1090,6 +1396,7 @@ Hai bên cam kết thực hiện đúng các điều khoản
           ticketingEnabled: proposal.eventType === 'PUBLIC',
           status: eventStatus,
         });
+        await autoInitializeEventSeats(event);
         await Contract.findByIdAndUpdate(contractId, { eventId: event._id });
         console.log(`[Event] ✅ Sự kiện "${event.title}" đã được tạo (${eventStatus}). ${eventStatus === 'Approved' ? '🌐 Hiển thị công khai trên trang chủ' : '🔒 Chỉ hiển thị nội bộ'}`);
         if (globalIo) {

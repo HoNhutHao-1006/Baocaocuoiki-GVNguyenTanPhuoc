@@ -84,7 +84,7 @@ export default function AdvancedDashboard() {
   const loadData = useCallback(() => {
     setRefreshing(true);
     Promise.all([
-      fetchGraphQL(`query { getSystemStats { totalRevenue totalTicketsSold activeUsers totalEvents pendingProposals totalContracts totalRefunded cancelledCount } }`),
+      fetchGraphQL(`query { getSystemStats { totalRevenue totalTicketsSold activeUsers totalEvents pendingProposals totalContracts totalRefunded cancelledCount approvedEventsCount } }`),
       fetchGraphQL(`query { getAnalyticsDashboard { monthlyRevenue { month revenue orders } eventTypeStats { name count } contractStatusStats { name count amount } orderStatusStats { name count } totalMembers newMembersThisMonth avgOrderValue conversionRate } }`),
       fetchGraphQL(`query { getAllContracts(limit: 10) { id details totalAmount status createdAt proposalTitle } }`)
     ]).then(([s, a, c]) => {
@@ -208,7 +208,7 @@ export default function AdvancedDashboard() {
           <GaugeChart value={stats.totalTicketsSold} max={stats.totalTicketsSold + (stats.cancelledCount || 0)} label="Tỷ lệ giữ vé" color="#00F0FF" />
         </div>
         <div className="panel" style={{ padding: '16px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <GaugeChart value={stats.totalEvents - stats.pendingProposals} max={stats.totalEvents || 1} label="SK đã duyệt" color="#F59E0B" />
+          <GaugeChart value={stats.approvedEventsCount !== undefined ? stats.approvedEventsCount : (stats.totalEvents - stats.pendingProposals)} max={stats.totalEvents || 1} label="SK đã duyệt" color="#F59E0B" />
         </div>
         <div className="panel" style={{ padding: '16px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <GaugeChart value={stats.totalRevenue - (stats.totalRefunded || 0)} max={stats.totalRevenue || 1} label="Doanh thu thực" color="#FF00E5" />
@@ -226,12 +226,12 @@ export default function AdvancedDashboard() {
               <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><div style={{ width: 10, height: 4, borderRadius: 2, background: '#FF00E5', opacity: 0.5 }} /> Dự báo</span>
             </div>
           </div>
-          <div style={{ height: 200, display: 'flex', alignItems: 'flex-end', gap: 4, paddingBottom: 22 }}>
+          <div style={{ height: 200, display: 'flex', alignItems: 'flex-end', justifyContent: 'space-evenly', gap: 8, paddingBottom: 22 }}>
             {allMonths.map((m, i) => {
               const h = Math.max((m.revenue / allMaxRev) * 170, 4);
               const isPred = m.predicted;
               return (
-                <div key={i} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }} onClick={() => !isPred && setDrillDown(drillDown === m.month ? null : m.month)}>
+                <div key={i} style={{ flex: '0 1 60px', width: '60px', display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }} onClick={() => !isPred && setDrillDown(drillDown === m.month ? null : m.month)}>
                   <div style={{ fontSize: '0.55rem', color: isPred ? '#FF00E5' : '#00F0FF', marginBottom: 3, fontWeight: 600, opacity: isPred ? 0.6 : 1 }}>{(m.revenue / 1000).toFixed(0)}k</div>
                   <div style={{ width: '100%', height: h, background: isPred ? 'repeating-linear-gradient(45deg,#FF00E555,#FF00E555 2px,transparent 2px,transparent 6px)' : `linear-gradient(to top,#00F0FF,#00c3cc)`, borderRadius: '3px 3px 0 0', transition: 'height 0.6s', border: drillDown === m.month ? '2px solid #FFD700' : 'none', opacity: isPred ? 0.5 : 0.85 }} />
                   <div style={{ fontSize: '0.55rem', color: isPred ? '#FF00E5' : '#666', marginTop: 5 }}>{m.month.slice(5)}{isPred ? '*' : ''}</div>
@@ -248,7 +248,11 @@ export default function AdvancedDashboard() {
           <DonutChart data={analytics?.eventTypeStats || []} colors={etColors} />
           <div style={{ marginTop: 16, borderTop: '1px solid #333', paddingTop: 12 }}>
             <div style={{ fontSize: '0.75rem', color: '#999', marginBottom: 6 }}>Trạng thái đơn hàng (Funnel)</div>
-            <FunnelChart data={osData} colors={funnelColors} />
+            {osData.length === 0 ? (
+              <div style={{ padding: '20px 0', fontSize: '0.75rem', color: '#666', textAlign: 'center' }}>Chưa có dữ liệu đơn hàng</div>
+            ) : (
+              <FunnelChart data={osData} colors={funnelColors} />
+            )}
           </div>
         </div>
       </div>

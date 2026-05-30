@@ -156,22 +156,7 @@ export default function AdminPage({ view }) {
     ]} 
   />;
   
-  if (view === 'personnel') return <GenericCRUD key={view} 
-        title="Quản Lý Nhân Sự (Nội Bộ)" 
-        headerIllustration={<IllustrationPersonnel />}
-        dataQuery="query U($page: Int, $limit: Int) { getAllUsers(page: $page, limit: $limit) { id username fullname role status email avatar } }" dataKey="getAllUsers" dataFilter={u => u.role !== 'MEMBER' && u.role !== 'ADMIN'}
-        createMutation={`mutation M($username: String!, $role: String!, $fullname: String) { registerAuth(username: $username, password: "123456", role: $role, fullname: $fullname) { id } }`} 
-        formFields={[{ name: 'username', label: 'Username' }, { name: 'fullname', label: 'Họ tên' }, { name: 'role', label: 'Vai trò', type: 'select', options: [{ value: 'ORGANIZER', label: 'ORGANIZER' }, { value: 'EMPLOYEE', label: 'EMPLOYEE' }] }]} 
-        columns={[
-          { key: 'avatar', label: '', render: r => { const initials = (r.fullname || r.username || '?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(); const src = r.avatar ? resolveFileUrl(r.avatar) : null; return src ? <img src={src} alt="" style={{ width: 36, height: 36, borderRadius: '50%', objectFit: 'cover' }} onError={e => e.target.style.display='none'} /> : <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(135deg, #4ECDC4, #45B7D1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.75rem', color: '#fff' }}>{initials}</div>; } },
-          { key: 'username', label: 'Username' }, 
-          { key: 'fullname', label: 'Tên' }, 
-          { key: 'email', label: 'Email' },
-          { key: 'role', label: 'Vai trò', render: r => <span className={`badge ${r.role === 'ORGANIZER' ? 'blue' : 'warning'}`}>{r.role}</span> }, 
-          { key: 'status', label: 'Trạng thái', render: r => <span className={`badge ${r.status === 'ACTIVE' ? 'success' : 'error'}`}>{r.status}</span> }, 
-          { label: 'Thao tác', render: (r, load) => <button className="btn outline" onClick={() => handleToggleUser(r, load)}>{r.status === 'LOCKED' ? 'Mở khóa' : 'Khóa'}</button> }]} 
-  />;
-
+  if (view === 'personnel') return <PersonnelManager key={view} />;
   if (view === 'approvals') return <GenericCRUD key={view} 
         title="Phê duyệt Sự kiện" 
         headerIllustration={<IllustrationEvent />}
@@ -179,10 +164,10 @@ export default function AdminPage({ view }) {
         columns={[
           { key: 'coverImg', label: 'Ảnh', render: r => <img src={r.coverImg} alt="" style={{ width: 60, height: 40, objectFit: 'cover', borderRadius: 6 }} /> },
           { key: 'title', label: 'Tên Sự Kiện' }, 
-          { key: 'date', label: 'Ngày' }, 
+          { key: 'date', label: 'Ngày', render: r => <span style={{ whiteSpace: 'nowrap' }}>{r.date || '—'}</span> }, 
           { key: 'location', label: 'Địa Điểm' },
           { key: 'status', label: 'Trạng thái', render: r => <span className={`badge ${r.status === 'Approved' ? 'success' : 'warning'}`}>{r.status}</span> },
-          { label: 'Thao tác', render: (r, load) => <button className="btn outline" onClick={() => handleApproveEvent(r, load)} disabled={r.status === 'Approved'}>{r.status === 'Approved' ? '✅ Đã duyệt' : 'Duyệt'}</button> }
+          { label: 'Thao tác', render: (r, load) => <button className="btn outline" style={{padding:'6px 12px',fontSize:'0.8rem',whiteSpace:'nowrap'}} onClick={() => handleApproveEvent(r, load)} disabled={r.status === 'Approved'}>{r.status === 'Approved' ? '✅ Đã duyệt' : 'Duyệt'}</button> }
         ]} 
   />;
 
@@ -194,18 +179,18 @@ export default function AdminPage({ view }) {
         enableDateFilter={true}
         dateFilterKey="createdAt"
         columns={[
-          { key: 'createdAt', label: 'Ngày Tạo', render: r => { try { const d = r.createdAt; if (!d) return '—'; const date = new Date(isNaN(d) ? d : parseInt(d)); return isNaN(date) ? '—' : date.toLocaleDateString('vi-VN'); } catch { return '—'; }}},
+          { key: 'createdAt', label: 'Ngày Tạo', render: r => { try { const d = r.createdAt; if (!d) return '—'; const date = new Date(isNaN(d) ? d : parseInt(d)); return isNaN(date) ? '—' : <span style={{ whiteSpace: 'nowrap' }}>{date.toLocaleDateString('vi-VN')}</span>; } catch { return '—'; }}},
           { key: 'proposalTitle', label: 'Dự Án', render: r => r.proposalTitle || '—' },
           { key: 'details', label: 'Chi Tiết', render: r => <span style={{maxWidth:120,display:'inline-block',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{r.details?.slice(0,40)}</span> },
-          { key: 'totalAmount', label: 'Giá Trị', render: r => `${r.totalAmount?.toLocaleString()}đ` },
+          { key: 'totalAmount', label: 'Giá Trị', render: r => <span style={{ whiteSpace: 'nowrap', fontWeight: 700 }}>{`${r.totalAmount?.toLocaleString()}đ`}</span> },
           { key: 'status', label: 'Trạng Thái', render: r => <span className={`badge ${r.status === 'Paid' ? 'success' : r.status === 'Approved' ? 'blue' : r.status === 'Pending' ? 'warning' : 'error'}`}>{r.status}</span> },
           { label: 'Xem', render: (r) => (
-            <button className="btn outline" style={{padding:'6px 12px',fontSize:'0.8rem'}} onClick={() => setSelectedContract(r)}><Eye size={14} style={{marginRight:4}}/>Chi tiết</button>
+            <button className="btn outline" style={{padding:'6px 12px',fontSize:'0.8rem',whiteSpace:'nowrap'}} onClick={() => setSelectedContract(r)}><Eye size={14} style={{marginRight:4}}/>Chi tiết</button>
           )},
           { label: 'Duyệt/Hủy', render: (r, load) => (
             <div style={{ display: 'flex', gap: 5 }}>
-              <button className="btn outline" onClick={() => handleUpdateContract(r.id, 'Approved', load)} disabled={r.status !== 'Pending'}>Duyệt</button>
-              <button className="btn outline" style={{ color: '#ff4444', borderColor: '#ff4444' }} onClick={() => handleUpdateContract(r.id, 'Cancelled', load)} disabled={r.status === 'Cancelled' || r.status === 'Paid'}>Hủy</button>
+              <button className="btn outline" style={{padding:'6px 12px',fontSize:'0.8rem',whiteSpace:'nowrap'}} onClick={() => handleUpdateContract(r.id, 'Approved', load)} disabled={r.status !== 'Pending'}>Duyệt</button>
+              <button className="btn outline" style={{ color: '#ff4444', borderColor: '#ff4444', padding:'6px 12px', fontSize:'0.8rem', whiteSpace:'nowrap' }} onClick={() => handleUpdateContract(r.id, 'Cancelled', load)} disabled={r.status === 'Cancelled' || r.status === 'Paid'}>Hủy</button>
             </div>
           )}
         ]} 
@@ -225,7 +210,7 @@ export default function AdminPage({ view }) {
           { key: 'status', label: 'Trạng Thái', render: r => <span className={`badge ${r.status === 'ACTIVE' ? 'success' : 'error'}`}>{r.status}</span> }, 
           { label: 'Thao tác', render: (r, load) => (
             <div style={{ display: 'flex', gap: 5 }}>
-                <button className="btn outline" onClick={() => handleToggleUser(r, load)}>{r.status === 'LOCKED' ? 'Kích hoạt' : 'Đóng băng'}</button>
+                <button className="btn outline" style={{padding:'6px 12px',fontSize:'0.8rem',whiteSpace:'nowrap'}} onClick={() => handleToggleUser(r, load)}>{r.status === 'LOCKED' ? 'Kích hoạt' : 'Đóng băng'}</button>
             </div>
           )}
         ]} 
@@ -238,20 +223,20 @@ export default function AdminPage({ view }) {
         dataQuery="query P($page: Int, $limit: Int) { getAllEventProposals(page: $page, limit: $limit) { id memberId memberName title description eventType expectedDate expectedLocation budget status reviewNote createdAt } }" 
         dataKey="getAllEventProposals"
         columns={[
-          { key: 'createdAt', label: 'Ngày Gửi', render: r => r.createdAt ? new Date(r.createdAt).toLocaleDateString('vi-VN') : '-' },
+          { key: 'createdAt', label: 'Ngày Gửi', render: r => r.createdAt ? <span style={{ whiteSpace: 'nowrap' }}>{new Date(r.createdAt).toLocaleDateString('vi-VN')}</span> : '-' },
           { key: 'memberName', label: 'Khách Hàng' },
           { key: 'title', label: 'Tên Dự Án' },
-          { key: 'expectedDate', label: 'Ngày Dự Kiến' },
+          { key: 'expectedDate', label: 'Ngày Dự Kiến', render: r => <span style={{ whiteSpace: 'nowrap' }}>{r.expectedDate || '—'}</span> },
           { key: 'expectedLocation', label: 'Địa Điểm' },
-          { key: 'budget', label: 'Ngân Sách', render: r => `${r.budget?.toLocaleString()}đ` },
+          { key: 'budget', label: 'Ngân Sách', render: r => <span style={{ whiteSpace: 'nowrap' }}>{`${r.budget?.toLocaleString()}đ`}</span> },
           { key: 'status', label: 'Trạng Thái', render: r => <span className={`badge ${r.status === 'Approved' ? 'success' : r.status === 'Rejected' ? 'error' : 'warning'}`}>{r.status === 'Approved' ? '✅ Đã duyệt' : r.status === 'Rejected' ? '❌ Từ chối' : '⏳ Chờ duyệt'}</span> },
           { label: 'Thao tác', render: (r, load) => r.status === 'Pending' ? (
             <div style={{ display: 'flex', gap: 5 }}>
-              <button className="btn outline" onClick={() => handleApproveProposal(r.id, load)}>✅ Duyệt</button>
-              <button className="btn outline" style={{ color: '#ff4444', borderColor: '#ff4444' }} onClick={() => handleRejectProposal(r.id, load)}>❌ Từ chối</button>
+              <button className="btn outline" style={{padding:'6px 12px',fontSize:'0.8rem',whiteSpace:'nowrap'}} onClick={() => handleApproveProposal(r.id, load)}>✅ Duyệt</button>
+              <button className="btn outline" style={{ color: '#ff4444', borderColor: '#ff4444', padding:'6px 12px', fontSize:'0.8rem', whiteSpace:'nowrap' }} onClick={() => handleRejectProposal(r.id, load)}>❌ Từ chối</button>
             </div>
           ) : (
-            <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{r.reviewNote || '—'}</span>
+            <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>{r.reviewNote || '—'}</span>
           )}
         ]}
   />;
@@ -335,4 +320,46 @@ function AdminMailbox() {
       </div>
     </div>
   );
+}
+
+function PersonnelManager() {
+  const [organizations, setOrganizations] = useState([]);
+  
+  useEffect(() => {
+    fetchGraphQL(`query { getAllOrganizations { id name } }`)
+      .then(res => setOrganizations(res.getAllOrganizations || []))
+      .catch(console.error);
+  }, []);
+
+  const handleToggleUser = async (u, loadData) => {
+    let newSt = u.status === 'LOCKED' ? 'ACTIVE' : 'LOCKED';
+    await fetchGraphQL(`mutation { updateUserStatus(userId: "${u.id}", status: "${newSt}") { id } }`);
+    loadData();
+  };
+
+  const orgOptions = organizations.map(o => ({ value: o.id, label: o.name }));
+
+  return <GenericCRUD 
+        title="Quản Lý Nhân Sự (Nội Bộ)" 
+        headerIllustration={<IllustrationPersonnel />}
+        dataQuery="query U($page: Int, $limit: Int) { getAllUsers(page: $page, limit: $limit) { id username fullname role status email avatar organizationName } }" 
+        dataKey="getAllUsers" 
+        dataFilter={u => u.role !== 'MEMBER' && u.role !== 'ADMIN'}
+        createMutation={`mutation M($username: String!, $role: String!, $fullname: String, $organizationId: String) { registerAuth(username: $username, password: "123456", role: $role, fullname: $fullname, organizationId: $organizationId) { id } }`} 
+        formFields={[
+          { name: 'username', label: 'Username' }, 
+          { name: 'fullname', label: 'Họ tên' }, 
+          { name: 'role', label: 'Vai trò', type: 'select', options: [{ value: 'ORGANIZER', label: 'ORGANIZER' }, { value: 'EMPLOYEE', label: 'EMPLOYEE' }] },
+          { name: 'organizationId', label: 'Chi nhánh (Tổ chức)', type: 'select', options: orgOptions }
+        ]} 
+        columns={[
+          { key: 'avatar', label: '', render: r => { const initials = (r.fullname || r.username || '?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(); const src = r.avatar ? resolveFileUrl(r.avatar) : null; return src ? <img src={src} alt="" style={{ width: 36, height: 36, borderRadius: '50%', objectFit: 'cover' }} onError={e => e.target.style.display='none'} /> : <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(135deg, #4ECDC4, #45B7D1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.75rem', color: '#fff' }}>{initials}</div>; } },
+          { key: 'username', label: 'Username' }, 
+          { key: 'fullname', label: 'Tên' }, 
+          { key: 'role', label: 'Vai trò', render: r => <span className={`badge ${r.role === 'ORGANIZER' ? 'blue' : 'warning'}`}>{r.role}</span> }, 
+          { key: 'organizationName', label: 'Chi nhánh', render: r => <span style={{fontSize: '0.85rem', color: '#ccc'}}>{r.organizationName || 'Chưa phân công'}</span> },
+          { key: 'status', label: 'Trạng thái', render: r => <span className={`badge ${r.status === 'ACTIVE' ? 'success' : 'error'}`}>{r.status}</span> }, 
+          { label: 'Thao tác', render: (r, load) => <button className="btn outline" style={{padding:'6px 12px',fontSize:'0.8rem',whiteSpace:'nowrap'}} onClick={() => handleToggleUser(r, load)}>{r.status === 'LOCKED' ? 'Mở khóa' : 'Khóa'}</button> }
+        ]} 
+  />;
 }

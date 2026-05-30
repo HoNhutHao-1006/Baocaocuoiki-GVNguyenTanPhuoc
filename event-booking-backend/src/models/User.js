@@ -14,7 +14,8 @@ const userSchema = new mongoose.Schema({
     bankAccount: { type: String, default: '' },
     emailVerified: { type: Boolean, default: false },
     verificationCode: { type: String, default: '' },
-    verificationExpires: { type: Date }
+    verificationExpires: { type: Date },
+    organizationId: { type: mongoose.Schema.Types.ObjectId, ref: 'Organization' }
 }, { timestamps: true });
 
 userSchema.index({ role: 1 });

@@ -17,20 +17,35 @@ export const fetchGraphQL = async (query, variables = {}) => {
   }
 
   const apiBase = import.meta.env.VITE_API_BASE_URL || GRAPHQL_URL;
-  const response = await fetch(apiBase, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      ...(token ? { 'Authorization': `Bearer ${token}` } : {})
-    },
-    body: JSON.stringify({ query, variables }),
-  });
+  
+  // Add a 10-second timeout to prevent infinite spinning when the server is unreachable
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
 
-  const result = await response.json();
-  
-  if (result.errors) {
-    throw new Error(result.errors[0].message);
+  try {
+    const response = await fetch(apiBase, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      },
+      body: JSON.stringify({ query, variables }),
+      signal: controller.signal
+    });
+
+    clearTimeout(timeoutId);
+    const result = await response.json();
+    
+    if (result.errors) {
+      throw new Error(result.errors[0].message);
+    }
+    
+    return result.data;
+  } catch (error) {
+    clearTimeout(timeoutId);
+    if (error.name === 'AbortError') {
+      throw new Error('Yêu cầu hết hạn kết nối (timeout 10s). Máy chủ không phản hồi.');
+    }
+    throw error;
   }
-  
-  return result.data;
 };

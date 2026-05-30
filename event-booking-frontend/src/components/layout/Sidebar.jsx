@@ -25,10 +25,12 @@ export default function Sidebar({ currentUser, view, setView, onLogout }) {
         {currentUser.role === 'ORGANIZER' && (
           <>
             <div className={`nav-item ${view === 'dashboard' ? 'active' : ''}`} onClick={() => setView('dashboard')}><Activity size={18} /> Thống Kê Chung</div>
+            <div className={`nav-item ${view === 'contracts' ? 'active' : ''}`} onClick={() => setView('contracts')}><FileText size={18} /> Hợp đồng phân công</div>
             <div className={`nav-item ${view === 'events' ? 'active' : ''}`} onClick={() => setView('events')}><Calendar size={18} /> Quản Lý Sự Kiện</div>
             <div className={`nav-item ${view === 'rsvp' ? 'active' : ''}`} onClick={() => setView('rsvp')}><Users size={18} /> Khách mời & RSVP</div>
             <div className={`nav-item ${view === 'seating' ? 'active' : ''}`} onClick={() => setView('seating')}><LayoutGrid size={18} /> Xếp Bàn Tiệc</div>
             <div className={`nav-item ${view === 'rundown' ? 'active' : ''}`} onClick={() => setView('rundown')}><Clock size={18} /> Kịch Bản & Task</div>
+            <div className={`nav-item ${view === 'internal-requests' ? 'active' : ''}`} onClick={() => setView('internal-requests')}><ClipboardList size={18} /> Yêu cầu nội bộ</div>
             <div className={`nav-item ${view === 'settings' ? 'active' : ''}`} onClick={() => setView('settings')}><Settings size={18} /> Quản lý tài khoản</div>
           </>
         )}
@@ -38,6 +40,7 @@ export default function Sidebar({ currentUser, view, setView, onLogout }) {
             <div className={`nav-item ${view === 'all-contracts' ? 'active' : ''}`} onClick={() => setView('all-contracts')}><ClipboardList size={18} /> Tất cả hợp đồng</div>
             <div className={`nav-item ${view === 'events' ? 'active' : ''}`} onClick={() => setView('events')}><Calendar size={18} /> Danh sách sự kiện</div>
             <div className={`nav-item ${view === 'proposals' ? 'active' : ''}`} onClick={() => setView('proposals')}><PlusCircle size={18} /> Đề xuất SK</div>
+            <div className={`nav-item ${view === 'my-requests' ? 'active' : ''}`} onClick={() => setView('my-requests')}><FileText size={18} /> Gửi yêu cầu</div>
             <div className={`nav-item ${view === 'scanner' ? 'active' : ''}`} onClick={() => setView('scanner')}><Ticket size={18} /> QR Scanner (Soát vé)</div>
             <div className={`nav-item ${view === 'settings' ? 'active' : ''}`} onClick={() => setView('settings')}><Settings size={18} /> Quản lý tài khoản</div>
           </>

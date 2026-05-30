@@ -10,6 +10,8 @@ const Device = require('./src/models/Device');
 const Contract = require('./src/models/Contract');
 const Order = require('./src/models/Order');
 const EventProposal = require('./src/models/EventProposal');
+const Organization = require('./src/models/Organization');
+const InternalRequest = require('./src/models/InternalRequest');
 
 async function seed() {
     await connectDB();
@@ -26,17 +28,24 @@ async function seed() {
     await Contract.deleteMany({});
     await Order.deleteMany({});
     await EventProposal.deleteMany({});
+    await Organization.deleteMany({});
+    await InternalRequest.deleteMany({});
+
+    // Seed Organizations
+    const orgBranch1 = await Organization.create({ name: 'Chi nhánh Quận 1', description: 'Trụ sở chính quản lý khu vực Quận 1 và trung tâm' });
+    const orgBranch2 = await Organization.create({ name: 'Chi nhánh Quận 3', description: 'Văn phòng đại diện Quận 3 chuyên nghiệp' });
+    console.log("✅ Organizations created.");
 
     // ═══════════════════════════════════════════════════
     // 1. USERS
     // ═══════════════════════════════════════════════════
     const admin = await User.create({ username: 'admin', password: '123', role: 'ADMIN', fullname: 'Nguyễn Quốc Bảo', email: 'admin@ems.vn' });
-    const org = await User.create({ username: 'org', password: '123', role: 'ORGANIZER', fullname: 'SpaceSpeakers Entertainment', phone: '0988888888', email: 'org@spacespeakers.vn' });
-    const org2 = await User.create({ username: 'org2', password: '123', role: 'ORGANIZER', fullname: 'YeaH1 Entertainment', phone: '0977777777', email: 'contact@yeah1.vn' });
+    const org = await User.create({ username: 'org', password: '123', role: 'ORGANIZER', fullname: 'SpaceSpeakers Entertainment', phone: '0988888888', email: 'org@spacespeakers.vn', organizationId: orgBranch1._id });
+    const org2 = await User.create({ username: 'org2', password: '123', role: 'ORGANIZER', fullname: 'YeaH1 Entertainment', phone: '0977777777', email: 'contact@yeah1.vn', organizationId: orgBranch2._id });
     const mem = await User.create({ username: 'member', password: '123', role: 'MEMBER', fullname: 'Trần Nhật Hào', phone: '0901112222', email: 'haotran@gmail.com' });
     const mem2 = await User.create({ username: 'member2', password: '123', role: 'MEMBER', fullname: 'Lê Thị Minh Anh', phone: '0912345678', email: 'minhanh@gmail.com' });
-    const emp = await User.create({ username: 'employee', password: '123', role: 'EMPLOYEE', fullname: 'Phạm Văn Đức', email: 'duc.pham@ems.vn' });
-    const emp2 = await User.create({ username: 'employee2', password: '123', role: 'EMPLOYEE', fullname: 'Hoàng Thị Mai', email: 'mai.hoang@ems.vn' });
+    const emp = await User.create({ username: 'employee', password: '123', role: 'EMPLOYEE', fullname: 'Phạm Văn Đức', email: 'duc.pham@ems.vn', organizationId: orgBranch1._id });
+    const emp2 = await User.create({ username: 'employee2', password: '123', role: 'EMPLOYEE', fullname: 'Hoàng Thị Mai', email: 'mai.hoang@ems.vn', organizationId: orgBranch2._id });
     console.log("✅ Users created.");
 
     // ═══════════════════════════════════════════════════

@@ -1,4 +1,4 @@
-﻿# 🎫 LUMINA EMS — HỆ THỐNG TỔ CHỨC QUẢN LÝ SỰ KIỆN VÀ ĐẶT VÉ
+# 🎫 LUMINA EMS — HỆ THỐNG TỔ CHỨC QUẢN LÝ SỰ KIỆN VÀ ĐẶT VÉ
 
 ## 1. Giới thiệu tổng quan (System Overview)
 
@@ -140,7 +140,7 @@
 
 ---
 
-## 1.2. Công nghệ sử dụng (Tech Stack)
+## 1.3. Công nghệ sử dụng (Tech Stack)
 
 | Tầng | Công nghệ | Chi tiết |
 |------|-----------|----------|
@@ -616,53 +616,87 @@ sequenceDiagram
 
 ```
 event-booking-backend/
-├── src/
-│   ├── config/          # Cấu hình DB, env
-│   ├── models/          # Mongoose schemas (12 models)
-│   │   ├── User.js, Event.js, Order.js
-│   │   ├── Contract.js, EventProposal.js
-│   │   ├── Floorplan.js, Rsvp.js
-│   │   ├── Category.js, TicketTier.js
-│   │   ├── Location.js, Service.js, Device.js
-│   ├── services/        # Business logic
-│   │   ├── email.service.js   # Gửi email xác thực
-│   │   ├── qr.service.js      # QR Code generation
-│   │   ├── rabbitmq.js        # Message queue
-│   │   └── ticket.worker.js   # Async ticket processing
-│   └── schema.js        # GraphQL schema & resolvers
+├── seed.js              # Script khởi tạo cơ sở dữ liệu thực tế (users, categories, events...)
+├── seed-seats.js        # Script khởi tạo sơ đồ ghế ngồi (Seat zones & Seats) cho các sự kiện
+├── server.js            # Entry point chạy backend (Express HTTP + GraphQL + Socket.IO)
+└── src/
+    ├── config/          # Cấu hình kết nối DB (MongoDB local / Memory Server) và môi trường
+    ├── models/          # Mongoose schemas (13 models)
+    │   ├── User.js, Event.js, Order.js, AdminRequest.js
+    │   ├── Contract.js, EventProposal.js, Rsvp.js
+    │   ├── Floorplan.js (gồm SeatZone & Seat), Category.js
+    │   ├── TicketTier.js, Location.js, Service.js, Device.js
+    ├── services/        # Logic nghiệp vụ bổ trợ
+    │   ├── ai.service.js      # Trợ lý AI (OpenAI API / Mock fallback)
+    │   ├── email.service.js   # Gửi OTP & email thư mời RSVP qua nodemailer (Gmail SMTP)
+    │   ├── event.service.js   # Logic nghiệp vụ phụ trợ cho Event
+    │   ├── qr.service.js      # Tạo QR Code soát vé & xác thực check-in
+    │   ├── rabbitmq.js        # Cấu hình và kết nối Message Queue RabbitMQ
+    │   └── ticket.worker.js   # Xử lý hàng đợi mua vé/email không đồng bộ
+    └── schema.js        # Định nghĩa GraphQL schema (Queries, Mutations) & Resolvers
 
 event-booking-frontend/
-├── src/
-│   ├── features/
-│   │   ├── auth/        # AuthModal (Login/Register)
-│   │   ├── discovery/   # DiscoveryHub, InfoModal
-│   │   ├── ticketing/   # EventDetail, SeatMapUI
-│   │   └── dashboard/   # GenericCRUD component
-│   ├── pages/
-│   │   ├── AdminPage.jsx
-│   │   ├── MemberPage.jsx
-│   │   ├── OrganizerPage.jsx
-│   │   ├── EmployeePage.jsx
-│   │   └── SettingsPage.jsx
-│   └── components/      # Sidebar, Topbar
+└── src/
+    ├── features/        # Các module chức năng của hệ thống
+    │   ├── auth/        # Module đăng nhập, đăng ký & xác thực OTP (AuthModal)
+    │   ├── discovery/   # Tìm kiếm, lọc danh mục & hiển thị sự kiện (DiscoveryHub, InfoModal)
+    │   ├── ticketing/   # Chọn ghế trên sơ đồ realtime & đặt vé (EventDetail, SeatMapUI)
+    │   ├── proposal/    # Đề xuất tổ chức sự kiện B2B (EventProposalWizard)
+    │   ├── rsvp/        # Quản lý khách mời & phản hồi RSVP
+    │   └── dashboard/   # Dashboard quản trị, biểu đồ doanh thu & các form quản lý (GenericCRUD...)
+    ├── pages/           # Các trang chính theo vai trò người dùng (Actor Pages)
+    │   ├── AdminPage.jsx        # Giao diện của Quản trị viên (thống kê doanh thu, AI insights, duyệt đề xuất, CRUD...)
+    │   ├── MemberPage.jsx       # Giao diện của Member (quản lý tủ vé, tạo đề xuất sự kiện, xem hợp đồng...)
+    │   ├── OrganizerPage.jsx    # Giao diện của Organizer (tạo sự kiện, quản lý RSVP, xếp bàn tiệc...)
+    │   ├── EmployeePage.jsx     # Giao diện di động cho nhân viên soát vé (quét QR, quản lý hợp đồng...)
+    │   ├── RsvpPage.jsx         # Trang phản hồi thư mời tham dự sự kiện dành cho khách mời
+    │   ├── SettingsPage.jsx     # Cập nhật thông tin cá nhân & đổi mật khẩu tài khoản
+    │   └── MemberComponents.jsx # Các components giao diện dùng riêng cho trang Member
+    └── components/      # Các component dùng chung
+        └── layout/      # Thanh điều hướng ngang (Topbar) và thanh menu dọc (Sidebar)
 ```
 
 ---
 
 ## 9. Hướng dẫn chạy
 
-```bash
-# Backend
-cd event-booking-backend
-npm install
-npm run dev    # Port 4000
+### 9.1. Yêu cầu chuẩn bị
+- Node.js cài sẵn trên máy.
+- MongoDB chạy local tại port mặc định `27017` (Nếu không có MongoDB local, backend sẽ tự khởi động MongoDB Memory Server giả lập để chạy thử).
+- (Tùy chọn) RabbitMQ chạy tại `localhost:5672` (hoặc qua Docker Desktop với `docker-compose up -d` trong thư mục backend để chạy đầy đủ tính năng realtime và message queue).
 
-# Frontend
-cd event-booking-frontend
+### 9.2. Khởi tạo dữ liệu (Seeding Database)
+Trước khi chạy ứng dụng lần đầu tiên, hãy seed dữ liệu mẫu để hệ thống có đầy đủ tài khoản, sự kiện và sơ đồ ghế ngồi:
+
+```bash
+cd event-booking-backend
+
+# 1. Cài đặt các package cần thiết cho backend
 npm install
-npm run dev    # Port 5173
+
+# 2. Tạo dữ liệu người dùng, sự kiện, đề xuất, hợp đồng mẫu
+node seed.js
+
+# 3. Tạo sơ đồ chỗ ngồi & ghế ngồi realtime cho các sự kiện
+node seed-seats.js
 ```
 
----
+Tài khoản demo sau khi seed thành công:
+- **Admin**: `admin` / `123`
+- **Member (Khách hàng)**: `member` / `123`
+- **Organizer (Người tổ chức)**: `org` / `123`
+- **Employee (Nhân viên soát vé)**: `employee` / `123`
+
+### 9.3. Chạy các service ứng dụng
+```bash
+# Chạy Backend (Port 4000)
+cd event-booking-backend
+npm run dev
+
+# Chạy Frontend (Port 5173)
+cd event-booking-frontend
+npm install
+npm run dev
+```
 
 > **Tác giả:** Hồ Nhựt Hào — Sinh viên Năm 4 | Báo cáo cuối kỳ — GV: Nguyễn Tấn Phước

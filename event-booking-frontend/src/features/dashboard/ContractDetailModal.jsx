@@ -53,9 +53,9 @@ export default function ContractDetailModal({ contract, onClose }) {
 
   return (
     <div style={{ position:'fixed',top:0,left:0,right:0,bottom:0,background:'rgba(0,0,0,0.85)',zIndex:9999,display:'flex',alignItems:'center',justifyContent:'center',backdropFilter:'blur(8px)' }} onClick={onClose}>
-      <div style={{ width:'95vw',maxWidth:1200,height:'90vh',background:'var(--bg-panel,#16161e)',borderRadius:16,border:'1px solid rgba(0,240,255,0.2)',display:'flex',overflow:'hidden',boxShadow:'0 25px 60px rgba(0,0,0,0.5)' }} onClick={e=>e.stopPropagation()}>
+      <div className="responsive-modal-container" style={{ width:'95vw',maxWidth:1200,height:'90vh',background:'var(--bg-panel,#16161e)',borderRadius:16,border:'1px solid rgba(0,240,255,0.2)',display:'flex',overflow:'hidden',boxShadow:'0 25px 60px rgba(0,0,0,0.5)' }} onClick={e=>e.stopPropagation()}>
         {/* Sidebar tabs */}
-        <div style={{ width:220,background:'rgba(0,0,0,0.3)',borderRight:'1px solid rgba(255,255,255,0.08)',padding:'20px 0',display:'flex',flexDirection:'column' }}>
+        <div className="responsive-modal-sidebar" style={{ width:220,background:'rgba(0,0,0,0.3)',borderRight:'1px solid rgba(255,255,255,0.08)',padding:'20px 0',display:'flex',flexDirection:'column' }}>
           <div style={{ padding:'10px 20px 25px',borderBottom:'1px solid rgba(255,255,255,0.08)' }}>
             <h3 style={{ color:'#fff',fontSize:'1rem',fontFamily:'Outfit',margin:0 }}>Chi Tiết Hợp Đồng</h3>
             <div style={{ fontSize:'0.8rem',color:'var(--text-muted)',marginTop:4 }}>HD-{(d.id||'').slice(-6).toUpperCase()}</div>

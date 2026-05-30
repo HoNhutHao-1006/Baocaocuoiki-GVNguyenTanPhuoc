@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { fetchGraphQL } from '../api/axiosClient';
+import { resolveFileUrl } from '../api/config';
 import SettingsPage from './SettingsPage';
-import { Calendar, Users, Clock, CheckCircle, XCircle, DollarSign, RefreshCw, PlusCircle, MapPin, Eye } from 'lucide-react';
+import EmployeeSetupModal from '../features/dashboard/EmployeeSetupModal';
+import ContractDetailModal from '../features/dashboard/ContractDetailModal';
+import { Calendar, Users, Clock, CheckCircle, XCircle, DollarSign, RefreshCw, PlusCircle, MapPin, Eye, FileText, Package } from 'lucide-react';
 
 export default function OrganizerPage({ view, currentUser }) {
   const [events, setEvents] = useState([]);
@@ -11,11 +14,47 @@ export default function OrganizerPage({ view, currentUser }) {
   const [selectedEventId, setSelectedEventId] = useState(null);
   const [showCreate, setShowCreate] = useState(false);
   const [form, setForm] = useState({ title: '', description: '', date: '', location: '', coverImg: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1200', categoryId: '', eventType: 'PUBLIC', ticketingEnabled: true });
+  
+  const [contracts, setContracts] = useState([]);
+  const [setupModal, setSetupModal] = useState(null);
+  const [selectedContract, setSelectedContract] = useState(null);
 
   useEffect(() => {
     if (currentUser && (view === 'dashboard' || view === 'events')) loadEvents();
     if (view === 'events') loadCategories();
+    if (currentUser && view === 'contracts') loadMyContracts();
   }, [view, currentUser]);
+
+  const loadMyContracts = async () => {
+    setLoading(true);
+    try {
+      const res = await fetchGraphQL(`query { getEmployeeContracts(employeeId: "${currentUser.id}") { id memberId eventId details totalAmount status createdAt fileUrl fileName proposalTitle } }`);
+      setContracts(res.getEmployeeContracts || []);
+    } catch (err) { console.error(err); }
+    setLoading(false);
+  };
+
+  const formatMoney = (v) => v ? v.toLocaleString('vi-VN') + ' ₫' : '—';
+  const formatDate = (d) => d ? new Date(d).toLocaleDateString('vi-VN') : '—';
+
+  const contractStatusBadge = (status) => {
+    const map = {
+      'Pending': { bg: 'rgba(245,158,11,0.15)', color: '#F59E0B', icon: <Clock size={14} /> },
+      'MemberConfirmed': { bg: 'rgba(59,130,246,0.15)', color: '#3B82F6', icon: <CheckCircle size={14} /> },
+      'MemberRejected': { bg: 'rgba(239,68,68,0.15)', color: '#EF4444', icon: <XCircle size={14} /> },
+      'EmployeeConfirmed': { bg: 'rgba(16,185,129,0.15)', color: '#10B981', icon: <CheckCircle size={14} /> },
+      'Approved': { bg: 'rgba(16,185,129,0.15)', color: '#10B981', icon: <CheckCircle size={14} /> },
+      'Deposited': { bg: 'rgba(59,130,246,0.15)', color: '#3B82F6', icon: <DollarSign size={14} /> },
+      'Paid': { bg: 'rgba(16,185,129,0.15)', color: '#10B981', icon: <CheckCircle size={14} /> },
+      'Rejected': { bg: 'rgba(239,68,68,0.15)', color: '#EF4444', icon: <XCircle size={14} /> },
+    };
+    const s = map[status] || map['Pending'];
+    return (
+      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '4px 10px', borderRadius: 8, background: s.bg, color: s.color, fontWeight: 700, fontSize: '0.8rem' }}>
+        {s.icon} {status}
+      </span>
+    );
+  };
 
   const loadEvents = async () => {
     setLoading(true);
@@ -288,6 +327,206 @@ export default function OrganizerPage({ view, currentUser }) {
     </div>
   );
 
+  // ═══ HỢP ĐỒNG PHÂN CÔNG ═══
+  if (view === 'contracts') return (
+    <div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
+        <h2 className="page-title" style={{ margin: 0 }}>📋 Hợp Đồng Được Phân Công Tổ Chức</h2>
+        <button className="btn outline" onClick={loadMyContracts} style={{ padding: '8px 16px' }}>
+          <RefreshCw size={16} /> Làm mới
+        </button>
+      </div>
+      
+      {loading ? (
+        <div className="panel" style={{ textAlign: 'center', padding: 40 }}>
+          <div className="spin" style={{ width: 32, height: 32, border: '3px solid var(--border-color)', borderTopColor: 'var(--primary-color)', borderRadius: '50%', margin: '0 auto 16px' }}></div>
+          <p style={{ color: 'var(--text-muted)' }}>Đang tải...</p>
+        </div>
+      ) : contracts.length === 0 ? (
+        <div className="panel" style={{ textAlign: 'center', padding: 50 }}>
+          <div style={{ fontSize: '3rem', marginBottom: 16 }}>📂</div>
+          <h3 style={{ color: 'var(--text-muted)', fontWeight: 600 }}>Chưa có hợp đồng nào được phân công</h3>
+          <p style={{ color: '#666', fontSize: '0.9rem' }}>Bạn sẽ nhận được các hợp đồng tổ chức sự kiện khi khách hàng xác nhận.</p>
+        </div>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          {/* Summary cards */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12, marginBottom: 8 }}>
+            <div className="panel" style={{ padding: 16, textAlign: 'center' }}>
+              <div style={{ fontSize: '1.8rem', fontWeight: 900, color: 'var(--primary-color)' }}>{contracts.length}</div>
+              <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Tổng HĐ</div>
+            </div>
+            <div className="panel" style={{ padding: 16, textAlign: 'center' }}>
+              <div style={{ fontSize: '1.8rem', fontWeight: 900, color: '#F59E0B' }}>{contracts.filter(c => c.status === 'Pending' || c.status === 'MemberConfirmed').length}</div>
+              <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Chờ xử lý</div>
+            </div>
+            <div className="panel" style={{ padding: 16, textAlign: 'center' }}>
+              <div style={{ fontSize: '1.8rem', fontWeight: 900, color: '#10B981' }}>{contracts.filter(c => c.status === 'EmployeeConfirmed' || c.status === 'Approved' || c.status === 'Paid').length}</div>
+              <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Đã triển khai</div>
+            </div>
+            <div className="panel" style={{ padding: 16, textAlign: 'center' }}>
+              <div style={{ fontSize: '1.8rem', fontWeight: 900, color: '#3B82F6' }}>{formatMoney(contracts.reduce((s, c) => s + (c.totalAmount || 0), 0))}</div>
+              <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Tổng giá trị</div>
+            </div>
+          </div>
+
+          {/* Contract list */}
+          {contracts.map(c => (
+            <div key={c.id} className="panel" style={{ padding: 20 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
+                <div>
+                  <h3 style={{ margin: '0 0 6px', fontWeight: 700, fontSize: '1.05rem' }}>
+                    <FileText size={16} style={{ marginRight: 6, verticalAlign: -2, color: 'var(--primary-color)' }} />
+                    {c.proposalTitle || `Hợp đồng #${c.id.slice(-6)}`}
+                  </h3>
+                  <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Ngày tạo: {formatDate(c.createdAt)}</span>
+                </div>
+                {contractStatusBadge(c.status)}
+              </div>
+              <div style={{ background: 'rgba(0,0,0,0.2)', borderRadius: 10, padding: 14, marginBottom: 14, maxHeight: 120, overflow: 'auto', fontSize: '0.85rem', color: 'var(--text-muted)', whiteSpace: 'pre-wrap', fontFamily: 'monospace' }}>
+                {c.details ? c.details.substring(0, 300) + (c.details.length > 300 ? '...' : '') : 'Không có chi tiết'}
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ fontWeight: 700, color: '#00F0FF', fontSize: '1.1rem' }}>
+                  <DollarSign size={16} style={{ verticalAlign: -2 }} /> {formatMoney(c.totalAmount)}
+                </div>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <button className="btn outline" style={{ padding: '6px 14px', fontSize: '0.8rem' }} onClick={() => setSelectedContract(c)}>
+                    👁️ Chi tiết
+                  </button>
+                  {c.fileUrl && (
+                    <a href={resolveFileUrl(c.fileUrl)} target="_blank" rel="noreferrer" className="btn outline" style={{ padding: '6px 14px', fontSize: '0.8rem', textDecoration: 'none' }}>
+                      📄 Tải file
+                    </a>
+                  )}
+                  {c.status === 'MemberConfirmed' && (
+                    <button className="btn" style={{ padding: '6px 14px', fontSize: '0.8rem', background: 'linear-gradient(135deg, #3B82F6, #2563EB)' }} onClick={() => setSetupModal(c)}>
+                      <Package size={14} /> Kiểm tra & Xác nhận
+                    </button>
+                  )}
+                  {c.status === 'EmployeeConfirmed' && (
+                    <button className="btn outline" style={{ padding: '6px 14px', fontSize: '0.8rem', borderColor: '#10B981', color: '#10B981' }} onClick={() => { setSetupModal({...c, showProgress: true}); }}>
+                      <CheckCircle size={14} /> Cập nhật tiến độ
+                    </button>
+                  )}
+                  {c.status === 'Pending' && (
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '6px 14px', borderRadius: 8, background: 'rgba(245,158,11,0.15)', color: '#F59E0B', fontWeight: 700, fontSize: '0.8rem' }}>
+                      <Clock size={14} /> Chờ khách hàng xác nhận
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* ═══ SETUP MODAL ═══ */}
+      {setupModal && (
+        <EmployeeSetupModal
+          contract={setupModal}
+          onClose={() => setSetupModal(null)}
+          onConfirmed={() => { setSetupModal(null); loadMyContracts(); }}
+        />
+      )}
+
+      {selectedContract && (
+        <ContractDetailModal
+          contract={selectedContract}
+          onClose={() => setSelectedContract(null)}
+        />
+      )}
+    </div>
+  );
+
   if (view === 'settings') return <div><h2 className="page-title">⚙️ Thông Tin Cá Nhân</h2><SettingsPage currentUser={currentUser} /></div>;
+  if (view === 'internal-requests') return <OrganizerRequests currentUser={currentUser} />;
   return null;
+}
+
+function OrganizerRequests({ currentUser }) {
+  const [requests, setRequests] = useState([]);
+
+  const loadRequests = () => {
+    fetchGraphQL(`query { getInternalRequestsForManager(managerId: "${currentUser.id}") { id employeeName type subject content amount status managerNote createdAt } }`)
+      .then(res => setRequests(res.getInternalRequestsForManager || []))
+      .catch(console.error);
+  };
+
+  useEffect(() => { loadRequests(); }, [currentUser]);
+
+  const handleUpdate = async (id, status) => {
+    const note = prompt('Nhập ghi chú cho nhân viên (không bắt buộc):') || '';
+    try {
+      await fetchGraphQL(`mutation M($requestId: ID!, $status: String!, $managerNote: String) { updateInternalRequestStatus(requestId: $requestId, status: $status, managerNote: $managerNote) { id } }`, { requestId: id, status, managerNote: note });
+      loadRequests();
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  const statusBadge = (s) => {
+    if (s === 'Approved') return <span className="badge success">✅ Đã duyệt</span>;
+    if (s === 'Rejected') return <span className="badge error">❌ Từ chối</span>;
+    return <span className="badge warning">⏳ Chờ duyệt</span>;
+  };
+
+  const typeLabels = { Leave: 'Nghỉ phép', Advance: 'Tạm ứng', Expense: 'Thanh toán chi phí', Other: 'Khác' };
+
+  return (
+    <div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+        <h2 className="page-title" style={{ margin: 0 }}>Duyệt Yêu Cầu Chi Nhánh</h2>
+        <button className="btn outline" onClick={loadRequests}><RefreshCw size={16} /> Làm mới</button>
+      </div>
+
+      <div className="panel">
+        {requests.length === 0 ? (
+          <p style={{ color: 'var(--text-muted)' }}>Chưa có yêu cầu nào từ nhân viên trong chi nhánh.</p>
+        ) : (
+          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+            <thead>
+              <tr style={{ borderBottom: '1px solid #444' }}>
+                <th style={{ padding: 10 }}>Ngày Gửi</th>
+                <th style={{ padding: 10 }}>Nhân Viên</th>
+                <th style={{ padding: 10 }}>Loại</th>
+                <th style={{ padding: 10 }}>Tiêu Đề / Nội dung</th>
+                <th style={{ padding: 10 }}>Số Tiền</th>
+                <th style={{ padding: 10 }}>Trạng Thái</th>
+                <th style={{ padding: 10 }}>Thao Tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              {requests.map(r => {
+                const rawDate = r.createdAt;
+                const d = rawDate ? new Date(isNaN(rawDate) ? rawDate : parseInt(rawDate)) : null;
+                return (
+                  <tr key={r.id} style={{ borderBottom: '1px solid #333' }}>
+                    <td style={{ padding: 10 }}>{d && !isNaN(d) ? d.toLocaleDateString('vi-VN') : '-'}</td>
+                    <td style={{ padding: 10, fontWeight: 'bold' }}>{r.employeeName}</td>
+                    <td style={{ padding: 10 }}>{typeLabels[r.type] || r.type}</td>
+                    <td style={{ padding: 10 }}>
+                      <div style={{ fontWeight: 'bold' }}>{r.subject}</div>
+                      <div style={{ fontSize: '0.85rem', color: '#aaa', marginTop: 4 }}>{r.content}</div>
+                      {r.managerNote && <div style={{ fontSize: '0.85rem', color: '#00F0FF', marginTop: 4 }}>💬 QL: {r.managerNote}</div>}
+                    </td>
+                    <td style={{ padding: 10, color: '#00F0FF' }}>{r.amount ? `${r.amount.toLocaleString()}đ` : '-'}</td>
+                    <td style={{ padding: 10 }}>{statusBadge(r.status)}</td>
+                    <td style={{ padding: 10 }}>
+                      {r.status === 'Pending' && (
+                        <div style={{ display: 'flex', gap: 6, flexDirection: 'column' }}>
+                          <button className="btn" style={{ padding: '6px 10px', fontSize: '0.8rem' }} onClick={() => handleUpdate(r.id, 'Approved')}>✅ Duyệt</button>
+                          <button className="btn outline" style={{ color: '#ff4444', borderColor: '#ff4444', padding: '6px 10px', fontSize: '0.8rem' }} onClick={() => handleUpdate(r.id, 'Rejected')}>❌ Hủy</button>
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        )}
+      </div>
+    </div>
+  );
 }

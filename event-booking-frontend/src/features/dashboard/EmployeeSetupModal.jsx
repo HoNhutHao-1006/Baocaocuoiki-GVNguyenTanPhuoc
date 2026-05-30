@@ -74,7 +74,7 @@ export default function EmployeeSetupModal({ contract, onClose, onConfirmed }) {
 
   return (
     <div style={{ position:'fixed',inset:0,background:'rgba(0,0,0,0.85)',zIndex:9999,display:'flex',alignItems:'center',justifyContent:'center',backdropFilter:'blur(6px)' }} onClick={onClose}>
-      <div style={{ width: 800, maxHeight:'90vh', background:'var(--bg-panel,#16161e)', borderRadius:16, border:'1px solid rgba(0,240,255,0.2)', overflow:'hidden', display:'flex', flexDirection:'column' }} onClick={e=>e.stopPropagation()}>
+      <div style={{ width: '95vw', maxWidth: 800, maxHeight:'90vh', background:'var(--bg-panel,#16161e)', borderRadius:16, border:'1px solid rgba(0,240,255,0.2)', overflow:'hidden', display:'flex', flexDirection:'column' }} onClick={e=>e.stopPropagation()}>
         {/* Header */}
         <div style={{ background:'linear-gradient(135deg,rgba(16,185,129,0.12),rgba(0,240,255,0.08))', padding:'20px 28px 16px', borderBottom:'1px solid var(--border-color)' }}>
           <h2 style={{ margin:'0 0 4px', fontFamily:'Outfit', fontWeight:800, fontSize:'1.2rem' }}>🔧 Điều Phối & Vận Hành Sự Kiện</h2>
