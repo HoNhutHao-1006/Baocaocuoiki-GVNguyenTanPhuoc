@@ -62,6 +62,11 @@ Em xin gửi lời cảm ơn chân thành và sâu sắc nhất đến **TS. Ngu
   - 5.1. Yêu cầu hệ thống và môi trường
   - 5.2. Các bước cấu hình cơ sở dữ liệu mẫu (Seeding)
   - 5.3. Hướng dẫn khởi động các dịch vụ (Frontend, Backend)
+  Bước 1: cd event-booking-frontend
+  npm run dev
+  Bước 2: cd event-booking-backend
+  npm run dev
+  Bước 3: ngrok http 5173 (Để public app)
 - [**CHƯƠNG 6: ĐÁNH GIÁ & HƯỚNG PHÁT TRIỂN**](#chương-6-đánh-giá--hướng-phát-triển)
   - 6.1. Đánh giá tính khả thi và ưu/nhược điểm
   - 6.2. Phân tích SWOT & Khuyến nghị vận hành (AI Generated Insight)
