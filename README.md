@@ -528,153 +528,132 @@ Nếu sinh viên muốn sao chép nội dung này sang Microsoft Word để so�
 ## CHƯƠNG 1: GIỚI THIỆU CÔNG NGHỆ
 
 ### 1.1. Công nghệ là gì
-GraphQL là một ngôn ngữ truy vấn dữ liệu đột phá dành cho API được Facebook phát triển vào năm 2012. Hệ thống này cung cấp một mô tả đầy đủ và dễ hiểu về dữ liệu trong API của bạn. Ứng dụng client có thể yêu cầu chính xác những gì họ cần và không nhận thêm bất kỳ thứ gì khác. Để hiểu rõ lý do tại sao công nghệ này lại vượt trội hơn REST, chúng ta hãy cùng phân tích mục tiếp theo.
+Công nghệ truyền thông thời gian thực Socket.IO là giải pháp hàng đầu hiện nay giúp trao đổi thông tin liên tục giữa client và server. Giải pháp này cho phép thiết lập một kênh kết nối WebSocket hai chiều bền vững và có độ trễ cực thấp. Nhờ tính năng này, mọi thay đổi về trạng thái ghế ngồi đều được cập nhật tức thì đến màn hình người dùng. Để gia tăng sức mạnh cho ứng dụng, việc kết hợp thêm trí tuệ nhân tạo là xu thế không thể bỏ qua.
 
-Cơ chế hoạt động của GraphQL dựa trên một điểm cuối duy nhất thay vì nhiều đường dẫn truy cập phức tạp. Client gửi một chuỗi truy vấn đặc tả trực tiếp đến server thông qua phương thức HTTP POST. Server sẽ phân tích cú pháp truy vấn và trả về kết quả dưới dạng cấu trúc JSON chính xác. Tiếp theo dưới đây, chúng ta sẽ làm rõ các lý do cốt lõi quyết định việc lựa chọn công nghệ này.
+Google Gemini AI là mô hình trí tuệ nhân tạo tiên tiến hỗ trợ xử lý ngôn ngữ tự nhiên và phân tích dữ liệu chuyên sâu. Mô hình này giúp máy tính hiểu và tạo ra các báo cáo thông minh từ các số liệu thô trong cơ sở dữ liệu. Hệ thống Lumina EMS ứng dụng Gemini AI để phân tích SWOT tự động phục vụ công tác quản lý. Tiếp theo dưới đây, chúng ta sẽ làm rõ các lý do cốt lõi quyết định việc lựa chọn hai công nghệ này.
 
 ### 1.2. Tại sao chọn
-Lý do hàng đầu để lựa chọn GraphQL là khả năng giải quyết triệt để vấn đề Over-fetching dữ liệu. Over-fetching xảy ra khi client phải nhận về quá nhiều thông tin dư thừa không cần sử dụng đến. Với GraphQL, bạn chỉ cần khai báo các trường dữ liệu cần thiết để tối ưu hóa băng thông. Bên cạnh việc tiết kiệm dung lượng mạng, công nghệ này còn giải quyết một thách thức kỹ thuật lớn khác.
+Lý do chọn Socket.IO xuất phát từ yêu cầu khắt khe về mặt đồng bộ dữ liệu thời gian thực của sơ đồ ghế. Nếu sử dụng giao thức HTTP thông thường, người dùng sẽ phải tải lại trang liên tục để xem trạng thái ghế. Socket.IO giúp loại bỏ hoàn toàn sự bất tiện này bằng cách tự động đồng bộ hóa dữ liệu lập tức. Bên cạnh giải pháp truyền tin realtime, việc đưa AI vào quản lý cũng mang lại những lợi ích vô cùng to lớn.
 
-Khả năng loại bỏ hoàn toàn Under-fetching là điểm mạnh thứ hai giúp tối ưu hóa hiệu năng hệ thống. Under-fetching bắt buộc client phải gọi nhiều API liên tiếp mới thu thập đủ thông tin hiển thị. GraphQL cho phép bạn gộp nhiều truy vấn phức tạp vào trong một yêu cầu duy nhất một cách dễ dàng. Từ những ưu điểm kỹ thuật vượt trội trên, công nghệ này đã được ứng dụng rộng rãi ngoài thực tế.
+Lựa chọn Google Gemini AI giúp tự động hóa hoàn toàn quy trình lập báo cáo kinh doanh phức tạp của Admin. Gemini 2.0 Flash sở hữu tốc độ xử lý nhanh chóng cùng chi phí vận hành vô cùng tối ưu. Hệ thống có thể đưa ra các đề xuất điều chỉnh giá vé thông minh dựa trên phân tích xu hướng bán vé. Từ những ưu điểm vượt trội trên, hai công nghệ này đã chứng minh tính hiệu quả cao trong thực tế.
 
 ### 1.3. Ứng dụng thực tế
-GraphQL đang được áp dụng rộng rãi tại các tập đoàn công nghệ hàng đầu trên toàn cầu. Các doanh nghiệp lớn như GitHub, Shopify và Airbnb đã chuyển đổi toàn bộ hệ thống API sang GraphQL. Việc chuyển đổi này giúp họ cải thiện đáng kể tốc độ phản hồi dịch vụ trên thiết bị di động. Để bắt đầu áp dụng giải pháp tiên tiến này, chúng ta cần tìm hiểu quy trình cài đặt môi trường.
+Cả Socket.IO và Gemini AI đều đang được ứng dụng rộng rãi tại các hệ thống thương mại điện tử lớn. Các nền tảng như Uber sử dụng kết nối realtime để cập nhật vị trí xe chạy trên bản đồ. Trong khi đó, các sàn giao dịch lớn tích hợp AI để dự báo hành vi mua sắm của khách hàng. Để bắt đầu áp dụng các giải pháp tiên tiến này vào dự án, chúng ta cần cài đặt môi trường phát triển.
 
 ---
 
 ## CHƯƠNG 2: CÀI ĐẶT MÔI TRƯỜNG
 
 ### 2.1. Yêu cầu hệ thống
-Thiết lập yêu cầu hệ thống là bước khởi đầu bắt buộc để cài đặt môi trường phát triển. Hệ thống yêu cầu cài đặt sẵn môi trường chạy Node.js phiên bản từ 18.0.0 trở lên. Bên cạnh đó, lập trình viên cần chuẩn bị một trình quản lý gói như NPM hoặc Yarn. Sau khi đảm bảo các yêu cầu phần mềm cơ bản, chúng ta sẽ thực hiện các bước cài đặt thư viện.
+Thiết lập yêu cầu hệ thống là bước khởi đầu bắt buộc để cài đặt môi trường phát triển. Hệ thống yêu cầu cài đặt sẵn môi trường chạy Node.js phiên bản từ 18.0.0 trở lên. Ngoài ra, lập trình viên cần đăng ký một mã khóa API Key từ Google AI Studio để gọi mô hình Gemini. Sau khi đảm bảo các yêu cầu phần mềm cơ bản, chúng ta sẽ thực hiện các bước cài đặt thư viện.
 
 ### 2.2. Cài đặt
-Cài đặt các gói thư viện phụ thuộc được thực hiện dễ dàng thông qua dòng lệnh NPM. Chúng ta cần chạy lệnh cài đặt hai gói core là graphql và apollo-server-express. Các thư viện này sẽ được tự động tải về và quản lý bên trong tệp tin package.json. Khi quá trình cài đặt thư viện hoàn tất, công việc tiếp theo là tiến hành cấu hình khởi tạo.
+Cài đặt các gói thư viện phụ thuộc được thực hiện dễ dàng thông qua dòng lệnh NPM. Chúng ta cần chạy lệnh cài đặt các gói socket.io, socket.io-client và @google/generative-ai. Các gói thư viện này sẽ được tự động tải về và quản lý bên trong tệp tin package.json. Khi quá trình cài đặt thư viện hoàn tất, công việc tiếp theo là tiến hành cấu hình khởi tạo.
 
 ### 2.3. Cấu hình
-Cấu hình máy chủ khởi tạo yêu cầu chúng ta tích hợp Apollo Server vào ứng dụng Express. Lập trình viên cần khởi tạo thực thể ApolloServer với các tham số typeDefs và resolvers. Phương thức start sẽ kích hoạt dịch vụ chạy ngầm trước khi áp dụng middleware Express. Để nắm vững cách thức lập trình sau khi cấu hình xong, chương tiếp theo sẽ giới thiệu kiến thức cơ bản.
+Cấu hình máy chủ khởi tạo yêu cầu chúng ta thiết lập Socket.IO kết nối trực tiếp với Express Server. Lập trình viên cần khởi tạo thực thể Server của Socket.IO và cấu hình phân quyền CORS an toàn. Đồng thời, chúng ta khởi tạo thực thể GoogleGenAI bằng mã khóa API Key lấy từ tệp biến môi trường. Để nắm vững cách thức lập trình sau khi cấu hình xong, chương tiếp theo sẽ giới thiệu kiến thức cơ bản.
 
 ---
 
 ## CHƯƠNG 3: KIẾN THỨC CƠ BẢN
 
 ### 3.1. Cú pháp
-Cú pháp truy vấn của GraphQL được thiết kế trực quan và cực kỳ dễ đọc đối với lập trình viên. Ngôn ngữ này chia các thao tác làm hai loại chính là Query và Mutation. Thao tác Query dùng để lấy dữ liệu, còn Mutation dùng cho các tác vụ ghi và cập nhật. Để hiểu rõ cách thức tổ chức các thao tác này, chúng ta cần xem xét các thành phần chính.
+Cú pháp lập trình của Socket.IO và Gemini API được thiết kế trực quan và cực kỳ dễ tiếp cận. Socket.IO sử dụng cú pháp socket.on để lắng nghe và socket.emit để phát đi các sự kiện. Gemini API sử dụng cú pháp model.generateContent để gửi yêu cầu phân tích dữ liệu trực tiếp đến máy chủ Google. Để hiểu rõ cách thức tổ chức các cú pháp này, chúng ta cần xem xét các thành phần chính.
 
 ### 3.2. Thành phần chính
-Schema là thành phần cốt lõi đóng vai trò định nghĩa toàn bộ mô hình dữ liệu của hệ thống. Thành phần này mô tả chi tiết các kiểu dữ liệu và mối quan hệ giữa chúng. Schema hoạt động như một bản hợp đồng cam kết chặt chẽ giữa ứng dụng khách và máy chủ. Song song với việc định nghĩa Schema, hệ thống bắt buộc phải có thành phần Resolvers xử lý.
+Kết nối Socket và Room là hai thành phần cốt lõi quản lý luồng dữ liệu thời gian thực. Mỗi trình duyệt kết nối đến server sẽ được cấp một thực thể Socket duy nhất để trao đổi. Room cho phép nhóm các kết nối của cùng một sự kiện lại với nhau để tối ưu hóa việc phát tin. Song song với luồng truyền tin realtime, hệ thống AI cũng hoạt động dựa trên các thành phần đặc thù.
 
-Resolvers là các hàm xử lý chịu trách nhiệm điền dữ liệu thực tế cho từng trường trong Schema. Mỗi trường thông tin được định nghĩa trong Schema sẽ có một hàm resolver tương ứng. Resolvers sẽ thực hiện các truy vấn trực tiếp vào cơ sở dữ liệu MongoDB để trả về kết quả. Mục tiếp theo dưới đây sẽ minh họa một ví dụ đơn giản để làm rõ các khái niệm này.
+GenerativeModel và Prompt là hai thành phần quan trọng quyết định chất lượng câu trả lời của trí tuệ nhân tạo. GenerativeModel đại diện cho mô hình ngôn ngữ lớn được cấu hình để xử lý thông tin. Prompt là chuỗi chỉ thị dạng văn bản hướng dẫn AI thực hiện các nghiệp vụ phân tích dữ liệu. Mục tiếp theo dưới đây sẽ minh họa một ví dụ đơn giản để làm rõ các khái niệm này.
 
 ### 3.3. Ví dụ đơn giản
-Một ví dụ đơn giản giúp lập trình viên nhanh chóng hình dung cách thức vận hành thực tế. Dưới đây là đoạn mã định nghĩa Schema và Resolver cho tính năng lấy thông tin sự kiện. Đoạn mã này thể hiện rõ ràng tính tối giản và hiệu quả cao của GraphQL. Sau khi nắm vững các kiến thức cơ bản này, chúng ta sẽ chuyển sang hướng dẫn sử dụng chuyên sâu.
-
-```graphql
-# Định nghĩa Schema
-type Event {
-  id: ID!
-  title: String!
-  price: Float!
-}
-
-type Query {
-  getEvent(id: ID!): Event
-}
-```
+Một ví dụ đơn giản giúp lập trình viên nhanh chóng hình dung cách thức vận hành thực tế. Dưới đây là đoạn mã mô phỏng cách thức phát tin nhắn realtime và gọi AI sinh văn bản. Đoạn mã này thể hiện rõ ràng tính tối giản và hiệu quả cao của hai công nghệ mới. Sau khi nắm vững các kiến thức cơ bản này, chúng ta sẽ chuyển sang hướng dẫn sử dụng chuyên sâu.
 
 ```javascript
-// Định nghĩa Resolvers tương ứng
-const resolvers = {
-  Query: {
-    getEvent: async (_, { id }) => {
-      return await EventModel.findById(id);
-    }
-  }
-};
+// 1. Ví dụ gửi thông tin cập nhật ghế qua Socket.IO
+socket.emit('seat-updated', { seatId: 'A10', status: 'held' });
+
+// 2. Ví dụ gọi Google Gemini AI sinh tóm tắt báo cáo
+const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+const result = await model.generateContent("Tóm tắt doanh thu bán vé tháng này.");
+console.log(result.response.text());
 ```
 
-Ví dụ trên đã mô phỏng hoàn chỉnh luồng đi của dữ liệu từ client qua resolver đến database. Client chỉ cần gửi yêu cầu lấy title và price mà không cần nhận về ID. Cơ chế này mang lại sự linh hoạt tối đa cho việc phát triển giao diện người dùng. Tiếp theo dưới đây, chương 4 sẽ hướng dẫn sử dụng công nghệ này một cách toàn diện.
+Ví dụ trên đã mô phỏng hoàn chỉnh luồng đi của dữ liệu từ client đến server. Sự kiện cập nhật ghế sẽ lập tức chuyển đến toàn bộ người dùng đang mở sơ đồ. Trong khi đó, kết quả phân tích báo cáo của AI sẽ hiển thị nhanh chóng trên terminal. Tiếp theo dưới đây, chương 4 sẽ hướng dẫn sử dụng các công nghệ này một cách toàn diện.
 
 ---
 
 ## CHƯƠNG 4: SỬ DỤNG CÔNG NGHỆ
 
 ### 4.1. Các chức năng chính
-Các chức năng chính của GraphQL cung cấp đầy đủ công cụ để xây dựng ứng dụng quy mô lớn. Chức năng Query hỗ trợ tìm kiếm, lọc và phân trang dữ liệu cực kỳ mạnh mẽ. Chức năng Mutation giúp thực hiện thêm mới, cập nhật và xóa thông tin an toàn. Để triển khai các chức năng này một cách hiệu quả, việc lựa chọn thư viện phù hợp là rất quan trọng.
+Các chức năng chính của Socket.IO và Gemini AI cung cấp đầy đủ công cụ để xây dựng ứng dụng. Socket.IO hỗ trợ tự động kết nối lại khi mất mạng và quản lý phòng chat theo thời gian thực. Gemini AI hỗ trợ phân tích dữ liệu có cấu trúc và đề xuất giải pháp kinh doanh thông minh. Để triển khai các chức năng này một cách hiệu quả, việc lựa chọn thư viện phù hợp là rất quan trọng.
 
 ### 4.2. API / thư viện
-Các thư viện hỗ trợ phong phú giúp đẩy nhanh tốc độ phát triển dự án phần mềm. Ở phía client, Apollo Client là thư viện phổ biến nhất giúp quản lý bộ nhớ đệm tự động. Ở phía server, apollo-server-express giúp tích hợp GraphQL vào Express Server một cách mượt mà. Để giúp lập trình viên dễ hình dung, mục dưới đây sẽ cung cấp mã nguồn hiện thực chi tiết.
+Các thư viện chính thức giúp đảm bảo tính tương thích và bảo mật cho ứng dụng. Chúng ta sử dụng thư viện socket.io cho backend Node.js và socket.io-client cho frontend ReactJS. Thư viện @google/generative-ai là SDK chính thức giúp kết nối an toàn với máy chủ Google. Để giúp lập trình viên dễ hình dung, mục dưới đây sẽ cung cấp mã nguồn hiện thực chi tiết.
 
 ### 4.3. Code mẫu
-Mã nguồn mẫu dưới đây minh họa chi tiết cách xây dựng một API GraphQL hoàn chỉnh. Đoạn mã bao gồm cả phần định nghĩa Schema và Resolver xử lý nghiệp vụ thực tế. Lập trình viên có thể dễ dàng sao chép và phát triển thêm các tính năng mới từ đây. Từ các kiến thức thực tế này, chương tiếp theo sẽ trình bày cách ứng dụng vào đồ án.
+Mã nguồn mẫu dưới đây minh họa chi tiết cách xây dựng một ứng dụng realtime tích hợp AI. Đoạn mã bao gồm phần thiết lập socket server lắng nghe cập nhật ghế và gọi API AI. Lập trình viên có thể dễ dàng sao chép và phát triển thêm các tính năng mới từ đây. Từ các kiến thức thực tế này, chương tiếp theo sẽ trình bày cách ứng dụng vào đồ án.
 
 ```javascript
-const { ApolloServer, gql } = require('apollo-server-express');
-const express = require('express');
+// Khởi tạo Socket.IO server
+const io = require('socket.io')(httpServer, { cors: { origin: "*" } });
+io.on('connection', (socket) => {
+  socket.on('hold-seat', (data) => {
+    socket.broadcast.emit('seat-status-changed', data);
+  });
+});
 
-const typeDefs = gql`
-  type Ticket {
-    id: ID!
-    eventTitle: String!
-    seatNumber: String!
-    status: String!
-  }
-
-  type Mutation {
-    bookTicket(eventId: ID!, seatId: ID!): Ticket!
-  }
-`;
-
-const resolvers = {
-  Mutation: {
-    bookTicket: async (_, { eventId, seatId }) => {
-      // Thực hiện nghiệp vụ đặt vé tại đây
-      return { id: "1", eventTitle: "Lumina Concert", seatNumber: "A10", status: "Paid" };
-    }
-  }
-};
+// Gọi Gemini AI phân tích hiệu suất sự kiện
+async function analyzeEventSales(salesData) {
+  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+  const prompt = `Phân tích dữ liệu bán vé sau và đưa ra khuyến nghị giá: ${JSON.stringify(salesData)}`;
+  const result = await model.generateContent(prompt);
+  return result.response.text();
+}
 ```
 
-Đoạn mã trên đã thể hiện cách thức thiết lập một Mutation cho chức năng đặt vé. Hệ thống Express sẽ lắng nghe kết nối và xử lý yêu cầu đặt vé của client đồng thời. Giải pháp này mang lại khả năng mở rộng cao và dễ bảo trì cho mã nguồn của bạn. Chuyển sang phần tiếp theo, chúng ta sẽ phân tích ứng dụng thực tế trong đồ án Lumina EMS.
+Đoạn mã trên đã thể hiện cách thức thiết lập Socket.IO phát tin và Gemini AI xử lý prompt. Hệ thống backend sẽ lắng nghe kết nối của client và điều phối thông điệp đồng thời. Giải pháp này mang lại khả năng mở rộng cao và dễ bảo trì cho mã nguồn của bạn. Chuyển sang phần tiếp theo, chúng ta sẽ phân tích ứng dụng thực tế trong đồ án Lumina EMS.
 
 ---
 
 ## CHƯƠNG 5: ỨNG DỤNG VÀO ĐỒ ÁN
 
 ### 5.1. Bạn dùng công nghệ này ở đâu
-Hệ thống Lumina EMS ứng dụng công nghệ GraphQL tại toàn bộ các luồng dữ liệu chính. Chúng tôi sử dụng GraphQL để thay thế hoàn toàn REST API cho phân hệ đặt vé B2C. Toàn bộ thông tin sự kiện, danh mục và sơ đồ ghế ngồi đều được truy vấn qua GraphQL. Để hiểu rõ hơn cách thức tích hợp công nghệ này vào dự án, chúng ta xem xét phần tiếp theo.
+Hệ thống Lumina EMS ứng dụng Socket.IO tại sơ đồ ghế ngồi tương tác thời gian thực. Khi một khách hàng chọn ghế VIP, trạng thái ghế sẽ ngay lập tức chuyển sang màu đỏ trên máy khách khác. Cơ chế này ngăn chặn tuyệt đối tình trạng chọn trùng ghế của hai khách hàng khác nhau. Để gia tăng hiệu quả quản lý hành chính, AI cũng được đưa vào vận hành tại khu vực phù hợp.
 
-Quy trình quản lý hợp đồng B2B cũng được tối ưu hóa vượt trội nhờ vào GraphQL. Lập trình viên thực hiện cập nhật trạng thái hợp đồng thông qua các GraphQL Mutations. Việc kết hợp này giúp dữ liệu hợp đồng luôn đồng bộ và chính xác giữa các actor. Dưới đây là sơ đồ mô hình hóa quy trình tích hợp GraphQL trong đồ án Lumina EMS.
+Quy trình phân tích kinh doanh tại trang quản trị Admin được hỗ trợ đắc lực bởi Gemini AI. Hệ thống thu thập dữ liệu doanh thu sự kiện, lượng vé bán và phản hồi RSVP gửi cho AI. Gemini AI sẽ tự động phân tích SWOT và đưa ra khuyến nghị chiến lược vận hành cho Admin. Dưới đây là sơ đồ mô hình hóa quy trình tích hợp Realtime và AI trong đồ án Lumina EMS.
 
 ```mermaid
-graph LR
-    subgraph Frontend [ReactJS Client]
-        A[Apollo Client Cache]
-        B[Interactive Seatmap UI]
+graph TD
+    subgraph Client [Trình duyệt Khách hàng / Admin]
+        A[Giao diện Sơ đồ Ghế]
+        B[Dashboard Quản trị Admin]
     end
-    subgraph Server [Backend Apollo Express]
-        C[GraphQL Schema typeDefs]
-        D[Resolvers Logic]
+    subgraph Server [Express Server Backend]
+        C[Socket.IO Server Engine]
+        D[AI Integration Service]
     end
-    subgraph Storage [Database]
-        E[(MongoDB Mongoose Models)]
+    subgraph External [Dịch vụ Bên ngoài]
+        E[(MongoDB Database)]
+        F[Google Gemini API]
     end
 
-    B -->|1. Request Query / Mutation| A
-    A -->|2. HTTP POST JSON query| C
-    C -->|3. Invoke Resolvers| D
-    D -->|4. Query / Write data| E
-    E -->|5. Return Documents| D
-    D -->|6. JSON Response| A
-    A -->|7. Update state & UI| B
+    A -->|1. Phát sự kiện giữ ghế| C
+    C -->|2. Cập nhật trạng thái| E
+    C -->|3. Broadcast trạng thái mới| A
+    B -->|4. Yêu cầu phân tích kinh doanh| D
+    D -->|5. Lấy dữ liệu thô| E
+    D -->|6. Gửi Prompt và Dữ liệu| F
+    F -->|7. Trả về báo cáo SWOT phân tích| D
+    D -->|8. Render báo cáo thông minh| B
 ```
 
-Sơ đồ trên đã khái quát hóa luồng hoạt động đồng bộ của GraphQL trong đồ án. Sự kết hợp này giúp giao diện sơ đồ ghế luôn hiển thị trạng thái chính xác nhất. Trải nghiệm đặt vé của người dùng được nâng cao rõ rệt nhờ cơ chế lưu cache tự động. Để nắm vững phương pháp triển khai thực tế, mục tiếp theo sẽ hướng dẫn cách tích hợp.
+Sơ đồ trên đã khái quát hóa luồng hoạt động đồng bộ của Socket.IO và Gemini AI trong đồ án. Sự kết hợp này giúp hệ thống hoạt động tự động hóa tối đa từ giao dịch đến quản lý. Trải nghiệm người dùng và hiệu quả ra quyết định của Admin được nâng cao rõ rệt. Để nắm vững phương pháp triển khai thực tế, mục tiếp theo sẽ hướng dẫn cách tích hợp.
 
 ### 5.2. Cách tích hợp
-Cách thức tích hợp GraphQL đòi hỏi sự phối hợp chặt chẽ giữa cả client và server. Phía Backend khởi tạo Apollo Server tích hợp dưới dạng middleware của ứng dụng Express. Phía Frontend bọc toàn bộ ứng dụng ReactJS trong thẻ ApolloProvider để cung cấp client cache. Quy trình tích hợp hoàn tất giúp hệ thống Lumina EMS đạt hiệu suất tối ưu và bền vững.
+Cách thức tích hợp hai công nghệ này đòi hỏi sự phối hợp chặt chẽ giữa frontend và backend. Phía Backend tích hợp Socket.IO và viết dịch vụ ai.service.js để gọi API của Google. Phía Frontend khởi tạo socket-client lắng nghe sự kiện và tạo dashboard hiển thị kết quả phân tích AI. Quy trình tích hợp hoàn tất giúp hệ thống Lumina EMS đạt hiệu suất tối ưu và bền vững.
 
 ---
-> **Bản quyền tài liệu thuộc về:** Sinh viên **Hồ Nhựt Hào** — Trường Đại học Công nghiệp TP. HCM.  
+> **Bản quyền tài liệu thuộc về:** Sinh viên **Hồ Nhựt Hào & Cao Hoàng Minh Cơ** — Trường Đại học Công nghiệp TP. HCM.  
 > **Giáo viên hướng dẫn khoa học:** **TS. Nguyễn Tấn Phước** (Bộ môn Hệ thống thông tin).  
 > *Nghiêm cấm sao chép, thương mại hóa dưới mọi hình thức.*
 
