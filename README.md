@@ -525,139 +525,157 @@ Nếu sinh viên muốn sao chép nội dung này sang Microsoft Word để so�
 
 # 📘 PHẦN II: QUYỂN TÀI LIỆU HƯỚNG DẪN SỬ DỤNG CÔNG NGHỆ MỚI (TECHNOLOGY MANUAL)
 
-## CHƯƠNG 1: TỔNG QUAN VỀ CÁC CÔNG NGHỆ MỚI ĐƯỢC ÁP DỤNG
+## CHƯƠNG 1: GIỚI THIỆU CÔNG NGHỆ
 
-### 1.1. Công nghệ truy vấn dữ liệu tối ưu GraphQL
-GraphQL là một ngôn ngữ truy vấn dữ liệu hiện đại và tối ưu dành cho API được phát triển bởi Facebook. Công nghệ này cho phép ứng dụng client yêu cầu chính xác những trường dữ liệu cần thiết thay vì nhận toàn bộ dữ liệu như REST API truyền thống. Nhờ cơ chế khai báo linh hoạt này, hệ thống Lumina EMS đã giảm thiểu được hơn 40% băng thông truyền tải mạng. Để hiểu rõ hơn về lý do lựa chọn công nghệ này, chúng ta sẽ chuyển sang phân tích về công cụ Apollo Server.
+### 1.1. Công nghệ là gì
+GraphQL là một ngôn ngữ truy vấn dữ liệu đột phá dành cho API được Facebook phát triển vào năm 2012. Hệ thống này cung cấp một mô tả đầy đủ và dễ hiểu về dữ liệu trong API của bạn. Ứng dụng client có thể yêu cầu chính xác những gì họ cần và không nhận thêm bất kỳ thứ gì khác. Để hiểu rõ lý do tại sao công nghệ này lại vượt trội hơn REST, chúng ta hãy cùng phân tích mục tiếp theo.
 
-Apollo Server đóng vai trò là tầng trung gian xử lý các truy vấn GraphQL từ phía ứng dụng khách. Thư viện này hỗ trợ cơ chế tự động biên dịch schema dữ liệu và tối ưu hóa các resolvers truy cập cơ sở dữ liệu. Việc kết hợp đồng bộ giữa Apollo Client ở ReactJS và Apollo Server giúp tăng đáng kể tốc độ phản hồi của hệ thống Lumina EMS. Tiếp nối phần lý thuyết này, mục dưới đây sẽ giới thiệu chi tiết về công nghệ kết nối thời gian thực.
+Cơ chế hoạt động của GraphQL dựa trên một điểm cuối duy nhất thay vì nhiều đường dẫn truy cập phức tạp. Client gửi một chuỗi truy vấn đặc tả trực tiếp đến server thông qua phương thức HTTP POST. Server sẽ phân tích cú pháp truy vấn và trả về kết quả dưới dạng cấu trúc JSON chính xác. Tiếp theo dưới đây, chúng ta sẽ làm rõ các lý do cốt lõi quyết định việc lựa chọn công nghệ này.
 
-### 1.2. Giải pháp truyền tải thông tin thời gian thực Socket.IO
-Socket.IO là thư viện Javascript cho phép truyền tải dữ liệu hai chiều thời gian thực giữa máy chủ và trình duyệt. Thư viện này sử dụng giao thức Engine.IO để thiết lập kết nối WebSocket liên tục và tự động hạ cấp xuống giao thức HTTP long-polling khi cần thiết. Việc áp dụng công nghệ này đảm bảo tính năng chọn ghế của Lumina EMS hoạt động ổn định và chính xác tuyệt đối. Để hiện thực hóa tính năng này trong môi trường tải cao, hệ thống cần có sự hỗ trợ đắc lực từ hàng đợi thông điệp RabbitMQ.
+### 1.2. Tại sao chọn
+Lý do hàng đầu để lựa chọn GraphQL là khả năng giải quyết triệt để vấn đề Over-fetching dữ liệu. Over-fetching xảy ra khi client phải nhận về quá nhiều thông tin dư thừa không cần sử dụng đến. Với GraphQL, bạn chỉ cần khai báo các trường dữ liệu cần thiết để tối ưu hóa băng thông. Bên cạnh việc tiết kiệm dung lượng mạng, công nghệ này còn giải quyết một thách thức kỹ thuật lớn khác.
 
-RabbitMQ là một hệ thống quản lý hàng đợi thông điệp mã nguồn mở cực kỳ mạnh mẽ sử dụng giao thức AMQP. Hệ thống này đảm nhận nhiệm vụ tiếp nhận và phân phối các thông điệp nghiệp vụ nặng một cách bất đồng bộ. Nhờ có RabbitMQ, hệ thống Lumina EMS có thể duy trì hoạt động mượt mà kể cả khi có hàng ngàn người dùng đặt vé cùng lúc. Chuyển sang phần tiếp theo, chúng ta sẽ cùng tìm hiểu về trí tuệ nhân tạo được tích hợp trong dự án.
+Khả năng loại bỏ hoàn toàn Under-fetching là điểm mạnh thứ hai giúp tối ưu hóa hiệu năng hệ thống. Under-fetching bắt buộc client phải gọi nhiều API liên tiếp mới thu thập đủ thông tin hiển thị. GraphQL cho phép bạn gộp nhiều truy vấn phức tạp vào trong một yêu cầu duy nhất một cách dễ dàng. Từ những ưu điểm kỹ thuật vượt trội trên, công nghệ này đã được ứng dụng rộng rãi ngoài thực tế.
 
-### 1.3. Hệ thống tích hợp Trí tuệ Nhân tạo Google Gemini AI
-Google Gemini AI là mô hình trí tuệ nhân tạo tiên tiến nhất hiện nay sở hữu khả năng xử lý thông tin đa phương tiện vượt trội. Trong đề tài này, mô hình Gemini 2.0 Flash được tích hợp nhằm tự động hóa quy trình phân tích số liệu kinh doanh. Sự kết hợp này mang đến cho quản trị viên những báo cáo SWOT trực quan và chính xác về hiệu quả vận hành hệ thống. Nhằm hỗ trợ lập trình viên nắm vững các công nghệ trên, chương tiếp theo sẽ cung cấp hướng dẫn cài đặt chi tiết.
-
----
-
-## CHƯƠNG 2: HƯỚNG DẪN CÀI ĐẶT VÀ CẤU HÌNH HỆ THỐNG
-
-### 2.1. Cấu hình môi trường Node.js và cơ sở dữ liệu MongoDB
-Cấu hình môi trường chạy là bước đầu tiên cực kỳ quan trọng giúp hệ thống hoạt động ổn định. Lập trình viên cần tiến hành cài đặt phiên bản Node.js v22.18.0 từ trang chủ chính thức. Bên cạnh đó, việc kích hoạt dịch vụ RabbitMQ thông qua Docker Desktop là giải pháp nhanh nhất và tối ưu nhất hiện nay. Sau khi hoàn tất cài đặt môi trường cơ bản, chúng ta sẽ bắt tay vào việc cấu hình cơ sở dữ liệu.
-
-Cơ sở dữ liệu MongoDB lưu trữ toàn bộ thông tin của dự án Lumina EMS dưới dạng tài liệu linh hoạt. Hệ quản trị cơ sở dữ liệu NoSQL này cho phép mở rộng quy mô lưu trữ dễ dàng mà không gặp trở ngại. Lập trình viên có thể sử dụng MongoDB Compass làm công cụ giao diện để trực quan hóa dữ liệu thực tế. Để kết nối thành công ứng dụng với cơ sở dữ liệu này, việc thiết lập các biến môi trường là bước cần làm tiếp theo.
-
-### 2.2. Thiết lập biến môi trường và cài đặt thư viện phụ thuộc
-Các biến môi trường đóng vai trò lưu trữ những thông số cấu hình nhạy cảm của dự án. Dự án cung cấp tệp cấu hình mẫu mang tên .env.example làm nền tảng khởi đầu. Lập trình viên cần sao chép tệp tin này và đổi tên thành .env để tiến hành khai báo các khóa bí mật. Khi các biến môi trường đã sẵn sàng, chúng ta sẽ thực hiện lệnh cài đặt các thư viện liên quan.
-
-Lệnh npm install sẽ tự động tải và cài đặt toàn bộ các thư viện được định nghĩa sẵn. Hệ thống NPM sẽ tải các gói này về và lưu vào thư mục node_modules trong dự án. Quá trình tải thư viện này diễn ra hoàn toàn tự động và mất khoảng 1 đến 2 phút để hoàn thành. Sau khi việc cài đặt thư viện thành công, chúng ta cần tiến hành chạy script khởi tạo dữ liệu mẫu.
+### 1.3. Ứng dụng thực tế
+GraphQL đang được áp dụng rộng rãi tại các tập đoàn công nghệ hàng đầu trên toàn cầu. Các doanh nghiệp lớn như GitHub, Shopify và Airbnb đã chuyển đổi toàn bộ hệ thống API sang GraphQL. Việc chuyển đổi này giúp họ cải thiện đáng kể tốc độ phản hồi dịch vụ trên thiết bị di động. Để bắt đầu áp dụng giải pháp tiên tiến này, chúng ta cần tìm hiểu quy trình cài đặt môi trường.
 
 ---
 
-## CHƯƠNG 3: MÔ HÌNH HÓA QUY TRÌNH VÀ CẤU TRÚC HỆ THỐNG
+## CHƯƠNG 2: CÀI ĐẶT MÔI TRƯỜNG
 
-### 3.1. Mô hình kiến trúc giao tiếp GraphQL
-Mô hình kiến trúc giao tiếp GraphQL thể hiện cách thức trao đổi thông tin giữa các thành phần. ReactJS Frontend sẽ gửi các truy vấn dạng chuỗi ký tự qua phương thức HTTP POST đến Server. Apollo Server tiếp nhận yêu cầu, phân tích cú pháp và gọi các hàm Resolvers tương ứng để lấy dữ liệu. Mô hình sơ đồ dưới đây sẽ trực quan hóa toàn bộ quy trình giao tiếp chặt chẽ này.
+### 2.1. Yêu cầu hệ thống
+Thiết lập yêu cầu hệ thống là bước khởi đầu bắt buộc để cài đặt môi trường phát triển. Hệ thống yêu cầu cài đặt sẵn môi trường chạy Node.js phiên bản từ 18.0.0 trở lên. Bên cạnh đó, lập trình viên cần chuẩn bị một trình quản lý gói như NPM hoặc Yarn. Sau khi đảm bảo các yêu cầu phần mềm cơ bản, chúng ta sẽ thực hiện các bước cài đặt thư viện.
 
-```mermaid
-graph TD
-    A[ReactJS Frontend] -->|1. Query / Mutation | B[Apollo Server GraphQL]
-    B -->|2. Gọi hàm Resolvers| C[Mongoose Database Models]
-    C -->|3. Truy vấn dữ liệu| D[(MongoDB Database)]
-    D -->|4. Trả về Documents| C
-    C -->|5. Trả dữ liệu thô| B
-    B -->|6. JSON Response đúng cấu trúc| A
+### 2.2. Cài đặt
+Cài đặt các gói thư viện phụ thuộc được thực hiện dễ dàng thông qua dòng lệnh NPM. Chúng ta cần chạy lệnh cài đặt hai gói core là graphql và apollo-server-express. Các thư viện này sẽ được tự động tải về và quản lý bên trong tệp tin package.json. Khi quá trình cài đặt thư viện hoàn tất, công việc tiếp theo là tiến hành cấu hình khởi tạo.
+
+### 2.3. Cấu hình
+Cấu hình máy chủ khởi tạo yêu cầu chúng ta tích hợp Apollo Server vào ứng dụng Express. Lập trình viên cần khởi tạo thực thể ApolloServer với các tham số typeDefs và resolvers. Phương thức start sẽ kích hoạt dịch vụ chạy ngầm trước khi áp dụng middleware Express. Để nắm vững cách thức lập trình sau khi cấu hình xong, chương tiếp theo sẽ giới thiệu kiến thức cơ bản.
+
+---
+
+## CHƯƠNG 3: KIẾN THỨC CƠ BẢN
+
+### 3.1. Cú pháp
+Cú pháp truy vấn của GraphQL được thiết kế trực quan và cực kỳ dễ đọc đối với lập trình viên. Ngôn ngữ này chia các thao tác làm hai loại chính là Query và Mutation. Thao tác Query dùng để lấy dữ liệu, còn Mutation dùng cho các tác vụ ghi và cập nhật. Để hiểu rõ cách thức tổ chức các thao tác này, chúng ta cần xem xét các thành phần chính.
+
+### 3.2. Thành phần chính
+Schema là thành phần cốt lõi đóng vai trò định nghĩa toàn bộ mô hình dữ liệu của hệ thống. Thành phần này mô tả chi tiết các kiểu dữ liệu và mối quan hệ giữa chúng. Schema hoạt động như một bản hợp đồng cam kết chặt chẽ giữa ứng dụng khách và máy chủ. Song song với việc định nghĩa Schema, hệ thống bắt buộc phải có thành phần Resolvers xử lý.
+
+Resolvers là các hàm xử lý chịu trách nhiệm điền dữ liệu thực tế cho từng trường trong Schema. Mỗi trường thông tin được định nghĩa trong Schema sẽ có một hàm resolver tương ứng. Resolvers sẽ thực hiện các truy vấn trực tiếp vào cơ sở dữ liệu MongoDB để trả về kết quả. Mục tiếp theo dưới đây sẽ minh họa một ví dụ đơn giản để làm rõ các khái niệm này.
+
+### 3.3. Ví dụ đơn giản
+Một ví dụ đơn giản giúp lập trình viên nhanh chóng hình dung cách thức vận hành thực tế. Dưới đây là đoạn mã định nghĩa Schema và Resolver cho tính năng lấy thông tin sự kiện. Đoạn mã này thể hiện rõ ràng tính tối giản và hiệu quả cao của GraphQL. Sau khi nắm vững các kiến thức cơ bản này, chúng ta sẽ chuyển sang hướng dẫn sử dụng chuyên sâu.
+
+```graphql
+# Định nghĩa Schema
+type Event {
+  id: ID!
+  title: String!
+  price: Float!
+}
+
+type Query {
+  getEvent(id: ID!): Event
+}
 ```
 
-Sơ đồ trên đã mô tả trực quan cơ chế hoạt động của tầng truy vấn dữ liệu Apollo GraphQL. Cơ chế này giúp loại bỏ hoàn toàn các điểm hạn chế của kiến trúc REST truyền thống. Khách hàng sẽ luôn nhận được phản hồi dữ liệu trong thời gian tối ưu nhất. Để làm rõ hơn tính năng tương tác trực tiếp của người dùng, mục tiếp theo sẽ mô tả quy trình giữ ghế.
-
-### 3.2. Mô hình quy trình giữ ghế thời gian thực (Realtime Seat Booking)
-Quy trình giữ ghế thời gian thực ngăn chặn hiện tượng xung đột khi nhiều người đặt cùng một chỗ. Khi một khách hàng chọn ghế, trình duyệt lập tức phát đi một sự kiện giữ ghế đến máy chủ. Hệ thống sẽ khóa chiếc ghế này trong 10 phút và cập nhật sơ đồ cho toàn bộ hệ thống. Sơ đồ luồng dưới đây sẽ chi tiết hóa các bước trao đổi thông điệp thời gian thực này.
-
-```mermaid
-sequenceDiagram
-    autonumber
-    actor UserA as Khách hàng A
-    participant Server as Server Backend
-    participant DB as MongoDB
-    actor UserB as Khách hàng B
-    
-    UserA->>Server: Gửi yêu cầu giữ ghế G1 (holdMultipleSeats)
-    Server->>DB: Cập nhật trạng thái ghế G1 thành "Held" (Khóa 10 phút)
-    DB-->>Server: Xác nhận cập nhật thành công
-    Server-->>UserA: Trả về đơn hàng tạm thời trạng thái "Held"
-    Server->>UserB: Broadcast sự kiện "seat-updated" qua Socket.IO
-    Note over UserB: Trình duyệt Khách hàng B tự động vô hiệu hóa ghế G1 trên sơ đồ
+```javascript
+// Định nghĩa Resolvers tương ứng
+const resolvers = {
+  Query: {
+    getEvent: async (_, { id }) => {
+      return await EventModel.findById(id);
+    }
+  }
+};
 ```
 
-Quy trình tuần tự trên giúp đảm bảo tính nhất quán dữ liệu tuyệt đối cho tính năng bán vé trực tuyến. Khách hàng B sẽ ngay lập tức nhìn thấy ghế G1 chuyển sang màu đỏ và không thể nhấn chọn. Cơ chế này mang lại trải nghiệm chuyên nghiệp giống như các hệ thống đặt vé xem phim hiện đại. Tiếp theo, chúng ta sẽ phân tích mô hình xử lý hàng đợi qua RabbitMQ.
+Ví dụ trên đã mô phỏng hoàn chỉnh luồng đi của dữ liệu từ client qua resolver đến database. Client chỉ cần gửi yêu cầu lấy title và price mà không cần nhận về ID. Cơ chế này mang lại sự linh hoạt tối đa cho việc phát triển giao diện người dùng. Tiếp theo dưới đây, chương 4 sẽ hướng dẫn sử dụng công nghệ này một cách toàn diện.
 
-### 3.3. Mô hình xử lý hàng đợi mua vé bất đồng bộ qua RabbitMQ
-Mô hình xử lý hàng đợi RabbitMQ đóng vai trò bảo vệ hệ thống khỏi nguy cơ quá tải. Khi lượng giao dịch mua vé tăng đột biến, các yêu cầu thanh toán được lưu trữ tạm thời trong hàng đợi. Các tiến trình worker chạy ngầm sẽ tiêu thụ và xử lý lần lượt từng thông điệp theo thứ tự. Mô hình kiến trúc xử lý bất đồng bộ này được minh họa chi tiết thông qua sơ đồ dưới đây.
+---
+
+## CHƯƠNG 4: SỬ DỤNG CÔNG NGHỆ
+
+### 4.1. Các chức năng chính
+Các chức năng chính của GraphQL cung cấp đầy đủ công cụ để xây dựng ứng dụng quy mô lớn. Chức năng Query hỗ trợ tìm kiếm, lọc và phân trang dữ liệu cực kỳ mạnh mẽ. Chức năng Mutation giúp thực hiện thêm mới, cập nhật và xóa thông tin an toàn. Để triển khai các chức năng này một cách hiệu quả, việc lựa chọn thư viện phù hợp là rất quan trọng.
+
+### 4.2. API / thư viện
+Các thư viện hỗ trợ phong phú giúp đẩy nhanh tốc độ phát triển dự án phần mềm. Ở phía client, Apollo Client là thư viện phổ biến nhất giúp quản lý bộ nhớ đệm tự động. Ở phía server, apollo-server-express giúp tích hợp GraphQL vào Express Server một cách mượt mà. Để giúp lập trình viên dễ hình dung, mục dưới đây sẽ cung cấp mã nguồn hiện thực chi tiết.
+
+### 4.3. Code mẫu
+Mã nguồn mẫu dưới đây minh họa chi tiết cách xây dựng một API GraphQL hoàn chỉnh. Đoạn mã bao gồm cả phần định nghĩa Schema và Resolver xử lý nghiệp vụ thực tế. Lập trình viên có thể dễ dàng sao chép và phát triển thêm các tính năng mới từ đây. Từ các kiến thức thực tế này, chương tiếp theo sẽ trình bày cách ứng dụng vào đồ án.
+
+```javascript
+const { ApolloServer, gql } = require('apollo-server-express');
+const express = require('express');
+
+const typeDefs = gql`
+  type Ticket {
+    id: ID!
+    eventTitle: String!
+    seatNumber: String!
+    status: String!
+  }
+
+  type Mutation {
+    bookTicket(eventId: ID!, seatId: ID!): Ticket!
+  }
+`;
+
+const resolvers = {
+  Mutation: {
+    bookTicket: async (_, { eventId, seatId }) => {
+      // Thực hiện nghiệp vụ đặt vé tại đây
+      return { id: "1", eventTitle: "Lumina Concert", seatNumber: "A10", status: "Paid" };
+    }
+  }
+};
+```
+
+Đoạn mã trên đã thể hiện cách thức thiết lập một Mutation cho chức năng đặt vé. Hệ thống Express sẽ lắng nghe kết nối và xử lý yêu cầu đặt vé của client đồng thời. Giải pháp này mang lại khả năng mở rộng cao và dễ bảo trì cho mã nguồn của bạn. Chuyển sang phần tiếp theo, chúng ta sẽ phân tích ứng dụng thực tế trong đồ án Lumina EMS.
+
+---
+
+## CHƯƠNG 5: ỨNG DỤNG VÀO ĐỒ ÁN
+
+### 5.1. Bạn dùng công nghệ này ở đâu
+Hệ thống Lumina EMS ứng dụng công nghệ GraphQL tại toàn bộ các luồng dữ liệu chính. Chúng tôi sử dụng GraphQL để thay thế hoàn toàn REST API cho phân hệ đặt vé B2C. Toàn bộ thông tin sự kiện, danh mục và sơ đồ ghế ngồi đều được truy vấn qua GraphQL. Để hiểu rõ hơn cách thức tích hợp công nghệ này vào dự án, chúng ta xem xét phần tiếp theo.
+
+Quy trình quản lý hợp đồng B2B cũng được tối ưu hóa vượt trội nhờ vào GraphQL. Lập trình viên thực hiện cập nhật trạng thái hợp đồng thông qua các GraphQL Mutations. Việc kết hợp này giúp dữ liệu hợp đồng luôn đồng bộ và chính xác giữa các actor. Dưới đây là sơ đồ mô hình hóa quy trình tích hợp GraphQL trong đồ án Lumina EMS.
 
 ```mermaid
 graph LR
-    A[GraphQL Mutation checkoutOrder] -->|1. Publish Message| B[RabbitMQ Exchange]
-    B -->|2. Route Message| C[Ticket Queue]
-    C -->|3. Consume Message| D[ticket.worker.js]
-    D -->|4. Tạo vé & Gửi Email| E[Nodemailer SMTP]
-    D -->|5. Cập nhật cơ sở dữ liệu| F[(MongoDB)]
+    subgraph Frontend [ReactJS Client]
+        A[Apollo Client Cache]
+        B[Interactive Seatmap UI]
+    end
+    subgraph Server [Backend Apollo Express]
+        C[GraphQL Schema typeDefs]
+        D[Resolvers Logic]
+    end
+    subgraph Storage [Database]
+        E[(MongoDB Mongoose Models)]
+    end
+
+    B -->|1. Request Query / Mutation| A
+    A -->|2. HTTP POST JSON query| C
+    C -->|3. Invoke Resolvers| D
+    D -->|4. Query / Write data| E
+    E -->|5. Return Documents| D
+    D -->|6. JSON Response| A
+    A -->|7. Update state & UI| B
 ```
 
-Mô hình hàng đợi trên giúp tăng cường độ tin cậy và khả năng chịu tải của máy chủ backend. Các tác vụ tốn thời gian như tạo mã QR hay gửi email xác nhận đều được đưa vào hàng đợi ngầm. Điều này giúp phản hồi của người dùng được trả về ngay lập tức mà không cần chờ đợi lâu. Để hiện thực hóa những mô hình này vào mã nguồn, chương tiếp theo sẽ hướng dẫn lập trình chi tiết.
+Sơ đồ trên đã khái quát hóa luồng hoạt động đồng bộ của GraphQL trong đồ án. Sự kết hợp này giúp giao diện sơ đồ ghế luôn hiển thị trạng thái chính xác nhất. Trải nghiệm đặt vé của người dùng được nâng cao rõ rệt nhờ cơ chế lưu cache tự động. Để nắm vững phương pháp triển khai thực tế, mục tiếp theo sẽ hướng dẫn cách tích hợp.
 
----
-
-## CHƯƠNG 4: HƯỚNG DẪN LẬP TRÌNH VÀ PHÁT TRIỂN TÍNH NĂNG
-
-### 4.1. Xây dựng Schema và Resolvers trong GraphQL
-Việc xây dựng một GraphQL Schema đòi hỏi lập trình viên phải định nghĩa rõ ràng các kiểu dữ liệu. Schema được mô tả bằng ngôn ngữ định nghĩa Type Definition (TypeDefs) chuẩn xác. Mỗi trường thông tin trong Schema phải tương thích với cấu trúc của cơ sở dữ liệu. Sau khi định nghĩa xong TypeDefs, lập trình viên cần viết các hàm Resolvers tương ứng.
-
-Resolvers chứa đựng toàn bộ logic xử lý dữ liệu và truy cập cơ sở dữ liệu thực tế. Hàm này tiếp nhận các tham số đầu vào từ client và trả về dữ liệu đúng định dạng. Chúng ta cần sử dụng thư viện Mongoose để tương tác với MongoDB bên trong các hàm Resolvers. Tiếp theo, mục dưới đây sẽ hướng dẫn cách tích hợp cơ chế Socket.IO.
-
-### 4.2. Hiện thực hóa kết nối thời gian thực bằng Socket.IO
-Tích hợp Socket.IO vào Express Server yêu cầu lập trình viên phải khởi tạo một thực thể server HTTP. Chúng ta cần lắng nghe các sự kiện kết nối từ ứng dụng khách thông qua phương thức io.on. Khi trạng thái ghế ngồi thay đổi, server sẽ phát sự kiện cập nhật bằng phương thức emit. Để hoàn thiện luồng xử lý này, chúng ta cần viết mã kết nối Socket.IO ở phía client.
-
-Ứng dụng khách ReactJS sử dụng thư viện socket.io-client để duy trì kết nối với máy chủ. Trình duyệt sẽ lắng nghe sự kiện seat-updated và cập nhật lại trạng thái ghế trên giao diện. Việc dọn dẹp kết nối socket khi component bị hủy là bắt buộc để tránh rò rỉ bộ nhớ. Sau khi xử lý xong các tác vụ realtime, chúng ta sẽ chuyển sang lập trình với RabbitMQ.
-
-### 4.3. Phát triển Worker xử lý hàng đợi RabbitMQ
-Xây dựng tiến trình worker yêu cầu lập trình viên kết nối máy chủ thông qua thư viện amqplib. Chúng ta cần thiết lập một kênh truyền dữ liệu (channel) và khai báo tên hàng đợi cố định. Phương thức channel.consume được sử dụng để liên tục lắng nghe và xử lý các thông điệp mới. Khi xử lý thành công, worker bắt buộc phải gửi phản hồi ack để giải phóng tin nhắn khỏi hàng đợi.
-
-Việc xử lý lỗi trong worker là cực kỳ quan trọng để đảm bảo tính an toàn cho dữ liệu bán vé. Nếu một thông điệp bị xử lý lỗi, worker cần đẩy nó vào hàng đợi lỗi để kiểm tra sau. Cơ chế này ngăn ngừa hiện tượng mất mát thông tin vé của khách hàng khi hệ thống xảy ra sự cố. Tiếp theo dưới đây, chúng ta sẽ cùng tìm hiểu cách gọi API Google Gemini AI.
-
-### 4.4. Tích hợp và gọi API Google Gemini AI
-Tích hợp Google Gemini AI giúp hệ thống sở hữu năng lực phân tích dữ liệu kinh doanh vượt trội. Lập trình viên cần cài đặt thư viện chính thức mang tên @google/generative-ai. Chúng ta cần khởi tạo thực thể GoogleGenAI bằng mã khóa API được lưu trong tệp cấu hình. Hàm gọi mô hình gemini-2.0-flash sẽ tiếp nhận dữ liệu doanh số và trả về báo cáo SWOT.
-
-Kết quả trả về từ Gemini AI cần được định dạng dưới dạng cấu trúc JSON để dễ hiển thị. Ứng dụng Frontend ReactJS sẽ tiếp nhận chuỗi JSON này để vẽ biểu đồ và bảng phân tích. Cơ chế này đem đến cho người quản lý góc nhìn toàn cảnh về tình hình kinh doanh sự kiện. Nhằm đánh giá tính hiệu quả của các giải pháp lập trình này, chương tiếp theo sẽ trình bày kịch bản kiểm thử.
-
----
-
-## CHƯƠNG 5: KIỂM THỬ VÀ ĐÁNH GIÁ CHẤT LƯỢNG CÔNG NGHỆ
-
-### 5.1. Kịch bản kiểm thử hiệu năng thời gian thực
-Kịch bản kiểm thử hiệu năng thời gian thực đánh giá khả năng phản hồi đồng thời của Socket.IO. Chúng tôi đã sử dụng công cụ Artillery để giả lập 500 kết nối WebSocket đồng thời vào hệ thống. Mỗi kết nối ảo sẽ thực hiện các thao tác chọn ghế và hủy giữ ghế liên tục trong 5 phút. Kết quả kiểm thử cho thấy toàn bộ các sơ đồ ghế đều được đồng bộ hóa hoàn toàn trong 150 mili giây.
-
-Độ trễ thấp như trên đảm bảo trải nghiệm mua vé mượt mà và không xảy ra hiện tượng giật lag. Hệ thống không ghi nhận bất kỳ trường hợp nào bị chọn trùng ghế hoặc mất kết nối đột ngột. Đây là minh chứng rõ nét cho sự ổn định vượt trội của giải pháp Socket.IO. Tiếp theo, chúng ta sẽ chuyển sang đánh giá khả năng xử lý hàng đợi của RabbitMQ.
-
-### 5.2. Đánh giá độ trễ và khả năng chịu tải của hệ thống qua RabbitMQ
-Đánh giá khả năng chịu tải qua RabbitMQ kiểm thử độ bền của hệ thống khi có lượng mua vé cực lớn. Chúng tôi đã gửi 10.000 yêu cầu đặt vé vào hàng đợi trong khoảng thời gian 10 giây. Hệ thống RabbitMQ đã điều tiết dòng dữ liệu cực tốt, phân phối đều cho các worker xử lý ngầm. Thời gian trung bình để hoàn thành một đơn đặt vé là 0.8 giây mà không gây treo máy chủ Express.
-
-Chỉ số hiệu năng ấn tượng này chứng tỏ kiến trúc hướng sự kiện đã hoạt động vô cùng hiệu quả. Hệ thống có khả năng tự động phục hồi và xử lý tiếp các tác vụ dở dang nếu worker bị khởi động lại. Điều này mang lại sự an tâm tuyệt đối cho các nhà tổ chức sự kiện quy mô lớn. Nhằm tổng kết toàn bộ nội dung của tài liệu hướng dẫn công nghệ mới này, mục tiếp theo sẽ là phần kết luận.
-
----
-
-## CHƯƠNG 6: KẾT LUẬN VÀ KHUYẾN NGHỊ VẬN HÀNH
-
-### 6.1. Tổng kết kết quả nghiên cứu công nghệ mới
-Việc ứng dụng các công nghệ mới đã đem lại những cải tiến mang tính đột phá cho dự án. GraphQL, Socket.IO, RabbitMQ và Gemini AI đã phối hợp nhịp nhàng tạo nên hệ thống Lumina EMS toàn diện. Các mục tiêu đặt ra về độ trễ, khả năng chịu tải và tính năng thông minh đều được đáp ứng hoàn hảo. Để duy trì hiệu suất cao này lâu dài, nhà phát triển cần tuân thủ một số khuyến nghị vận hành cụ thể.
-
-### 6.2. Khuyến nghị vận hành và bảo trì hệ thống
-Khuyến nghị vận hành hàng đầu là liên tục theo dõi các chỉ số đo lường hiệu năng của hệ thống. Quản trị viên cần kiểm tra định kỳ tệp tin nhật ký ghi nhận lỗi của các worker RabbitMQ. Việc cập nhật các gói thư viện phụ thuộc lên phiên bản mới nhất giúp ngăn ngừa các lỗ hổng bảo mật. Tuân thủ nghiêm ngặt các hướng dẫn bảo trì trên sẽ giúp Lumina EMS vận hành trơn tru suốt vòng đời dự án.
+### 5.2. Cách tích hợp
+Cách thức tích hợp GraphQL đòi hỏi sự phối hợp chặt chẽ giữa cả client và server. Phía Backend khởi tạo Apollo Server tích hợp dưới dạng middleware của ứng dụng Express. Phía Frontend bọc toàn bộ ứng dụng ReactJS trong thẻ ApolloProvider để cung cấp client cache. Quy trình tích hợp hoàn tất giúp hệ thống Lumina EMS đạt hiệu suất tối ưu và bền vững.
 
 ---
 > **Bản quyền tài liệu thuộc về:** Sinh viên **Hồ Nhựt Hào** — Trường Đại học Công nghiệp TP. HCM.  
 > **Giáo viên hướng dẫn khoa học:** **TS. Nguyễn Tấn Phước** (Bộ môn Hệ thống thông tin).  
 > *Nghiêm cấm sao chép, thương mại hóa dưới mọi hình thức.*
+
 
