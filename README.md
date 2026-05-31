@@ -7,9 +7,9 @@
 # 🎫 LUMINA EMS — HỆ THỐNG TỔ CHỨC QUẢN LÝ SỰ KIỆN VÀ ĐẶT VÉ
 *(Đề tài khóa luận tốt nghiệp ngành Hệ thống Thông tin)*
 
-**Sinh viên thực hiện:** Hồ Nhựt Hào  
+**Sinh viên thực hiện:** Hồ Nhựt Hào & Cao Hoàng Minh Cơ  
 **Giảng viên hướng dẫn:** TS. Nguyễn Tấn Phước  
-**Thời gian hoàn thành:** Tháng 12 Năm 2025  
+**Thời gian hoàn thành:** Tháng 5 Năm 2026  
 
 ---
 
