@@ -315,6 +315,20 @@ h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; }
     grid-template-columns: 1fr !important;
     gap: 24px !important;
   }
+
+  .discovery-services-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+  .discovery-services-grid .panel {
+    padding: 16px !important;
+  }
+  .discovery-services-grid h3 {
+    font-size: 0.95rem !important;
+  }
+  .discovery-services-grid p {
+    font-size: 0.8rem !important;
+  }
 }
 
 @media (max-width: 480px) {

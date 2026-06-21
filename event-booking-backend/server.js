@@ -13,7 +13,7 @@ const path = require('path');
 const fs = require('fs');
 
 const connectDB = require('./src/config/db.js');
-const { typeDefs, resolvers, setIo } = require('./src/schema.js');
+const { typeDefs, resolvers, setIo, seedMockSystemLogsAndSnapshots } = require('./src/schema.js');
 
 const app = express();
 const httpServer = createServer(app);
@@ -85,6 +85,9 @@ app.get('/', (req, res) => {
 
 const startServer = async () => {
     await connectDB();
+    if (seedMockSystemLogsAndSnapshots) {
+        await seedMockSystemLogsAndSnapshots();
+    }
     
     // Apollo Server
     const JWT_SECRET = process.env.JWT_SECRET || 'EMS_SUPER_SECRET_KEY';

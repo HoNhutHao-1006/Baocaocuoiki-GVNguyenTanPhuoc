@@ -186,7 +186,7 @@ export default function DiscoveryHub({ currentUser, onLogin, onSelectEvent, setV
           <h2 style={{ fontSize: '2rem', fontFamily: 'Outfit', fontWeight: 900 }}>🎯 Dịch Vụ Sự Kiện</h2>
           <p style={{ color: 'var(--text-muted)', marginTop: 8, fontSize: '1rem' }}>Chúng tôi cung cấp giải pháp toàn diện cho mọi loại sự kiện</p>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20, maxWidth: 1100, margin: '0 auto' }}>
+        <div className="discovery-services-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20, maxWidth: 1100, margin: '0 auto' }}>
           {[
             { icon: '🎵', title: 'Concert & Liveshow', desc: 'Tổ chức đại nhạc hội, live concert với sân khấu chuyên nghiệp, hệ thống ánh sáng LED và âm thanh đẳng cấp quốc tế.', color: '#00F0FF' },
             { icon: '💒', title: 'Tiệc Cưới & Hôn Lễ', desc: 'Trọn gói tiệc cưới hoàng gia — trang trí, catering 5 sao, ban nhạc sống, MC song ngữ, pháo hoa lạnh & kỹ xảo đặc biệt.', color: '#FFB6C1' },

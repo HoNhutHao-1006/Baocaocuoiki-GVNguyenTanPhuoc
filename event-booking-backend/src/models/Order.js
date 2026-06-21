@@ -18,4 +18,7 @@ const orderSchema = new mongoose.Schema({
     holdExpiresAt: Date
 }, { timestamps: true });
 
+orderSchema.index({ memberId: 1 });
+orderSchema.index({ eventId: 1 });
+
 module.exports = mongoose.model('Order', orderSchema);

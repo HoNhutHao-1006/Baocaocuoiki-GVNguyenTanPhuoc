@@ -55,7 +55,7 @@ Em xin gửi lời cảm ơn chân thành và sâu sắc nhất đến **TS. Ngu
   - 3.3. Đặc tả Use Case chi tiết (Các chức năng cốt lõi)
   - 3.4. Ma trận Actor — Use Case
 - [**CHƯƠNG 4: THIẾT KẾ KIẾN TRÚC & DỮ LIỆU**](#chương-4-thiết-kế-kiến-trúc--dữ-liệu)
-  - 4.1. Thiết kế Mô hình Cơ sở Dữ liệu (13 Mongoose Models)
+  - 4.1. Thiết kế Mô hình Cơ sở Dữ liệu (17 Mongoose Models)
   - 4.2. Thiết kế Luồng Nghiệp vụ (Sequence Diagrams)
   - 4.3. Cấu trúc thư mục dự án
 - [**CHƯƠNG 5: HIỆN THỰC & HƯỚNG DẪN CÀI ĐẶT**](#chương-5-hiện-thực--hướng-dẫn-cài-đặt)
@@ -140,10 +140,11 @@ Hệ thống được thiết kế theo mô hình client-server hiện đại, t
 |---|---|---|
 | **Frontend** | React.js (Vite) | Single Page Application (SPA), React Router, React Hooks |
 | **Backend** | Node.js + Express | Apollo Server GraphQL, REST API fallback, Multer File Upload |
-| **Database** | MongoDB (Mongoose) | 13 models, Schema-based, indexing tối ưu hóa tìm kiếm |
+| **Database** | MongoDB (Mongoose) | 17 models, Schema-based, indexing tối ưu hóa tìm kiếm |
 | **Realtime Engine** | Socket.IO | Giao tiếp hai chiều thời gian thực (Bi-directional realtime) |
 | **Message Queue** | RabbitMQ | Hàng đợi tin nhắn xử lý tác vụ gửi mail và bán vé bất đồng bộ |
-| **AI Integration** | Google Gemini 2.0 Flash | Phân tích SWOT dữ liệu kinh doanh, đề xuất xu hướng |
+| **AI Integration** | Google Gemini 1.5/2.0 Flash | Phân tích SWOT dữ liệu kinh doanh, đề xuất xu hướng, đề xuất hành động tối ưu |
+| **Web Scraping** | Cheerio | Thu thập dữ liệu sự kiện từ nguồn bên ngoài (Ticketbox, RSS) |
 | **Monitoring** | Prometheus | Thu thập metrics hiệu năng hệ thống (prom-client) |
 | **Email Service** | Nodemailer + Gmail SMTP | Gửi OTP đăng ký và thư mời điện tử RSVP |
 
@@ -153,7 +154,8 @@ Hệ thống được thiết kế theo mô hình client-server hiện đại, t
 *   **MongoDB & Mongoose:** Cơ sở dữ liệu phi quan hệ (NoSQL) cực kỳ phù hợp với dữ liệu sự kiện linh hoạt, sơ đồ chỗ ngồi phức tạp (Floorplan). Mongoose giúp định nghĩa schema chặt chẽ trên MongoDB.
 *   **Socket.IO:** Quản lý kết nối WebSocket giữa client và server. Khi một người dùng bấm chọn giữ ghế, trạng thái lập tức được phát (broadcast) realtime cho toàn bộ các client khác để tránh xung đột chọn trùng ghế.
 *   **RabbitMQ:** Tránh tình trạng thắt nút cổ chai (bottleneck) khi có hàng ngàn yêu cầu đặt vé hoặc gửi email xác nhận hàng loạt. Các tác vụ này sẽ được đẩy vào hàng đợi của RabbitMQ và xử lý tuần tự qua `ticket.worker.js`.
-*   **Gemini AI:** Đóng vai trò trợ lý kinh doanh thông minh cho Admin. AI sẽ đọc dữ liệu thực tế về doanh thu, số vé, tỷ lệ lấp đầy sự kiện để tự động đưa ra các báo cáo phân tích SWOT trực quan và đề xuất chiến lược tối ưu giá vé.
+*   **Gemini AI:** Đóng vai trò trợ lý kinh doanh thông minh cho Admin. AI sẽ đọc dữ liệu thực tế về doanh thu, số vé, tỷ lệ lấp đầy sự kiện cùng các số liệu kỹ thuật (API slow response time, missing DB index) để tự động đưa ra các báo cáo phân tích SWOT trực quan và đề xuất 4 hành động chiến lược thông minh (Action Items). Có thiết lập cơ chế Local Fallback khi mất kết nối hoặc thiếu API key.
+*   **Cheerio:** Thư viện giúp cào (scrape) dữ liệu HTML của Ticketbox.vn và phân tích RSS feed từ Eventbrite để cập nhật thông tin sự kiện thị trường thời gian thực, lưu trữ qua cơ chế đệm MarketSnapshot (24 giờ).
 
 ---
 
@@ -302,8 +304,8 @@ graph LR
 
 ## CHƯƠNG 4: THIẾT KẾ KIẾN TRÚC & DỮ LIỆU
 
-### 4.1. Thiết kế Mô hình Cơ sở Dữ liệu (13 Mongoose Models)
-Cơ sở dữ liệu MongoDB chứa 13 Collection được thiết kế chuẩn hóa và thiết lập quan hệ thông qua ObjectId tham chiếu:
+### 4.1. Thiết kế Mô hình Cơ sở Dữ liệu (17 Mongoose Models)
+Cơ sở dữ liệu MongoDB chứa 17 Collection được thiết kế chuẩn hóa và thiết lập quan hệ thông qua ObjectId tham chiếu:
 
 ```mermaid
 erDiagram
@@ -319,6 +321,10 @@ erDiagram
     ORDER ||--o{ SEAT : books
     CONTRACT ||--o{ SERVICE : includes
     CONTRACT ||--o{ DEVICE : requires
+    USER ||--o{ ACTION_FEEDBACK : provides
+    SYSTEM_LOG ||--o{ SYSTEM : records
+    MARKET_SNAPSHOT ||--o{ SYSTEM : caches
+    AI_INSIGHTS_CACHE ||--o{ SYSTEM : caches
 ```
 
 *   **User:** Lưu trữ tài khoản người dùng, mật khẩu đã mã hóa (bcrypt) và phân loại vai trò (Role: ADMIN, MEMBER, ORGANIZER, EMPLOYEE).
@@ -331,6 +337,10 @@ erDiagram
 *   **Contract:** Hợp đồng số gắn kết đề xuất sự kiện, ghi nhận tiến độ thanh toán cọc/đủ và tệp đính kèm.
 *   **Location / Service / Device:** Quản lý tài nguyên tổ chức sự kiện (địa điểm thực tế, dịch vụ đặt tiệc/âm thanh ánh sáng, thiết bị kỹ thuật).
 *   **Rsvp:** Quản lý lời mời và phản hồi tham dự sự kiện của các khách mời đặc biệt.
+*   **AIInsightsCache:** Bộ nhớ đệm lưu trữ kết quả phân tích SWOT sinh bởi Gemini AI để giảm thiểu các cuộc gọi API trùng lặp, tối ưu hóa chi phí và tốc độ tải trang Admin.
+*   **ActionFeedback:** Ghi nhận phản hồi của Admin về tính hữu ích (`isUseful`) của từng đề xuất hành động từ AI, giúp tinh chỉnh độ chính xác của mô hình đề xuất.
+*   **MarketSnapshot:** Caching dữ liệu sự kiện cào được từ Ticketbox & Eventbrite RSS (chu kỳ 24h) để tránh nghẽn mạng ngoài và giới hạn tần suất yêu cầu.
+*   **SystemLog:** Ghi nhận hiệu năng hệ thống (API Response Time) giúp Admin phát hiện các API chậm cần tối ưu hóa, đồng thời lưu trữ chi tiết lỗi kỹ thuật phát sinh (như lỗi kết nối crawler).
 
 ### 4.2. Thiết kế Luồng Nghiệp vụ (Sequence Diagrams)
 
@@ -390,8 +400,8 @@ c:/Nam4/ThayPhuoc/CK/
 │   ├── server.js                # Điểm khởi chạy Server (Express + GraphQL + Socket.IO)
 │   └── src/
 │       ├── config/              # Kết nối cơ sở dữ liệu MongoDB
-│       ├── models/              # Định nghĩa 13 Mongoose Schemas
-│       ├── services/            # Chứa các nghiệp vụ nền (AI, Email, QR, RabbitMQ)
+│       ├── models/              # Định nghĩa 17 Mongoose Schemas
+│       ├── services/            # Chứa các nghiệp vụ nền (AI Business Engine, Crawler/Scraper, Email, QR, RabbitMQ)
 │       └── schema.js            # GraphQL Schema (Resolvers & Types)
 │
 └── event-booking-frontend/      # Phân hệ Frontend (ReactJS & Vite)

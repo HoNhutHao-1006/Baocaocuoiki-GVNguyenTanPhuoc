@@ -4,6 +4,7 @@ import { resolveFileUrl } from '../api/config';
 import GenericCRUD from '../features/dashboard/GenericCRUD';
 import ContractDetailModal from '../features/dashboard/ContractDetailModal';
 import AdvancedDashboard from '../features/dashboard/AdvancedDashboard';
+import EventDetail from '../features/ticketing/EventDetail';
 import { MapPin, Server, Monitor, Users, FileText, Calendar, TrendingUp, Activity, CheckCircle, ClipboardList, Eye } from 'lucide-react';
 
 // ══════════════════════════════════════════════════════════
@@ -83,8 +84,13 @@ const IllustrationProposal = () => (
 // ══════════════════════════════════════════════════════════
 // ADMIN MAIN
 // ══════════════════════════════════════════════════════════
-export default function AdminPage({ view }) {
+export default function AdminPage({ view, currentUser }) {
   const [selectedContract, setSelectedContract] = useState(null);
+  const [selectedEventId, setSelectedEventId] = useState(null);
+
+  if (selectedEventId) {
+    return <EventDetail eventId={selectedEventId} onBack={() => setSelectedEventId(null)} currentUser={currentUser} />;
+  }
   const handleToggleUser = async (u, loadData) => {
     let newSt = u.status === 'LOCKED' ? 'ACTIVE' : 'LOCKED';
     await fetchGraphQL(`mutation { updateUserStatus(userId: "${u.id}", status: "${newSt}") { id } }`);
@@ -163,11 +169,37 @@ export default function AdminPage({ view }) {
         dataQuery="query E($page: Int, $limit: Int) { getAllEvents(page: $page, limit: $limit) { id title date location status eventType coverImg } }" dataKey="getAllEvents" 
         columns={[
           { key: 'coverImg', label: 'Ảnh', render: r => <img src={r.coverImg} alt="" style={{ width: 60, height: 40, objectFit: 'cover', borderRadius: 6 }} /> },
-          { key: 'title', label: 'Tên Sự Kiện' }, 
+          { key: 'title', label: 'Tên Sự Kiện', render: r => (
+            <button 
+              onClick={() => setSelectedEventId(r.id)} 
+              style={{ background: 'none', border: 'none', color: 'var(--primary-color)', cursor: 'pointer', fontWeight: 600, textAlign: 'left', padding: 0 }}
+              title="Xem chi tiết sự kiện"
+            >
+              {r.title}
+            </button>
+          ) }, 
           { key: 'date', label: 'Ngày', render: r => <span style={{ whiteSpace: 'nowrap' }}>{r.date || '—'}</span> }, 
           { key: 'location', label: 'Địa Điểm' },
           { key: 'status', label: 'Trạng thái', render: r => <span className={`badge ${r.status === 'Approved' ? 'success' : 'warning'}`}>{r.status}</span> },
-          { label: 'Thao tác', render: (r, load) => <button className="btn outline" style={{padding:'6px 12px',fontSize:'0.8rem',whiteSpace:'nowrap'}} onClick={() => handleApproveEvent(r, load)} disabled={r.status === 'Approved'}>{r.status === 'Approved' ? '✅ Đã duyệt' : 'Duyệt'}</button> }
+          { label: 'Thao tác', render: (r, load) => (
+            <div style={{ display: 'flex', gap: 6 }}>
+              <button 
+                className="btn outline" 
+                style={{ padding: '6px 12px', fontSize: '0.8rem', whiteSpace: 'nowrap' }} 
+                onClick={() => setSelectedEventId(r.id)}
+              >
+                👁️ Xem
+              </button>
+              <button 
+                className="btn outline" 
+                style={{ padding: '6px 12px', fontSize: '0.8rem', whiteSpace: 'nowrap' }} 
+                onClick={() => handleApproveEvent(r, load)} 
+                disabled={r.status === 'Approved'}
+              >
+                {r.status === 'Approved' ? '✅ Đã duyệt' : 'Duyệt'}
+              </button>
+            </div>
+          ) }
         ]} 
   />;
 

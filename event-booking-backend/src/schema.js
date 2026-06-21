@@ -20,6 +20,15 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
+const MarketSnapshot = require('./models/MarketSnapshot');
+const AIInsightsCache = require('./models/AIInsightsCache');
+const ActionFeedback = require('./models/ActionFeedback');
+const SystemLog = require('./models/SystemLog');
+
+const { calculateBusinessHealthScore, calculateRevenueForecast, calculateSystemHealth } = require('./services/business.engine');
+const { getMarketEvents } = require('./services/market.service');
+const { generateExecutiveSummaryAndActionsV2 } = require('./services/ai.service');
+
 const JWT_SECRET = process.env.JWT_SECRET || 'EMS_SUPER_SECRET_KEY';
 
 const typeDefs = `#graphql
@@ -154,6 +163,115 @@ const typeDefs = `#graphql
     generatedAt: String
   }
 
+  # ---- Tốc độ API & Lỗi hệ thống ----
+  type SystemMetric {
+    endpoint: String
+    responseTime: Float
+    errorRate: Float
+  }
+
+  # ---- Đề xuất tối ưu Index cho Dev ----
+  type DatabaseInsight {
+    collectionName: String
+    suggestedIndexes: [String]
+    reason: String
+  }
+
+  # ---- Chi tiết sức khỏe hệ thống (System Health) ----
+  type SystemHealthInfo {
+    status: String
+    slowestApis: [SystemMetric]
+    databaseInsights: [DatabaseInsight]
+    errorModules: [String]
+  }
+
+  # ---- Định nghĩa ActionItem nâng cấp ----
+  type ActionItemV2 {
+    id: String
+    action: String
+    reason: String
+    category: String
+    confidence: Float
+    impactScore: Float
+    priority: String
+  }
+
+  # ---- Chỉ số Sức khỏe Doanh nghiệp ----
+  type BusinessHealthScore {
+    score: Int
+    revenueStatus: String
+    conversionRate: Float
+    retentionRate: Float
+    cancellationRate: Float
+    marketCompetitiveness: String
+  }
+
+  # ---- Dự báo theo Moving Average & Trend ----
+  type MovingAverageForecast {
+    month: String
+    historicalAverage: Float
+    projectedRevenue: Float
+    trendDirection: String
+  }
+
+  # ---- Kết quả Insights V2 ----
+  type AIInsightsV2 {
+    businessHealth: BusinessHealthScore
+    systemHealth: SystemHealthInfo
+    forecasts: [MovingAverageForecast]
+    actionItems: [ActionItemV2]
+    executiveSummary: String
+    generatedAt: String
+    isCached: Boolean
+  }
+
+  # ---- Chi tiết Doanh thu theo Sự kiện ----
+  type RevenueByEvent {
+    eventId: String
+    eventTitle: String
+    ticketRevenue: Float
+    contractRevenue: Float
+    totalRevenue: Float
+    ticketCount: Int
+    orderCount: Int
+  }
+
+  type TicketDetail {
+    orderId: String
+    eventTitle: String
+    memberName: String
+    quantity: Int
+    totalAmount: Float
+    status: String
+    createdAt: String
+    seatLabels: [String]
+    zoneName: String
+  }
+
+  type MemberSpending {
+    memberId: String
+    memberName: String
+    totalSpent: Float
+    orderCount: Int
+  }
+
+  type ContractBreakdown {
+    contractId: String
+    proposalTitle: String
+    totalAmount: Float
+    status: String
+    createdAt: String
+  }
+
+  type RevenueBreakdown {
+    revenueByEvent: [RevenueByEvent]
+    recentTickets: [TicketDetail]
+    topMembers: [MemberSpending]
+    contractBreakdown: [ContractBreakdown]
+    totalTicketRevenue: Float
+    totalContractRevenue: Float
+  }
+
   type Query {
     login(username: String!, password: String!): User
     getAllUsers(page: Int, limit: Int): [User]
@@ -184,6 +302,8 @@ const typeDefs = `#graphql
     getContractFull(contractId: ID!): ContractFull
     getAnalyticsDashboard: AnalyticsDashboard
     getAIInsights: AIInsights
+    getAIInsightsV2(forceRefresh: Boolean): AIInsightsV2
+    getRevenueBreakdown: RevenueBreakdown
     getAllAdminRequests: [AdminRequest]
     getMyAdminRequests(memberId: ID!): [AdminRequest]
     getAllOrganizations: [Organization]
@@ -230,6 +350,7 @@ const typeDefs = `#graphql
     memberConfirmContract(contractId: ID!): Contract
     memberRejectContract(contractId: ID!): Contract
     employeeConfirmContract(contractId: ID!): Contract
+    submitActionFeedback(actionId: String!, isUseful: Boolean!): Boolean
   }
 `;
 
@@ -449,6 +570,85 @@ const resolvers = {
       const cancelledCount = cancelledOrders.length;
       const approvedEventsCount = await Event.countDocuments({ status: 'Approved' });
       return { totalRevenue: totalRevenue - totalRefunded, totalTicketsSold, activeUsers, totalEvents, pendingProposals, totalContracts, totalRefunded, cancelledCount, approvedEventsCount };
+    },
+
+    getRevenueBreakdown: async () => {
+      // --- Revenue by Event ---
+      const paidOrders = await Order.find({ status: { $in: ['Paid', 'CheckedIn'] } });
+      const allContracts = await Contract.find();
+      const eventIds = [...new Set(paidOrders.map(o => o.eventId?.toString()).filter(Boolean))];
+      const events = await Event.find({ _id: { $in: eventIds } });
+      const eventMap = {};
+      events.forEach(e => { eventMap[e._id.toString()] = e.title || e.name || 'Không có tên'; });
+
+      const revenueMap = {};
+      paidOrders.forEach(o => {
+        const eid = o.eventId?.toString() || 'unknown';
+        if (!revenueMap[eid]) revenueMap[eid] = { eventId: eid, eventTitle: eventMap[eid] || 'N/A', ticketRevenue: 0, contractRevenue: 0, totalRevenue: 0, ticketCount: 0, orderCount: 0 };
+        revenueMap[eid].ticketRevenue += o.totalAmount || 0;
+        revenueMap[eid].ticketCount += o.quantity || 0;
+        revenueMap[eid].orderCount += 1;
+      });
+
+      // Add contract revenue per event
+      const paidContracts = allContracts.filter(c => ['Paid', 'Deposited'].includes(c.status));
+      paidContracts.forEach(c => {
+        const eid = c.eventId?.toString() || 'contract-only';
+        if (!revenueMap[eid]) revenueMap[eid] = { eventId: eid, eventTitle: eventMap[eid] || c.proposalTitle || 'Hợp đồng', ticketRevenue: 0, contractRevenue: 0, totalRevenue: 0, ticketCount: 0, orderCount: 0 };
+        revenueMap[eid].contractRevenue += c.totalAmount || 0;
+      });
+
+      Object.values(revenueMap).forEach(r => { r.totalRevenue = r.ticketRevenue + r.contractRevenue; });
+      const revenueByEvent = Object.values(revenueMap).sort((a, b) => b.totalRevenue - a.totalRevenue);
+
+      // --- Recent Tickets (last 20) ---
+      const recentOrders = await Order.find().sort({ createdAt: -1 }).limit(20);
+      const memberIds = [...new Set(recentOrders.map(o => o.memberId?.toString()).filter(Boolean))];
+      const members = await User.find({ _id: { $in: memberIds } });
+      const memberMap = {};
+      members.forEach(m => { memberMap[m._id.toString()] = m.fullname || m.username; });
+
+      const recentTickets = recentOrders.map(o => ({
+        orderId: o._id.toString(),
+        eventTitle: eventMap[o.eventId?.toString()] || 'N/A',
+        memberName: memberMap[o.memberId?.toString()] || 'Ẩn danh',
+        quantity: o.quantity,
+        totalAmount: o.totalAmount,
+        status: o.status,
+        createdAt: o.createdAt?.toISOString(),
+        seatLabels: o.seatLabels || (o.seatLabel ? [o.seatLabel] : []),
+        zoneName: o.zoneName || ''
+      }));
+
+      // --- Top Members by spending ---
+      const memberSpendMap = {};
+      paidOrders.forEach(o => {
+        const mid = o.memberId?.toString() || 'unknown';
+        if (!memberSpendMap[mid]) memberSpendMap[mid] = { memberId: mid, memberName: memberMap[mid] || 'N/A', totalSpent: 0, orderCount: 0 };
+        memberSpendMap[mid].totalSpent += o.totalAmount || 0;
+        memberSpendMap[mid].orderCount += 1;
+      });
+      // Fetch any missing member names
+      const missingMemberIds = Object.keys(memberSpendMap).filter(id => memberSpendMap[id].memberName === 'N/A' && id !== 'unknown');
+      if (missingMemberIds.length > 0) {
+        const extraMembers = await User.find({ _id: { $in: missingMemberIds } });
+        extraMembers.forEach(m => { if (memberSpendMap[m._id.toString()]) memberSpendMap[m._id.toString()].memberName = m.fullname || m.username; });
+      }
+      const topMembers = Object.values(memberSpendMap).sort((a, b) => b.totalSpent - a.totalSpent).slice(0, 10);
+
+      // --- Contract Breakdown ---
+      const contractBreakdown = allContracts.map(c => ({
+        contractId: c._id.toString(),
+        proposalTitle: c.proposalTitle || c.details?.slice(0, 50) || 'Hợp đồng',
+        totalAmount: c.totalAmount || 0,
+        status: c.status,
+        createdAt: c.createdAt?.toISOString()
+      })).sort((a, b) => b.totalAmount - a.totalAmount);
+
+      const totalTicketRevenue = paidOrders.reduce((s, o) => s + (o.totalAmount || 0), 0);
+      const totalContractRevenue = paidContracts.reduce((s, c) => s + (c.totalAmount || 0), 0);
+
+      return { revenueByEvent, recentTickets, topMembers, contractBreakdown, totalTicketRevenue, totalContractRevenue };
     },
 
     getEventGuests: async (_, { eventId }) => await Rsvp.find({ eventId }),
@@ -828,6 +1028,87 @@ Hay tra loi CHINH XAC theo format JSON sau (KHONG giai thich them, CHI tra ve JS
         };
       }
     },
+
+    getAIInsightsV2: async (_, { forceRefresh = false }) => {
+      const startTime = Date.now();
+      try {
+        if (!forceRefresh) {
+          const cached = await AIInsightsCache.findOne({ key: 'latest' });
+          if (cached) {
+            const responseTime = (Date.now() - startTime) / 1000;
+            await SystemLog.create({
+              type: 'API_REQUEST',
+              endpoint: '/api/graphql (Query: getAIInsightsV2)',
+              responseTime
+            });
+            return {
+              ...cached.insights,
+              isCached: true,
+              generatedAt: cached.updatedAt.toISOString()
+            };
+          }
+        }
+
+        const businessHealth = await calculateBusinessHealthScore();
+        const forecasts = await calculateRevenueForecast();
+        const systemHealth = await calculateSystemHealth();
+        const marketEvents = await getMarketEvents();
+
+        const aggregatedData = {
+          businessHealth,
+          systemHealth,
+          forecasts,
+          marketEvents
+        };
+
+        const aiResponse = await generateExecutiveSummaryAndActionsV2(aggregatedData);
+
+        const actionItems = aiResponse.actionItems.map((item, idx) => ({
+          id: `action-${idx}-${Date.now()}`,
+          action: item.action,
+          reason: item.reason,
+          category: item.category,
+          confidence: item.confidence,
+          impactScore: item.impactScore,
+          priority: item.priority
+        }));
+
+        const result = {
+          businessHealth,
+          systemHealth,
+          forecasts,
+          actionItems,
+          executiveSummary: aiResponse.executiveSummary,
+          generatedAt: new Date().toISOString(),
+          isCached: false
+        };
+
+        await AIInsightsCache.findOneAndUpdate(
+          { key: 'latest' },
+          { insights: result },
+          { upsert: true, new: true }
+        );
+
+        const responseTime = (Date.now() - startTime) / 1000;
+        await SystemLog.create({
+          type: 'API_REQUEST',
+          endpoint: '/api/graphql (Query: getAIInsightsV2)',
+          responseTime
+        });
+
+        return result;
+
+      } catch (err) {
+        console.error('Error in getAIInsightsV2 resolver:', err);
+        await SystemLog.create({
+          type: 'ERROR',
+          endpoint: '/api/graphql (Query: getAIInsightsV2)',
+          module: 'AI Analysis Service',
+          errorMessage: err.message
+        });
+        throw err;
+      }
+    },
     getAllAdminRequests: async () => await AdminRequest.find().sort({ createdAt: -1 }),
     getMyAdminRequests: async (_, { memberId }) => await AdminRequest.find({ memberId }).sort({ createdAt: -1 }),
     getAllOrganizations: async () => await Organization.find().sort({ createdAt: -1 }),
@@ -840,6 +1121,22 @@ Hay tra loi CHINH XAC theo format JSON sau (KHONG giai thich them, CHI tra ve JS
   },
 
   Mutation: {
+    submitActionFeedback: async (_, { actionId, isUseful }) => {
+      try {
+        await ActionFeedback.create({ actionId, isUseful });
+        return true;
+      } catch (err) {
+        console.error('Error submitting action feedback:', err);
+        await SystemLog.create({
+          type: 'ERROR',
+          endpoint: '/api/graphql (Mutation: submitActionFeedback)',
+          module: 'Action Feedback Module',
+          errorMessage: err.message
+        });
+        return false;
+      }
+    },
+
     registerAuth: async (_, args) => {
       const exist = await User.findOne({ username: args.username });
       if (exist) throw new Error('Tài khoản đã tồn tại.');
@@ -1105,7 +1402,19 @@ Hay tra loi CHINH XAC theo format JSON sau (KHONG giai thich them, CHI tra ve JS
     },
 
     verifyTicketCheckin: async (_, { ticketId, otp }) => {
-      const o = await Order.findById(ticketId);
+      let o = null;
+      // 1) Try direct ID lookup
+      try { o = await Order.findById(ticketId); } catch (e) { /* not a valid ObjectId */ }
+      // 2) Parse QR code format: EMS-{orderId}-{timestamp}
+      if (!o && ticketId.startsWith('EMS-')) {
+        const parts = ticketId.split('-');
+        if (parts.length >= 2) {
+          const extractedId = parts[1];
+          try { o = await Order.findById(extractedId); } catch (e) {}
+        }
+      }
+      // 3) Fallback: search by qrCode field
+      if (!o) { o = await Order.findOne({ qrCode: ticketId }); }
       if (!o) return { success: false, message: 'Vé không tồn tại.' };
       if (o.status === 'CheckedIn') return { success: false, message: 'Vé đã được sử dụng.' };
       if (o.status !== 'Paid') return { success: false, message: 'Vé chưa được thanh toán.' };
@@ -1438,4 +1747,39 @@ Hai bên cam kết thực hiện đúng các điều khoản
 let globalIo = null;
 const setIo = (io) => { globalIo = io; };
 
-module.exports = { typeDefs, resolvers, setIo };
+async function seedMockSystemLogsAndSnapshots() {
+    try {
+        const logCount = await SystemLog.countDocuments();
+        if (logCount === 0) {
+            console.log('🌱 Seeding mock System Logs for Developer Insights V2...');
+            await SystemLog.insertMany([
+                { type: 'API_REQUEST', endpoint: '/api/graphql (Query: getAIInsightsV2)', responseTime: 2.3 },
+                { type: 'API_REQUEST', endpoint: '/api/graphql (Mutation: checkoutOrder)', responseTime: 1.1 },
+                { type: 'API_REQUEST', endpoint: '/api/graphql (Query: getEventSeatMap)', responseTime: 0.85 },
+                { type: 'API_REQUEST', endpoint: '/api/graphql (Query: getAllEvents)', responseTime: 0.22 },
+                { type: 'API_REQUEST', endpoint: '/api/graphql (Query: getSystemStats)', responseTime: 0.45 },
+                { type: 'ERROR', endpoint: 'Payment Gateway API', module: 'Payment Module', errorMessage: 'Timeout connecting to payment gateway provider.' },
+                { type: 'ERROR', endpoint: 'Payment Webhook', module: 'Payment Module', errorMessage: 'Signature verification failed.' },
+                { type: 'ERROR', endpoint: 'Crawler: Ticketbox Scraper', module: 'Crawler Module', errorMessage: 'Layout selector mismatch: card elements changed.' },
+                { type: 'ERROR', endpoint: 'JWT Verify', module: 'Auth Service', errorMessage: 'Token expired.' },
+                { type: 'ERROR', endpoint: 'JWT Sign', module: 'Auth Service', errorMessage: 'Internal keyserver unreachable.' }
+            ]);
+            console.log('🌱 Seeding mock System Logs completed.');
+        }
+
+        const snapshotCount = await MarketSnapshot.countDocuments();
+        if (snapshotCount === 0) {
+            console.log('🌱 Seeding mock Market Snapshot for Crawler Fallback V2...');
+            const { SANDBOX_MARKET_EVENTS } = require('./services/market.service');
+            await MarketSnapshot.create({
+                source: 'Ticketbox RSS & Eventbrite API public',
+                data: SANDBOX_MARKET_EVENTS
+            });
+            console.log('🌱 Seeding mock Market Snapshot completed.');
+        }
+    } catch (err) {
+        console.error('Error seeding mock logs/snapshots:', err);
+    }
+}
+
+module.exports = { typeDefs, resolvers, setIo, seedMockSystemLogsAndSnapshots };

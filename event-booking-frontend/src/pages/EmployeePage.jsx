@@ -4,6 +4,7 @@ import { resolveFileUrl } from '../api/config';
 import SettingsPage from './SettingsPage';
 import EmployeeSetupModal from '../features/dashboard/EmployeeSetupModal';
 import ContractDetailModal from '../features/dashboard/ContractDetailModal';
+import EventDetail from '../features/ticketing/EventDetail';
 import { FileText, CheckCircle, XCircle, Clock, DollarSign, Ticket, AlertCircle, RefreshCw, Search, AlertTriangle, MapPin, Package } from 'lucide-react';
 
 export default function EmployeePage({ view, currentUser }) {
@@ -18,6 +19,7 @@ export default function EmployeePage({ view, currentUser }) {
   const [setupData, setSetupData] = useState(null);
   const [setupLoading, setSetupLoading] = useState(false);
   const [selectedContract, setSelectedContract] = useState(null);
+  const [selectedEventId, setSelectedEventId] = useState(null);
 
   useEffect(() => {
     if (view === 'dashboard' && currentUser) loadMyContracts();
@@ -25,6 +27,10 @@ export default function EmployeePage({ view, currentUser }) {
     if (view === 'events' && currentUser) loadEvents();
     if (view === 'proposals' && currentUser) loadProposals();
   }, [view, currentUser]);
+
+  if (selectedEventId) {
+    return <EventDetail eventId={selectedEventId} onBack={() => setSelectedEventId(null)} currentUser={currentUser} />;
+  }
 
   const loadMyContracts = async () => {
     setLoading(true);
@@ -393,7 +399,12 @@ export default function EmployeePage({ view, currentUser }) {
                   <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>📍 {e.location}</span>
                   {statusBadge(e.status)}
                 </div>
-                <div style={{ marginTop: 8, color: 'var(--text-muted)', fontSize: '0.85rem' }}>📆 {e.date} • {e.eventType}</div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 12 }}>
+                  <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>📆 {e.date} • {e.eventType}</span>
+                  <button className="btn outline" style={{ padding: '4px 10px', fontSize: '0.75rem' }} onClick={() => setSelectedEventId(e.id)}>
+                    👁️ Chi tiết
+                  </button>
+                </div>
               </div>
             </div>
           ))}

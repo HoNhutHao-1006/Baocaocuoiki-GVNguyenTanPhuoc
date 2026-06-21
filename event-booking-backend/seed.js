@@ -102,7 +102,7 @@ async function seed() {
         title: 'Siêu Nhạc Hội KOSMIK 2026',
         description: 'Đại nhạc hội EDM lớn nhất Đông Nam Á quy tụ hơn 30 DJ/Producer hàng đầu thế giới. Line-up bao gồm Martin Garrix, KSHMR, Binz, Sơn Tùng M-TP. Trải nghiệm ánh sáng 3D laser mapping và sân khấu 360 độ hoành tráng nhất từ trước đến nay.',
         date: '2026-06-15', status: 'Approved',
-        coverImg: 'http://localhost:4000/uploads/kosmik_2026_cover.png',
+        coverImg: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?auto=format&fit=crop&w=1200&q=80',
         location: 'SVĐ Mỹ Đình, Hà Nội', eventType: 'PUBLIC', ticketingEnabled: true
     });
 

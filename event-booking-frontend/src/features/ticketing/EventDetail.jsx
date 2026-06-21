@@ -52,11 +52,15 @@ export default function EventDetail({ eventId, onBack, currentUser }) {
         setEvent(res.getEventDetail);
         const cat = (res.getEventDetail?.categoryName || '').toLowerCase();
         const isWedding = cat.includes('cưới') || cat.includes('wedding');
-        setActiveTab(isWedding ? 'gallery' : (res.getEventDetail?.ticketingEnabled ? 'seats' : 'info'));
+        if (currentUser?.role === 'EMPLOYEE') {
+          setActiveTab('info');
+        } else {
+          setActiveTab(isWedding ? 'gallery' : (res.getEventDetail?.ticketingEnabled ? 'seats' : 'info'));
+        }
       });
     fetchGraphQL(`query { getContractsByEvent(eventId: "${eventId}") { id details totalAmount status createdAt } }`)
       .then(res => setEventContracts(res.getContractsByEvent || [])).catch(() => {});
-  }, [eventId]);
+  }, [eventId, currentUser]);
 
   useEffect(() => {
     let t = null;
@@ -88,17 +92,19 @@ export default function EventDetail({ eventId, onBack, currentUser }) {
 
   // Build tabs based on event type
   const tabs = [];
-  if (isWedding) {
-    tabs.push({ key: 'gallery', label: '📸 Album Ảnh' });
-    tabs.push({ key: 'menu', label: '🍽️ Thực Đơn' });
-    tabs.push({ key: 'program', label: '🎵 Chương Trình' });
-    tabs.push({ key: 'effects', label: '✨ Kỹ Xảo' });
-  } else if (isTicketable) {
-    tabs.push({ key: 'seats', label: '🎟️ Chọn Ghế & Đặt Vé' });
+  if (currentUser?.role !== 'EMPLOYEE') {
+    if (isWedding) {
+      tabs.push({ key: 'gallery', label: '📸 Album Ảnh' });
+      tabs.push({ key: 'menu', label: '🍽️ Thực Đơn' });
+      tabs.push({ key: 'program', label: '🎵 Chương Trình' });
+      tabs.push({ key: 'effects', label: '✨ Kỹ Xảo' });
+    } else if (isTicketable) {
+      tabs.push({ key: 'seats', label: '🎟️ Chọn Ghế & Đặt Vé' });
+    }
+    tabs.push({ key: 'info', label: '📋 Thông Tin Chi Tiết' });
+    tabs.push({ key: 'contracts', label: `📄 Hợp Đồng (${eventContracts.length})` });
+    tabs.push({ key: 'map', label: '🗺️ Bản Đồ' });
   }
-  tabs.push({ key: 'info', label: '📋 Thông Tin Chi Tiết' });
-  tabs.push({ key: 'contracts', label: `📄 Hợp Đồng (${eventContracts.length})` });
-  tabs.push({ key: 'map', label: '🗺️ Bản Đồ' });
 
   return (
     <div style={{ height: '100vh', overflowY: 'auto', background: 'var(--bg-main)' }}>
@@ -129,14 +135,16 @@ export default function EventDetail({ eventId, onBack, currentUser }) {
       </div>
 
       {/* Tab Nav */}
-      <div style={{ display: 'flex', gap: 0, padding: '0 40px', background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(10px)', borderBottom: '1px solid var(--border-color)', position: 'sticky', top: 52, zIndex: 50, overflowX: 'auto' }}>
-        {tabs.map(t => (
-          <button key={t.key} onClick={() => setActiveTab(t.key)}
-            style={{ padding: '14px 24px', background: 'transparent', border: 'none', borderBottom: `3px solid ${activeTab === t.key ? 'var(--primary-color)' : 'transparent'}`, color: activeTab === t.key ? 'var(--primary-color)' : '#888', cursor: 'pointer', fontFamily: 'Outfit', fontWeight: 700, fontSize: '0.9rem', transition: 'all 0.2s', whiteSpace: 'nowrap' }}>
-            {t.label}
-          </button>
-        ))}
-      </div>
+      {tabs.length > 0 && (
+        <div style={{ display: 'flex', gap: 0, padding: '0 40px', background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(10px)', borderBottom: '1px solid var(--border-color)', position: 'sticky', top: 52, zIndex: 50, overflowX: 'auto' }}>
+          {tabs.map(t => (
+            <button key={t.key} onClick={() => setActiveTab(t.key)}
+              style={{ padding: '14px 24px', background: 'transparent', border: 'none', borderBottom: `3px solid ${activeTab === t.key ? 'var(--primary-color)' : 'transparent'}`, color: activeTab === t.key ? 'var(--primary-color)' : '#888', cursor: 'pointer', fontFamily: 'Outfit', fontWeight: 700, fontSize: '0.9rem', transition: 'all 0.2s', whiteSpace: 'nowrap' }}>
+              {t.label}
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* ═══ WEDDING TABS ═══ */}
       {activeTab === 'gallery' && isWedding && (
@@ -242,7 +250,7 @@ export default function EventDetail({ eventId, onBack, currentUser }) {
           <div className="panel" style={{ marginBottom: 30 }}>
             <p style={{ color: '#ddd', lineHeight: 2, fontSize: '1.05rem' }}>{event.description || 'Chưa có mô tả chi tiết.'}</p>
           </div>
-          {event.ticketTiers && event.ticketTiers.length > 0 && isTicketable && (
+          {currentUser?.role !== 'EMPLOYEE' && event.ticketTiers && event.ticketTiers.length > 0 && isTicketable && (
             <div>
               <h3 style={{ marginBottom: 16 }}>🎫 Các Hạng Vé</h3>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: 16 }}>

@@ -54,7 +54,7 @@ export default function App() {
         <div className="main-content" style={{ flex: 1, overflowY: 'auto' }}>
           <Topbar currentUser={currentUser} onUserUpdate={(updated) => { setCurrentUser(updated); localStorage.setItem('currentUser', JSON.stringify(updated)); }} />
           <div className="page-wrapper">
-            {currentUser.role === 'ADMIN' && <AdminPage view={view} />}
+            {currentUser.role === 'ADMIN' && <AdminPage view={view} currentUser={currentUser} />}
             {currentUser.role === 'ORGANIZER' && <OrganizerPage view={view} currentUser={currentUser} />}
             {currentUser.role === 'MEMBER' && <MemberPage view={view} currentUser={currentUser} />}
             {currentUser.role === 'EMPLOYEE' && <EmployeePage view={view} currentUser={currentUser} />}
