@@ -1,19 +1,20 @@
-# 🎓 BÁO CÁO KHÓA LUẬN TỐT NGHIỆP — NĂM 2025
+# BÁO CÁO KHÓA LUẬN TỐT NGHIỆP — NĂM 2025
 ## TRƯỜNG ĐẠI HỌC CÔNG NGHIỆP THÀNH PHỐ HỒ CHÍ MINH (IUH)
 ### KHOA CÔNG NGHỆ THÔNG TIN — BỘ MÔN HỆ THỐNG THÔNG TIN
 
 ---
 
-# 🎫 LUMINA EMS — HỆ THỐNG TỔ CHỨC QUẢN LÝ SỰ KIỆN VÀ ĐẶT VÉ
+# LUMINA EMS — HỆ THỐNG TỔ CHỨC QUẢN LÝ SỰ KIỆN VÀ ĐẶT VÉ
 *(Đề tài khóa luận tốt nghiệp ngành Hệ thống Thông tin)*
 
 **Sinh viên thực hiện:** Hồ Nhựt Hào & Cao Hoàng Minh Cơ  
 **Giảng viên hướng dẫn:** TS. Nguyễn Tấn Phước  
 **Thời gian hoàn thành:** Tháng 5 Năm 2026  
+**[TẢI XUỐNG QUYỂN BÁO CÁO ĐỀ TÀI FULL (PDF)](./Final_Q1.pdf)**
 
 ---
 
-## 📝 ABSTRACT & TÓM TẮT ĐỀ TÀI
+## ABSTRACT & TÓM TẮT ĐỀ TÀI
 
 ### ABSTRACT
 **Topic:** Lumina EMS — Event Management & Booking Platform  
@@ -29,7 +30,7 @@ Lumina EMS (Event Management & Booking Platform) là một nền tảng full-sta
 
 ---
 
-## 🙏 LỜI CẢM ƠN
+## LỜI CẢM ƠN
 Em xin gửi lời cảm ơn chân thành và sâu sắc nhất đến **TS. Nguyễn Tấn Phước** - Giảng viên hướng dẫn trực tiếp của đề tài. Thầy đã tận tình chỉ dẫn, định hướng khoa học và đưa ra những nhận xét vô cùng quý báu trong suốt quá trình nghiên cứu, xây dựng và hoàn thiện đề tài khóa luận tốt nghiệp này.
 
 Đồng thời, em cũng xin chân thành cảm ơn các Thầy/Cô trong **Khoa Công nghệ Thông tin - Trường Đại học Công nghiệp TP. Hồ Chí Minh (IUH)** đã trang bị cho em những kiến thức nền tảng vững chắc và tạo điều kiện học tập tốt nhất trong những năm học qua.
@@ -39,7 +40,7 @@ Em xin gửi lời cảm ơn chân thành và sâu sắc nhất đến **TS. Ngu
 
 ---
 
-## 📋 MỤC LỤC BÁO CÁO (KLTN OUTLINE MAPPING)
+## MỤC LỤC BÁO CÁO (KLTN OUTLINE MAPPING)
 
 - [**CHƯƠNG 1: GIỚI THIỆU CHUNG**](#chương-1-giới-thiệu-chung)
   - 1.1. Bối cảnh và lý do chọn đề tài
@@ -75,7 +76,7 @@ Em xin gửi lời cảm ơn chân thành và sâu sắc nhất đến **TS. Ngu
 
 ---
 
-## 🔤 DANH MỤC CÁC THUẬT NGỮ VIẾT TẮT
+## DANH MỤC CÁC THUẬT NGỮ VIẾT TẮT
 
 | Từ viết tắt | Từ đầy đủ | Nghĩa tiếng Việt |
 | :--- | :--- | :--- |
@@ -115,12 +116,12 @@ Hệ thống Lumina EMS phục vụ đồng thời hai mô hình kinh doanh cố
 ### 1.3. Danh sách chức năng chính của hệ thống
 Hệ thống phân chia nghiệp vụ chặt chẽ thành 6 phân hệ (module) lớn:
 
-*   **👤 Phân hệ Khách vãng lai (Guest):** Duyệt danh sách sự kiện, tìm kiếm, xem thông tin chi tiết sự kiện và gửi phản hồi RSVP không cần đăng nhập.
-*   **🧑 Phân hệ Khách hàng (Member):** Đăng ký/Đăng nhập (OTP xác thực), cập nhật hồ sơ cá nhân, chọn ghế & giữ chỗ (Hold Seat tối đa 10 ghế trong 10 phút), thanh toán/hủy vé tự động, xem tủ vé cá nhân có mã QR động. Ngoài ra, Member có quyền gửi đề xuất sự kiện B2B, quản lý/upload hợp đồng số, đặt cọc và quản lý danh sách khách mời RSVP.
-*   **🎭 Phân hệ Người tổ chức (Organizer):** Tạo sự kiện mới (Public/Private), quản lý danh sách khách mời RSVP, xếp bàn tiệc (Seating Arrangement) và thiết lập kịch bản/task checklist cho sự kiện.
-*   **🔧 Phân hệ Nhân viên (Employee):** Quét mã QR/Nhập ID soát vé check-in tại hiện trường, quản lý và xác nhận hợp đồng B2B được phân công phụ trách.
-*   **👑 Phân hệ Quản trị viên (Admin):** Dashboard phân tích nâng cao, AI Insights (Gemini AI phân tích SWOT, xu hướng hệ thống), duyệt sự kiện (kiểm tra trùng lịch tự động), duyệt đề xuất B2B, duyệt/hủy hợp đồng, phân công nhân viên, quản lý tài nguyên CRUD (Địa điểm, Dịch vụ, Thiết bị) và quản lý người dùng.
-*   **⚡ Phân hệ Hệ thống (System):** Realtime cập nhật trạng thái ghế và thông báo qua Socket.IO, xử lý tác vụ nền bất đồng bộ (gửi email hàng loạt, xuất vé) qua RabbitMQ Message Queue, kiểm tra tài nguyên tự động, hỗ trợ Prometheus Metrics thu thập dữ liệu hiệu năng hệ thống.
+*   **Phân hệ Khách vãng lai (Guest):** Duyệt danh sách sự kiện, tìm kiếm, xem thông tin chi tiết sự kiện và gửi phản hồi RSVP không cần đăng nhập.
+*   **Phân hệ Khách hàng (Member):** Đăng ký/Đăng nhập (OTP xác thực), cập nhật hồ sơ cá nhân, chọn ghế & giữ chỗ (Hold Seat tối đa 10 ghế trong 10 phút), thanh toán/hủy vé tự động, xem tủ vé cá nhân có mã QR động. Ngoài ra, Member có quyền gửi đề xuất sự kiện B2B, quản lý/upload hợp đồng số, đặt cọc và quản lý danh sách khách mời RSVP.
+*   **Phân hệ Người tổ chức (Organizer):** Tạo sự kiện mới (Public/Private), quản lý danh sách khách mời RSVP, xếp bàn tiệc (Seating Arrangement) và thiết lập kịch bản/task checklist cho sự kiện.
+*   **Phân hệ Nhân viên (Employee):** Quét mã QR/Nhập ID soát vé check-in tại hiện trường, quản lý và xác nhận hợp đồng B2B được phân công phụ trách.
+*   **Phân hệ Quản trị viên (Admin):** Dashboard phân tích nâng cao, AI Insights (Gemini AI phân tích SWOT, xu hướng hệ thống), duyệt sự kiện (kiểm tra trùng lịch tự động), duyệt đề xuất B2B, duyệt/hủy hợp đồng, phân công nhân viên, quản lý tài nguyên CRUD (Địa điểm, Dịch vụ, Thiết bị) và quản lý người dùng.
+*   **Phân hệ Hệ thống (System):** Realtime cập nhật trạng thái ghế và thông báo qua Socket.IO, xử lý tác vụ nền bất đồng bộ (gửi email hàng loạt, xuất vé) qua RabbitMQ Message Queue, kiểm tra tài nguyên tự động, hỗ trợ Prometheus Metrics thu thập dữ liệu hiệu năng hệ thống.
 
 ### 1.4. Yêu cầu về hình thức trình bày và đóng bìa báo cáo (KLTN Style)
 Theo quy chuẩn của Khoa CNTT - IUH, báo cáo KLTN chính thức phải đảm bảo các quy chuẩn sau:
@@ -171,16 +172,19 @@ Hệ thống Lumina EMS xác định 5 tác nhân (Actor) chính tham gia vào c
 
 ### 3.2. Sơ đồ Use Case tổng quát và chi tiết theo Actor
 
-#### Sơ đồ Use Case tổng quát hệ thống:
+#### Sơ đồ Use Case tổng quát hệ thống (Bản vẽ Báo cáo):
+![Sơ đồ Use Case tổng quát](./images/use_case_tong_quat.png)
+
+#### Sơ đồ Use Case tổng quát hệ thống (Mermaid):
 ```mermaid
 flowchart LR
-    GUEST(("👤\nGuest"))
-    MEMBER(("🧑\nMember"))
-    ORGANIZER(("🎭\nOrganizer"))
-    EMPLOYEE(("🔧\nEmployee"))
-    ADMIN(("👑\nAdmin"))
+    GUEST(("\nGuest"))
+    MEMBER(("\nMember"))
+    ORGANIZER(("\nOrganizer"))
+    EMPLOYEE(("\nEmployee"))
+    ADMIN(("\nAdmin"))
 
-    subgraph EMS["🎫 HỆ THỐNG QUẢN LÝ SỰ KIỆN - EMS"]
+    subgraph EMS["HỆ THỐNG QUẢN LÝ SỰ KIỆN - EMS"]
         direction TB
         UC_REG["Đăng ký tài khoản"]
         UC_LOGIN["Đăng nhập"]
@@ -218,7 +222,7 @@ flowchart LR
 #### Sơ đồ Use Case cho Phân hệ Khách hàng (Member):
 ```mermaid
 graph LR
-    MEMBER(("🧑 Member"))
+    MEMBER(("Member"))
     subgraph TICKET["Đặt vé B2C"]
         UC_HOLD["Chọn ghế / Giữ chỗ"]
         UC_PAY["Thanh toán vé"]
@@ -238,7 +242,7 @@ graph LR
 #### Sơ đồ Use Case cho Phân hệ Quản trị (Admin):
 ```mermaid
 graph LR
-    ADMIN(("👑 Admin"))
+    ADMIN(("Admin"))
     subgraph APPROVE["Phê duyệt"]
         UC_APPROVE_EVT["Duyệt sự kiện"]
         UC_APPROVE_PROP["Duyệt đề xuất SK"]
@@ -289,16 +293,16 @@ graph LR
 
 | Use Case | Guest | Member | Organizer | Employee | Admin |
 |:---|:---:|:---:|:---:|:---:|:---:|
-| **Đăng ký / Đăng nhập** | ✅ | ✅ | ✅ | ✅ | ✅ |
-| **Duyệt & Tìm kiếm sự kiện** | ✅ | ✅ | | | |
-| **Chọn ghế / Giữ chỗ (B2C)** | | ✅ | | | |
-| **Thanh toán & Hủy vé (B2C)** | | ✅ | | | |
-| **Tạo đề xuất & Hợp đồng (B2B)** | | ✅ | | | |
-| **Tạo sự kiện & Xếp bàn (B2B)** | | | ✅ | | |
-| **Quét QR soát vé Check-in** | | | | ✅ | |
-| **Duyệt Đề xuất & Hợp đồng** | | | | | ✅ |
-| **CRUD Danh mục & Tài nguyên** | | | | | ✅ |
-| **Xem thống kê & AI Insights** | | | | | ✅ |
+| **Đăng ký / Đăng nhập** | x | x | x | x | x |
+| **Duyệt & Tìm kiếm sự kiện** | x | x | | | |
+| **Chọn ghế / Giữ chỗ (B2C)** | | x | | | |
+| **Thanh toán & Hủy vé (B2C)** | | x | | | |
+| **Tạo đề xuất & Hợp đồng (B2B)** | | x | | | |
+| **Tạo sự kiện & Xếp bàn (B2B)** | | | x | | |
+| **Quét QR soát vé Check-in** | | | | x | |
+| **Duyệt Đề xuất & Hợp đồng** | | | | | x |
+| **CRUD Danh mục & Tài nguyên** | | | | | x |
+| **Xem thống kê & AI Insights** | | | | | x |
 
 ---
 
@@ -326,6 +330,9 @@ erDiagram
     MARKET_SNAPSHOT ||--o{ SYSTEM : caches
     AI_INSIGHTS_CACHE ||--o{ SYSTEM : caches
 ```
+
+#### Sơ đồ Mô hình Quan hệ Cơ sở Dữ liệu (ERD - Bản vẽ Báo cáo):
+![Sơ đồ Mô hình Quan hệ Cơ sở Dữ liệu ERD](./images/erd_database.png)
 
 *   **User:** Lưu trữ tài khoản người dùng, mật khẩu đã mã hóa (bcrypt) và phân loại vai trò (Role: ADMIN, MEMBER, ORGANIZER, EMPLOYEE).
 *   **Event:** Thông tin chi tiết sự kiện (tên, ngày bắt đầu, địa điểm, trạng thái phê duyệt).
@@ -389,6 +396,35 @@ sequenceDiagram
     SV->>DB: Cập nhật Contract -> "Deposited"
 ```
 
+#### Sơ đồ tuần tự nghiệp vụ chi tiết (Bản vẽ Báo cáo):
+<details>
+<summary><b>Click để mở rộng xem các Sơ đồ tuần tự (Sequence Diagrams) chi tiết từ báo cáo</b></summary>
+
+| Quy trình nghiệp vụ | Bản vẽ Sequence Diagram tương ứng |
+|---|---|
+| **1. Quy trình Đăng nhập** | ![Sequence Diagram Đăng nhập](./images/seq_dang_nhap.png) |
+| **2. Quy trình Đăng xuất** | ![Sequence Diagram Đăng xuất & Tìm kiếm](./images/seq_dang_xuat_tim_kiem.png) |
+| **3. Quy trình Tìm kiếm sự kiện** | ![Sequence Diagram Tìm kiếm sự kiện](./images/seq_dang_xuat_tim_kiem.png) |
+| **4. Quy trình Xem chi tiết sự kiện** | ![Sequence Diagram Xem chi tiết](./images/seq_xem_chi_tiet_dang_ky.png) |
+| **5. Quy trình Đăng ký tài khoản** | ![Sequence Diagram Đăng ký tài khoản](./images/seq_xem_chi_tiet_dang_ky.png) |
+| **6. Quy trình Đặt vé** | ![Sequence Diagram Đặt vé](./images/seq_dat_ve_huy_ve.png) |
+| **7. Quy trình Hủy vé** | ![Sequence Diagram Hủy vé](./images/seq_dat_ve_huy_ve.png) |
+| **8. Quy trình Mua thêm vé** | ![Sequence Diagram Mua thêm vé](./images/seq_mua_them_ve.png) |
+| **9. Quy trình Đặt vé trực tuyến** | ![Sequence Diagram Đặt vé trực tuyến](./images/seq_mua_them_ve.png) |
+| **10. Quy trình Quản lý hợp đồng cá nhân** | ![Sequence Diagram Quản lý hợp đồng cá nhân](./images/seq_ql_hop_dong_ca_nhan_gui_thu_moi.png) |
+| **11. Quy trình Gửi thư mời tham gia sự kiện** | ![Sequence Diagram Gửi thư mời](./images/seq_ql_hop_dong_ca_nhan_gui_thu_moi.png) |
+| **12. Quy trình Quản lý sự kiện** | ![Sequence Diagram Quản lý sự kiện](./images/seq_ql_su_kien_dia_diem.png) |
+| **13. Quy trình Quản lý địa điểm** | ![Sequence Diagram Quản lý địa điểm](./images/seq_ql_su_kien_dia_diem.png) |
+| **14. Quy trình Quản lý dịch vụ** | ![Sequence Diagram Quản lý dịch vụ](./images/seq_ql_dich_vu_thiet_bi_nhan_su.png) |
+| **15. Quy trình Quản lý thiết bị** | ![Sequence Diagram Quản lý thiết bị](./images/seq_ql_dich_vu_thiet_bi_nhan_su.png) |
+| **16. Quy trình Quản lý nhân sự** | ![Sequence Diagram Quản lý nhân sự](./images/seq_ql_dich_vu_thiet_bi_nhan_su.png) |
+| **17. Quy trình Quản lý hợp đồng tổng thể** | ![Sequence Diagram Quản lý hợp đồng tổng thể](./images/seq_ql_hop_dong_tong_the_nguoi_dung.png) |
+| **18. Quy trình Quản lý người dùng** | ![Sequence Diagram Quản lý người dùng](./images/seq_ql_hop_dong_tong_the_nguoi_dung.png) |
+| **19. Quy trình Quản lý thống kê báo cáo** | ![Sequence Diagram Thống kê báo cáo](./images/seq_ql_thong_ke_khach_hang.png) |
+| **20. Quy trình Quản lý khách hàng hệ thống** | ![Sequence Diagram Quản lý khách hàng](./images/seq_ql_thong_ke_khach_hang.png) |
+
+</details>
+
 ### 4.3. Cấu trúc thư mục dự án
 Hệ thống được tổ chức khoa học với các module rõ ràng:
 
@@ -444,10 +480,10 @@ node seed-seats.js
 ```
 
 **Danh sách tài khoản kiểm thử mặc định sau khi Seed (Mật khẩu chung: `123`):**
-*   **👑 Quản trị viên (Admin):** Username: `admin`
-*   **🧑 Khách hàng (Member):** Username: `member`
-*   **🎭 Người tổ chức (Organizer):** Username: `org`
-*   **🔧 Nhân viên soát vé (Employee):** Username: `employee`
+*   **Quản trị viên (Admin):** Username: `admin`
+*   **Khách hàng (Member):** Username: `member`
+*   **Người tổ chức (Organizer):** Username: `org`
+*   **Nhân viên soát vé (Employee):** Username: `employee`
 
 ### 5.3. Hướng dẫn khởi động các dịch vụ (Frontend, Backend)
 Kích hoạt các dịch vụ ở hai terminal riêng biệt:
@@ -463,6 +499,76 @@ npm install
 npm run dev
 ```
 Sau khi khởi động thành công, truy cập trình duyệt tại địa chỉ: [http://localhost:5173](http://localhost:5173) để trải nghiệm hệ thống.
+
+### 5.4. Hình ảnh Giao diện Hệ thống thực tế (Application Screenshots)
+
+Để minh họa trực quan các tính năng đã cài đặt và hoàn thiện trong đồ án Lumina EMS, dưới đây là hình chụp giao diện thực tế của hệ thống được phân nhóm theo vai trò người dùng (Actor):
+
+#### 1. Giao diện dành cho Khách hàng & Khách vãng lai (Guest & Member)
+
+<details>
+<summary><b>Click để xem các ảnh chụp giao diện Khách hàng</b></summary>
+
+* **Trang chủ chính thức (Phần trên & Khối Banner giới thiệu):**
+  ![Trang chủ Client Banner](./images/ui_trang_chu_client_1.png)
+  
+* **Trang chủ (Khối Thống kê hoạt động & Danh sách Dịch vụ Sự kiện):**
+  ![Trang chủ Client Services](./images/ui_trang_chu_client_2.png)
+  
+* **Trang chủ (Khối lọc tìm kiếm & Danh sách Sự kiện Hot nhất thị trường):**
+  ![Trang chủ Client Events](./images/ui_trang_chu_client_3.png)
+  
+* **Giao diện Đăng ký và Đăng nhập thành viên:**
+  ![Đăng ký Đăng nhập](./images/ui_auth.png)
+  
+* **Giao diện Tủ vé QR điện tử & Danh sách Hợp đồng Sự kiện B2B của cá nhân:**
+  ![Tủ vé QR và Hợp đồng cá nhân](./images/ui_member_tickets_contracts.png)
+  
+* **Giao diện Quản lý Đề xuất dự án sự kiện B2B & RSVP danh sách khách mời:**
+  ![Quản lý đề xuất và RSVP](./images/ui_member_proposals_rsvp.png)
+  
+* **Giao diện Hồ sơ thông tin cá nhân & Quản lý Hợp đồng cá nhân:**
+  ![Hồ sơ cá nhân và Hợp đồng](./images/ui_member_profile_employee_contracts.png)
+
+</details>
+
+#### 2. Giao diện dành cho Quản trị viên (Admin)
+
+<details>
+<summary><b>Click để xem các ảnh chụp giao diện Quản trị viên</b></summary>
+
+* **Bảng điều khiển Thống kê Báo cáo Doanh thu & Quản lý duyệt Sự kiện:**
+  ![Admin Dashboard](./images/ui_admin_dashboard_event.png)
+  
+* **Giao diện Duyệt đề xuất Sự kiện B2B & Quản lý Hợp đồng toàn hệ thống:**
+  ![Admin Approve and Contracts](./images/ui_admin_proposal_contract.png)
+  
+* **Giao diện Quản lý CRUD Địa điểm (Location) & Gói Dịch vụ (Service):**
+  ![Admin Locations and Services](./images/ui_admin_location_service.png)
+  
+* **Giao diện Quản lý CRUD Thiết bị Kỹ thuật (Device) & Nhân sự nội bộ (Employee):**
+  ![Admin Devices and Employees](./images/ui_admin_device_employee.png)
+  
+* **Giao diện Quản lý Khách hàng Member & Hộp thư nhận phản hồi/yêu cầu hỗ trợ:**
+  ![Admin Members and Requests](./images/ui_admin_customer_inbox.png)
+
+</details>
+
+#### 3. Giao diện dành cho Nhân viên kiểm soát & vận hành (Employee)
+
+<details>
+<summary><b>Click để xem các ảnh chụp giao diện Nhân viên</b></summary>
+
+* **Giao diện xem Danh sách Hợp đồng & Sự kiện được phân công phụ trách:**
+  ![Employee Assigned Contracts](./images/ui_employee_contracts_events.png)
+  
+* **Giao diện chi tiết duyệt Đề xuất sự kiện & Cổng quét mã QR soát vé Check-in:**
+  ![Employee Proposals and Check-in Gateway](./images/ui_employee_proposals_scan.png)
+  
+* **Giao diện Camera quét mã QR Scanner hoạt động realtime soát vé hiện trường:**
+  ![Employee QR Scanner Realtime](./images/ui_employee_scan_profile.png)
+
+</details>
 
 ---
 
@@ -538,7 +644,7 @@ Nếu sinh viên muốn sao chép nội dung này sang Microsoft Word để so�
 
 ---
 
-# 📘 PHẦN II: QUYỂN TÀI LIỆU HƯỚNG DẪN SỬ DỤNG CÔNG NGHỆ MỚI (TECHNOLOGY MANUAL)
+# PHẦN II: QUYỂN TÀI LIỆU HƯỚNG DẪN SỬ DỤNG CÔNG NGHỆ MỚI (TECHNOLOGY MANUAL)
 
 ## CHƯƠNG 1: GIỚI THIỆU CÔNG NGHỆ
 
